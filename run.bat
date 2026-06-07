@@ -1,8 +1,8 @@
 @echo off
-title TIDAL & Billboard Media Intel Center
+title "TIDAL & Billboard Media Intel Center"
 
 echo ===================================================
-echo   TIDAL & Billboard Combined Setup
+echo   TIDAL ^& Billboard Combined Setup
 echo ===================================================
 echo.
 
