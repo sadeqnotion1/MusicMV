@@ -918,17 +918,9 @@ def api_billboard_export():
     if not entries:
         return jsonify({'status': 'error', 'message': 'No entries to export'}), 400
         
-    text_content = f"BILLBOARD CHART: {chart_title.upper()}\n"
-    text_content += f"Chart Date / Year: {chart_date}\n"
-    text_content += f"Exported on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-    text_content += f"======================================================================\n\n"
-    
+    text_content = ""
     for entry in entries:
-        text_content += f"{entry.get('rank')}. {entry.get('title')} - {entry.get('artist')}\n"
-        text_content += f"   Peak Pos: {entry.get('peakPos')} | Weeks: {entry.get('weeks')}\n"
-        if entry.get('youtubeUrl'):
-            text_content += f"   YouTube URL: {entry.get('youtubeUrl')}\n"
-        text_content += "\n"
+        text_content += f"{entry.get('artist')} - {entry.get('title')}\n"
         
     exports_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'exports')
     os.makedirs(exports_dir, exist_ok=True)
@@ -958,22 +950,9 @@ def api_billboard_export_artist():
     if not entries:
         return jsonify({'status': 'error', 'message': 'No entries to export'}), 400
         
-    text_content = f"BILLBOARD HOT 100 HISTORY: {artist_name.upper()}\n"
-    text_content += f"Exported on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-    text_content += f"======================================================================\n"
-    text_content += f"Summary Statistics:\n"
-    text_content += f"  - No. 1 Hits: {stats.get('no1_hits', '—')}\n"
-    text_content += f"  - Top 10 Hits: {stats.get('top10_hits', '—')}\n"
-    text_content += f"  - Total Songs Charted: {stats.get('songs', '—')}\n"
-    text_content += f"======================================================================\n\n"
-    
-    for idx, entry in enumerate(entries):
-        text_content += f"{idx + 1}. {entry.get('title')}\n"
-        text_content += f"   Debut: {entry.get('debutDate')} | Peak Pos: {entry.get('peakPos')} (Weeks at Peak: {entry.get('peakWeeks')})\n"
-        text_content += f"   Total Weeks on Hot 100: {entry.get('weeksOnChart')}\n"
-        if entry.get('youtubeUrl'):
-            text_content += f"   YouTube URL: {entry.get('youtubeUrl')}\n"
-        text_content += "\n"
+    text_content = ""
+    for entry in entries:
+        text_content += f"{entry.get('artist')} - {entry.get('title')}\n"
         
     exports_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'exports')
     os.makedirs(exports_dir, exist_ok=True)
