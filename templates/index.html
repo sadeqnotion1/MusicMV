@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIDAL & Billboard Media Intel Center</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS RESET & CUSTOM PROPERTIES */
+        :root {
+            --bg-parchment: #f9f6f0;
+            --bg-parchment-light: #fdfcfb;
+            --bg-card: #ffffff;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-muted: #8c857b;
+            --border-warm: #eae5db;
+            --border-focus: #b45309;
+            --accent-warm: #d97706;
+            --accent-warm-light: #fef3c7;
+            --accent-dark: #78350f;
+            --accent-charcoal: #292524;
+            --accent-charcoal-hover: #44403c;
+            --danger: #b91c1c;
+            --danger-light: #fee2e2;
+            
+            --shadow-sm: 0 2px 8px rgba(28, 25, 23, 0.04);
+            --shadow-md: 0 8px 24px rgba(28, 25, 23, 0.06);
+            --shadow-lg: 0 16px 40px rgba(28, 25, 23, 0.09);
+            
+            --radius-pill: 9999px;
+            --radius-card: 16px;
+            --radius-inner: 10px;
+            
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-parchment);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-parchment);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-warm);
+            border-radius: var(--radius-pill);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* LAYOUT CONTAINER */
+        .app-container {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+            }
+        }
+
+        /* SIDEBAR (LEFT) */
+        .sidebar {
+            width: 400px;
+            background-color: var(--bg-parchment-light);
+            border-right: 1px solid var(--border-warm);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-warm);
+                padding: 20px;
+            }
+        }
+
+        /* LOGO & BRANDING */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-icon {
+            background-color: var(--accent-charcoal);
+            color: var(--bg-parchment);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            box-shadow: var(--shadow-sm);
+        }
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+        .brand-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        /* WIDGET PANEL */
+        .widget-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .widget-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-warm);
+            padding-bottom: 8px;
+            margin-bottom: 2px;
+        }
+
+        /* FORM CONTROLS */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .text-input {
+            width: 100%;
+            padding: 12px 14px;
+            padding-right: 36px;
+            background-color: var(--bg-parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .text-input:focus {
+            border-color: var(--border-focus);
+            background-color: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.1);
+        }
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+        }
+        .select-input {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: var(--bg-parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%2357534e%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpolyline%20points%3D%276%209%2012%2015%2018%209%27%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+        }
+        .select-input:focus {
+            border-color: var(--border-focus);
+            background-color: var(--bg-card);
+        }
+
+        /* PILL BUTTONS */
+        .btn-pill {
+            background-color: var(--accent-charcoal);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-pill);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+        .btn-pill:hover {
+            background-color: var(--accent-charcoal-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .stat-card {
+            background-color: var(--bg-parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .stat-val {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 36px;
+            gap: 28px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                padding: 20px;
+                overflow-y: visible;
+            }
+        }
+
+        /* WELCOME STATE */
+        .welcome-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 40px 0;
+            gap: 20px;
+        }
+        .welcome-icon {
+            background-color: var(--bg-parchment-light);
+            border: 1px solid var(--border-warm);
+            color: var(--accent-warm);
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .welcome-state h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .welcome-state p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* PROFILE BANNER */
+        .artist-banner {
+            background-color: var(--bg-parchment-light);
+            border: 1px solid var(--border-warm);
+            border-radius: 20px;
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            animation: fadeIn 0.4s ease;
+        }
+        .artist-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .artist-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-warm);
+            box-shadow: var(--shadow-sm);
+            background-color: var(--border-warm);
+        }
+        .artist-details h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+        .artist-details p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        /* TABS NAVIGATION */
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-warm);
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 18px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover, .tab-btn.active {
+            color: var(--text-primary);
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-focus);
+        }
+        .tab-badge {
+            background-color: var(--border-warm);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+        }
+        .tab-btn.active .tab-badge {
+            background-color: var(--accent-charcoal);
+            color: #ffffff;
+        }
+
+        /* PREMIUM TABLES */
+        .premium-table-wrapper {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .premium-table th {
+            background-color: var(--bg-parchment-light);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-warm);
+        }
+        .premium-table td {
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-warm);
+            vertical-align: middle;
+        }
+        .premium-table tr:last-child td {
+            border-bottom: none;
+        }
+        .premium-table tr:hover td {
+            background-color: rgba(249, 246, 240, 0.5);
+        }
+
+        .rank-cell {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            width: 60px;
+        }
+        .rank-cell.top3 {
+            color: var(--accent-warm);
+        }
+        .song-title-cell {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .song-artist-cell {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* VIDEO CONTAINER & CARDS */
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .video-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+        .video-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(180, 83, 9, 0.2);
+        }
+        .thumb-wrapper {
+            position: relative;
+            width: 250px;
+            aspect-ratio: 16 / 9;
+            flex-shrink: 0;
+            background-color: var(--bg-parchment);
+            overflow: hidden;
+        }
+        .video-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .video-card:hover .video-thumb {
+            transform: scale(1.03);
+        }
+        .duration-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background-color: rgba(28, 25, 23, 0.85);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .card-details {
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .card-badges {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .v-badge {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.02em;
+        }
+        .v-badge-priority {
+            background-color: var(--accent-warm-light);
+            color: var(--accent-dark);
+        }
+        .v-badge-standard {
+            background-color: var(--bg-parchment);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-warm);
+        }
+        .v-badge-excluded {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+        .v-badge-hd {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+        .v-badge-explicit {
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: 800;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            font-size: 0.6rem;
+        }
+        .v-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-body-row {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .video-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+        .video-artists {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .popularity-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pop-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .pop-bar-track {
+            height: 4px;
+            width: 70px;
+            background-color: var(--border-warm);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+        .pop-bar-fill {
+            height: 100%;
+            background-color: var(--text-muted);
+            border-radius: var(--radius-pill);
+        }
+        .video-card:hover .pop-bar-fill {
+            background-color: var(--accent-warm);
+        }
+
+        .card-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px dashed var(--border-warm);
+            padding-top: 10px;
+            margin-top: 2px;
+        }
+        .exclusion-info {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-play-outline {
+            background: none;
+            border: 1px solid var(--accent-charcoal);
+            color: var(--accent-charcoal);
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-play-outline:hover {
+            background-color: var(--accent-charcoal);
+            color: #ffffff;
+        }
+        
+        .video-card.excluded-card {
+            background-color: rgba(253, 252, 251, 0.6);
+        }
+        .video-card.excluded-card .video-thumb {
+            filter: grayscale(1) opacity(0.65);
+        }
+        .video-card.excluded-card .video-title {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            text-decoration-color: var(--text-muted);
+        }
+
+        /* SUGGESTIONS AUTCOMPLETE LIST */
+        .suggestions-list {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-warm);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            max-height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(234, 229, 219, 0.5);
+            text-align: left;
+        }
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        .suggestion-item:hover {
+            background-color: var(--bg-parchment);
+        }
+        .suggestion-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-warm);
+        }
+        .suggestion-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+        .suggestion-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .suggestion-meta {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+
+        .active-mode {
+            background-color: var(--accent-charcoal) !important;
+            color: #ffffff !important;
+            border-color: var(--accent-charcoal) !important;
+        }
+
+        /* SKELETON LOADER */
+        .skeleton-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            height: 140px;
+        }
+        .skeleton-thumb {
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(90deg, #f2eee5 25%, #eae5db 50%, #f2eee5 75%);
+            background-size: 200% 100%;
+            animation: loading-pulse 1.5s infinite;
+        }
+        .skeleton-details {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .skeleton-line {
+            height: 12px;
+            background: linear-gradient(90deg, #f2eee5 25%, #eae5db 50%, #f2eee5 75%);
+            background-size: 200% 100%;
+            animation: loading-pulse 1.5s infinite;
+            border-radius: 4px;
+        }
+        .skeleton-title { width: 60%; height: 18px; }
+        .skeleton-sub { width: 30%; margin-top: 6px; }
+        .skeleton-bottom { width: 25%; height: 28px; border-radius: var(--radius-pill); }
+
+        @keyframes loading-pulse {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* NOTIFICATIONS */
+        .notification-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-warm);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        .notification-card.error {
+            border-left: 4px solid var(--danger);
+            background-color: rgba(254, 226, 226, 0.2);
+        }
+        .notification-icon {
+            font-size: 1.35rem;
+        }
+        .notification-icon.error { color: var(--danger); }
+        .notification-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+        .notification-text p { font-size: 0.82rem; color: var(--text-secondary); }
+
+        /* DOWNLOAD ITEM */
+        .dl-item {
+            background-color: var(--bg-parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+            animation: fadeIn 0.25s ease;
+        }
+        .dl-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .dl-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            color: var(--text-primary);
+        }
+        .dl-badge {
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 1px 4px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .dl-badge-audio { background-color: #dbeafe; color: #1e40af; }
+        .dl-badge-video { background-color: #dcfce7; color: #166534; }
+        .dl-progress-track {
+            height: 3px;
+            background-color: var(--border-warm);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+        .dl-progress-fill {
+            height: 100%;
+            background-color: var(--accent-warm);
+            transition: width 0.3s ease;
+        }
+        .dl-progress-fill.completed { background-color: #10b981; }
+        .dl-progress-fill.failed { background-color: var(--danger); }
+        .dl-meta {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- SIDEBAR (LEFT) -->
+        <div class="sidebar">
+            
+            <!-- BRAND / LOGO -->
+            <div class="brand">
+                <div class="brand-icon">M</div>
+                <div class="brand-text">
+                    <h1>Music Intel Center</h1>
+                    <p>Tidal MV & Billboard Dashboard</p>
+                </div>
+            </div>
+
+            <!-- MODE SWITCHER -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; border-bottom: 1px solid var(--border-warm); padding-bottom: 12px;">
+                <button id="mode-catalog-btn" class="btn-play-outline active-mode" style="justify-content: center; padding: 8px; font-size: 0.78rem; border-radius: var(--radius-inner);" onclick="setMode('catalog')">
+                    Tidal Artist
+                </button>
+                <button id="mode-playlist-btn" class="btn-play-outline" style="justify-content: center; padding: 8px; font-size: 0.78rem; border-radius: var(--radius-inner);" onclick="setMode('playlist')">
+                    Song Playlist
+                </button>
+                <button id="mode-chart-btn" class="btn-play-outline" style="justify-content: center; padding: 8px; font-size: 0.78rem; border-radius: var(--radius-inner);" onclick="setMode('chart')">
+                    Chart Explorer
+                </button>
+                <button id="mode-history-btn" class="btn-play-outline" style="justify-content: center; padding: 8px; font-size: 0.78rem; border-radius: var(--radius-inner);" onclick="setMode('history')">
+                    Artist History
+                </button>
+            </div>
+
+            <!-- TIDAL CATALOG INPUTS -->
+            <div id="catalog-inputs" class="widget-panel">
+                <div class="widget-title">Artist Search</div>
+                <div class="form-group">
+                    <label class="form-label" for="artist-input">Artist Name, ID, or URL</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="artist-input" class="text-input" placeholder="e.g. Beyonce, 1566, URL..." value="1566" autocomplete="off">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <div id="suggestions-dropdown" class="suggestions-list" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="region-select">Region (Tidal Catalog)</label>
+                    <select id="region-select" class="select-input">
+                        <option value="US" selected>United States (US)</option>
+                        <option value="GB">United Kingdom (GB)</option>
+                        <option value="CA">Canada (CA)</option>
+                        <option value="DE">Germany (DE)</option>
+                        <option value="FR">France (FR)</option>
+                        <option value="AU">Australia (AU)</option>
+                    </select>
+                </div>
+
+                <button id="fetch-btn" class="btn-pill" onclick="fetchArtist(document.getElementById('artist-input').value)">
+                    Fetch Videos
+                </button>
+            </div>
+
+            <!-- SONG PLAYLIST INPUTS -->
+            <div id="playlist-inputs" class="widget-panel" style="display: none;">
+                <div class="widget-title">Match Song Playlist</div>
+                <div class="form-group">
+                    <label class="form-label" for="playlist-textarea">Playlist Lines (%artist% - %song%)</label>
+                    <textarea id="playlist-textarea" class="text-input" style="height: 150px; font-family: monospace; font-size: 0.8rem; resize: vertical;" placeholder="Beyonce - Single Ladies&#10;Sabrina Carpenter - Espresso&#10;Noah Cyrus - Make Me (Cry)"></textarea>
+                </div>
+                
+                <button id="match-playlist-btn" class="btn-pill" onclick="matchPlaylist()">
+                    Match Playlist
+                </button>
+            </div>
+
+            <!-- BILLBOARD CHART EXPLORER INPUTS -->
+            <div id="chart-inputs" class="widget-panel" style="display: none;">
+                <div class="widget-title">Billboard Chart Explorer</div>
+                <div class="form-group">
+                    <label class="form-label" for="chart-preset-select">Chart Preset</label>
+                    <select id="chart-preset-select" class="select-input">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="chart-date-input">Specific Date (YYYY-MM-DD)</label>
+                    <input type="date" id="chart-date-input" class="text-input" style="padding: 10px 12px;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="chart-year-input">Or Year-End Chart (YYYY)</label>
+                    <input type="text" id="chart-year-input" class="text-input" style="padding: 10px 12px;" placeholder="e.g. 2024">
+                </div>
+                <button class="btn-pill" onclick="fetchBillboardChart()">
+                    Load Chart
+                </button>
+            </div>
+
+            <!-- BILLBOARD ARTIST HISTORY INPUTS -->
+            <div id="history-inputs" class="widget-panel" style="display: none;">
+                <div class="widget-title">Artist Chart History</div>
+                <div class="form-group">
+                    <label class="form-label" for="history-artist-input">Artist Name</label>
+                    <input type="text" id="history-artist-input" class="text-input" placeholder="e.g. Sabrina Carpenter">
+                </div>
+                <button class="btn-pill" onclick="fetchArtistChartHistory()">
+                    Query Billboard History
+                </button>
+            </div>
+
+            <!-- STATISTICS WIDGET -->
+            <div id="stats-panel" class="widget-panel" style="display: none;">
+                <div class="widget-title">Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-total">-</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-priority" style="color: var(--accent-warm);">-</span>
+                        <span class="stat-label" id="stat-priority-label">Priority</span>
+                    </div>
+                    <div class="stat-card" id="stat-standard-card">
+                        <span class="stat-val" id="stat-standard">-</span>
+                        <span class="stat-label">Standard</span>
+                    </div>
+                    <div class="stat-card" id="stat-excluded-card">
+                        <span class="stat-val" id="stat-excluded" style="color: var(--danger);">-</span>
+                        <span class="stat-label">Filtered</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOWNLOAD MANAGER WIDGET -->
+            <div id="download-manager-panel" class="widget-panel">
+                <div class="widget-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Downloads</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="openExportsFolder()" title="Open Exports Folder" style="background:none; border:none; cursor:pointer; color:var(--text-secondary); display:flex; align-items:center;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                            </svg>
+                        </button>
+                        <button onclick="clearCompletedDownloads()" title="Clear Completed" style="background:none; border:none; cursor:pointer; color:var(--text-secondary); display:flex; align-items:center;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="download-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto; padding-right: 2px;">
+                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; padding: 8px 0;">No active downloads.</p>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-warm);">
+                TIDAL & Billboard Intel Center
+            </div>
+        </div>
+
+        <!-- MAIN AREA (RIGHT) -->
+        <div class="main-content" id="main-content">
+            
+            <!-- WELCOME VIEW -->
+            <div id="welcome-view" class="welcome-state">
+                <div class="welcome-icon">🎶</div>
+                <h2>Explore TIDAL and Billboard Music Intel</h2>
+                <p>
+                    Track the Billboard charts, query historical artist achievements, parse playlist structures, and fetch equivalent music video files directly through a unified download engine. Toggle between tools on the left panel to begin.
+                </p>
+            </div>
+
+            <!-- ARTIST MULTIPLE RESULTS SELECTOR -->
+            <div id="selector-view" style="display: none;">
+                <h3 style="margin-bottom: 8px; font-size: 1.15rem; font-weight: 700;">Select Artist</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.88rem;">Multiple profiles match your search term. Select one to catalog their videos:</p>
+                <div id="artist-selector-list" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <!-- MAIN CATALOG DATA VIEW -->
+            <div id="data-view" style="display: none; flex-direction: column; gap: 24px; width: 100%;">
+                <div class="artist-banner" id="artist-banner">
+                    <div class="artist-info">
+                        <img src="" alt="" class="artist-img" id="artist-photo">
+                        <div class="artist-details">
+                            <h2 id="artist-name">Artist Name</h2>
+                            <p id="artist-meta">Tidal Artist Profile</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+                    <div class="tabs-nav" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 8px;">
+                            <button class="tab-btn active" id="tab-priority-btn" onclick="switchTab('priority')">
+                                <span id="tab-priority-text">Priority Content</span>
+                                <span class="tab-badge" id="badge-priority">0</span>
+                            </button>
+                            <button class="tab-btn" id="tab-standard-btn" onclick="switchTab('standard')">
+                                <span>Standard Videos</span>
+                                <span class="tab-badge" id="badge-standard">0</span>
+                            </button>
+                            <button class="tab-btn" id="tab-excluded-btn" onclick="switchTab('excluded')">
+                                <span>Filtered Out</span>
+                                <span class="tab-badge" id="badge-excluded">0</span>
+                            </button>
+                        </div>
+                        <button class="btn-play-outline" style="padding: 6px 12px; font-size: 0.78rem;" onclick="exportAsText()">
+                            Export Catalogue
+                        </button>
+                    </div>
+                    <div id="video-list-content" class="video-container"></div>
+                </div>
+            </div>
+
+            <!-- BILLBOARD CHARTExplorer DATA VIEW -->
+            <div id="chart-data-view" style="display: none; flex-direction: column; gap: 24px; width: 100%;">
+                <div class="artist-banner">
+                    <div class="artist-info">
+                        <div class="brand-icon" style="background-color:var(--accent-warm);">B</div>
+                        <div class="artist-details">
+                            <h2 id="chart-view-title">Chart Title</h2>
+                            <p id="chart-view-meta">Chart Date / Year</p>
+                        </div>
+                    </div>
+                    <button class="btn-play-outline" onclick="exportBillboardChart()">Export Chart</button>
+                </div>
+
+                <div class="premium-table-wrapper">
+                    <table class="premium-table" id="chart-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">Rank</th>
+                                <th>Song Details</th>
+                                <th style="width: 100px;">Peak</th>
+                                <th style="width: 100px;">Weeks</th>
+                                <th style="text-align: right; width: 320px;">Media Integration</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chart-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BILLBOARD ARTIST HISTORY DATA VIEW -->
+            <div id="history-data-view" style="display: none; flex-direction: column; gap: 24px; width: 100%;">
+                <div class="artist-banner">
+                    <div class="artist-info">
+                        <div class="brand-icon" style="background-color:#1e3a8a;">H</div>
+                        <div class="artist-details">
+                            <h2 id="history-view-title">Sabrina Carpenter</h2>
+                            <p>Billboard Hot 100 Performance History</p>
+                        </div>
+                    </div>
+                    <button class="btn-play-outline" onclick="exportBillboardArtistHistory()">Export History</button>
+                </div>
+
+                <div class="premium-table-wrapper">
+                    <table class="premium-table" id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Title / Debut Date</th>
+                                <th style="width: 100px;">Peak Position</th>
+                                <th style="width: 120px;">Weeks at Peak</th>
+                                <th style="width: 120px;">Total Weeks</th>
+                                <th style="text-align: right; width: 320px;">Media Integration</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SKELETON LOADER -->
+            <div id="loader-view" style="display: none; flex-direction: column; gap: 20px; width: 100%;">
+                <div class="skeleton-card" style="height: 110px; border-radius: 20px;">
+                    <div class="skeleton-details">
+                        <div class="skeleton-line skeleton-title"></div>
+                        <div class="skeleton-line skeleton-sub"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-details">
+                        <div class="skeleton-line skeleton-title"></div>
+                        <div class="skeleton-line skeleton-bottom"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-details">
+                        <div class="skeleton-line skeleton-title"></div>
+                        <div class="skeleton-line skeleton-bottom"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ERROR VIEW -->
+            <div id="error-view" style="display: none; width: 100%;">
+                <div class="notification-card error">
+                    <div class="notification-icon error">⚠️</div>
+                    <div class="notification-text">
+                        <h4 id="error-title">Request Failed</h4>
+                        <p id="error-message">Unable to fetch data. Please try again or check your query.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data variables
+        let activeMode = 'catalog';
+        let artistVideos = { priority: [], standard: [], excluded: [] };
+        let currentTab = 'priority';
+        
+        let loadedChartData = null;
+        let loadedArtistHistory = null;
+
+        // DOM elements
+        const welcomeView = document.getElementById('welcome-view');
+        const selectorView = document.getElementById('selector-view');
+        const dataView = document.getElementById('data-view');
+        const chartDataView = document.getElementById('chart-data-view');
+        const historyDataView = document.getElementById('history-data-view');
+        const loaderView = document.getElementById('loader-view');
+        const errorView = document.getElementById('error-view');
+        
+        const artistPhoto = document.getElementById('artist-photo');
+        const artistName = document.getElementById('artist-name');
+        const artistMeta = document.getElementById('artist-meta');
+        const badgePriority = document.getElementById('badge-priority');
+        const badgeStandard = document.getElementById('badge-standard');
+        const badgeExcluded = document.getElementById('badge-excluded');
+        const videoListContent = document.getElementById('video-list-content');
+        
+        const statsPanel = document.getElementById('stats-panel');
+        const statTotal = document.getElementById('stat-total');
+        const statPriority = document.getElementById('stat-priority');
+        const statPriorityLabel = document.getElementById('stat-priority-label');
+        const statStandard = document.getElementById('stat-standard');
+        const statExcluded = document.getElementById('stat-excluded');
+        const statStandardCard = document.getElementById('stat-standard-card');
+        const statExcludedCard = document.getElementById('stat-excluded-card');
+        
+        const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+        const artistInput = document.getElementById('artist-input');
+        const regionSelect = document.getElementById('region-select');
+        const artistSelectorList = document.getElementById('artist-selector-list');
+        
+        let autocompleteTimeout = null;
+
+        // Mode Switching
+        function setMode(mode) {
+            activeMode = mode;
+            
+            // Remove active classes
+            document.getElementById('mode-catalog-btn').classList.remove('active-mode');
+            document.getElementById('mode-playlist-btn').classList.remove('active-mode');
+            document.getElementById('mode-chart-btn').classList.remove('active-mode');
+            document.getElementById('mode-history-btn').classList.remove('active-mode');
+            
+            // Hide panels
+            document.getElementById('catalog-inputs').style.display = 'none';
+            document.getElementById('playlist-inputs').style.display = 'none';
+            document.getElementById('chart-inputs').style.display = 'none';
+            document.getElementById('history-inputs').style.display = 'none';
+            
+            // Activate current
+            document.getElementById(`mode-${mode}-btn`).classList.add('active-mode');
+            document.getElementById(`${mode}-inputs`).style.display = 'flex';
+            
+            // Hide stats on switch
+            statsPanel.style.display = 'none';
+            showView('welcome');
+        }
+
+        // View Toggler
+        function showView(viewName) {
+            welcomeView.style.display = 'none';
+            selectorView.style.display = 'none';
+            dataView.style.display = 'none';
+            chartDataView.style.display = 'none';
+            historyDataView.style.display = 'none';
+            loaderView.style.display = 'none';
+            errorView.style.display = 'none';
+            
+            if (viewName === 'welcome') welcomeView.style.display = 'flex';
+            if (viewName === 'selector') selectorView.style.display = 'block';
+            if (viewName === 'data') dataView.style.display = 'flex';
+            if (viewName === 'chart-data') chartDataView.style.display = 'flex';
+            if (viewName === 'history-data') historyDataView.style.display = 'flex';
+            if (viewName === 'loader') loaderView.style.display = 'flex';
+            if (viewName === 'error') errorView.style.display = 'block';
+        }
+
+        function showError(title, msg) {
+            document.getElementById('error-title').textContent = title;
+            document.getElementById('error-message').textContent = msg;
+            showView('error');
+        }
+
+        // Auto Load Presets on startup
+        async function loadBillboardPresets() {
+            try {
+                const response = await fetch('/api/billboard/presets');
+                const presets = await response.json();
+                const select = document.getElementById('chart-preset-select');
+                select.innerHTML = '';
+                for (const [name, slug] of Object.entries(presets)) {
+                    const option = document.createElement('option');
+                    option.value = slug;
+                    option.textContent = name;
+                    select.appendChild(option);
+                }
+            } catch (err) {
+                console.error("Failed to load Billboard presets:", err);
+            }
+        }
+
+        // TIDAL CATALOG SEARCH & AUTOCOMPLETE
+        artistInput.addEventListener('input', () => {
+            clearTimeout(autocompleteTimeout);
+            const query = artistInput.value.trim();
+            if (query.length < 2) {
+                suggestionsDropdown.style.display = 'none';
+                return;
+            }
+            autocompleteTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/search?query=${encodeURIComponent(query)}&countryCode=${regionSelect.value}`);
+                    const artists = await response.json();
+                    if (artists && artists.length > 0) {
+                        renderSuggestions(artists);
+                    } else {
+                        suggestionsDropdown.style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error("Autocomplete error:", err);
+                }
+            }, 250);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target !== artistInput && e.target !== suggestionsDropdown && !suggestionsDropdown.contains(e.target)) {
+                suggestionsDropdown.style.display = 'none';
+            }
+        });
+
+        function renderSuggestions(artists) {
+            suggestionsDropdown.innerHTML = '';
+            artists.forEach(artist => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                const imgSource = artist.picture || 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%238c857b%27%20stroke-width%3D%272%27%3E%3Cpath%20d%3D%27M20%2021v-2a4%204%200%200%200-4-4H8a4%204%200%200%200-4%204%20v2%27%3E%3C/path%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277%27%20r%3D%274%27%3E%3C/circle%3E%3C/svg%3E';
+                item.innerHTML = `
+                    <img src="${imgSource}" class="suggestion-img" alt="${artist.name}">
+                    <div class="suggestion-info">
+                        <span class="suggestion-name">${artist.name}</span>
+                        <span class="suggestion-meta">TIDAL ID: ${artist.id} | Popularity: ${artist.popularity}%</span>
+                    </div>
+                `;
+                item.onclick = () => {
+                    artistInput.value = artist.id;
+                    suggestionsDropdown.style.display = 'none';
+                    fetchArtist(artist.id);
+                };
+                suggestionsDropdown.appendChild(item);
+            });
+            suggestionsDropdown.style.display = 'flex';
+        }
+
+        async function fetchArtist(inputStr) {
+            if (!inputStr.trim()) return;
+            suggestionsDropdown.style.display = 'none';
+            showView('loader');
+            statsPanel.style.display = 'none';
+            try {
+                const response = await fetch('/api/fetch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: inputStr, countryCode: regionSelect.value })
+                });
+                const result = await response.json();
+                if (response.status !== 200 && result.status === 'error') {
+                    showError("Fetching Failed", result.message);
+                    return;
+                }
+                if (result.status === 'search_results') {
+                    displayArtistSelector(result.data);
+                    showView('selector');
+                } else if (result.status === 'success') {
+                    loadCatalogData(result.data);
+                }
+            } catch (err) {
+                showError("Network Error", "Could not connect to local server backend.");
+            }
+        }
+
+        function displayArtistSelector(artists) {
+            artistSelectorList.innerHTML = '';
+            artists.forEach(artist => {
+                const imgSource = artist.picture || 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%238c857b%27%20stroke-width%3D%272%27%3E%3Cpath%20d%3D%27M20%2021v-2a4%204%200%200%200-4-4H8a4%204%200%200%200-4%204%20v2%27%3E%3C/path%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277%27%20r%3D%274%27%3E%3C/circle%3E%3C/svg%3E';
+                const card = document.createElement('div');
+                card.className = 'widget-panel';
+                card.style.flexDirection = 'row';
+                card.style.justifyContent = 'space-between';
+                card.style.alignItems = 'center';
+                card.innerHTML = `
+                    <div class="artist-info">
+                        <img src="${imgSource}" alt="${artist.name}" class="artist-img" style="width:40px; height:40px;">
+                        <div class="artist-details">
+                            <h4 style="font-weight:600;">${artist.name}</h4>
+                            <p style="font-size:0.75rem; color:var(--text-muted);">TIDAL ID: ${artist.id}</p>
+                        </div>
+                    </div>
+                    <button class="btn-play-outline" onclick="selectArtistFromList('${artist.id}')">Select</button>
+                `;
+                artistSelectorList.appendChild(card);
+            });
+        }
+
+        function selectArtistFromList(artistId) {
+            artistInput.value = artistId;
+            fetchArtist(artistId);
+        }
+
+        function loadCatalogData(data) {
+            document.getElementById('tab-standard-btn').style.display = 'inline-flex';
+            document.getElementById('tab-excluded-btn').style.display = 'inline-flex';
+            document.getElementById('tab-priority-text').textContent = 'Priority Content';
+            statStandardCard.style.display = 'flex';
+            statExcludedCard.style.display = 'flex';
+            statPriorityLabel.textContent = 'Priority';
+
+            artistName.textContent = data.artist.name;
+            artistPhoto.src = data.artist.picture || 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%238c857b%27%20stroke-width%3D%272%27%3E%3Cpath%20d%3D%27M20%2021v-2a4%204%200%200%200-4-4H8a4%204%200%200%200-4%204%20v2%27%3E%3C/path%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277%27%20r%3D%274%27%3E%3C/circle%3E%3C/svg%3E';
+            artistMeta.textContent = `TIDAL Artist ID: ${data.artist.id} | Country: ${regionSelect.value}`;
+            
+            artistVideos = data.videos;
+            
+            statTotal.textContent = data.stats.total;
+            statPriority.textContent = data.stats.priority;
+            statStandard.textContent = data.stats.standard;
+            statExcluded.textContent = data.stats.excluded;
+            
+            badgePriority.textContent = data.stats.priority;
+            badgeStandard.textContent = data.stats.standard;
+            badgeExcluded.textContent = data.stats.excluded;
+            
+            statsPanel.style.display = 'flex';
+            
+            if (data.stats.priority > 0) switchTab('priority');
+            else if (data.stats.standard > 0) switchTab('standard');
+            else switchTab('excluded');
+            
+            showView('data');
+        }
+
+        // PLAYLIST MATCH
+        async function matchPlaylist() {
+            const playlistText = document.getElementById('playlist-textarea').value.trim();
+            if (!playlistText) {
+                alert("Please enter at least one song line.");
+                return;
+            }
+            showView('loader');
+            statsPanel.style.display = 'none';
+            try {
+                const response = await fetch('/api/playlist/match', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ playlist: playlistText, countryCode: regionSelect.value })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    loadPlaylistData(result.data);
+                } else {
+                    showError("Matching Failed", result.message);
+                }
+            } catch (err) {
+                showError("Network Error", "Could not connect to server backend.");
+            }
+        }
+
+        function loadPlaylistData(data) {
+            artistName.textContent = data.artist.name;
+            artistPhoto.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%238c857b%27%20stroke-width%3D%272%27%3E%3Cpath%20d%3D%27M9%2018V5l12-2v13%27%3E%3C/path%3E%3Ccircle%20cx%3D%276%27%20cy%3D%2718%27%20r%3D%273%27%3E%3C/circle%3E%3Ccircle%20cx%3D%2718%27%20cy%3D%2716%27%20r%3D%273%27%3E%3C/circle%3E%3C/svg%3E';
+            artistMeta.textContent = `Custom Matched Playlist | Catalog Country: ${regionSelect.value}`;
+            
+            artistVideos = data.videos;
+            
+            statTotal.textContent = data.stats.total;
+            statPriority.textContent = data.stats.priority;
+            statStandardCard.style.display = 'none';
+            statExcludedCard.style.display = 'none';
+            statPriorityLabel.textContent = 'Playlist';
+            
+            badgePriority.textContent = data.stats.priority;
+            document.getElementById('tab-standard-btn').style.display = 'none';
+            document.getElementById('tab-excluded-btn').style.display = 'none';
+            document.getElementById('tab-priority-text').textContent = 'Song List';
+            
+            statsPanel.style.display = 'flex';
+            switchTab('priority');
+            showView('data');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            document.getElementById('tab-priority-btn').classList.remove('active');
+            document.getElementById('tab-standard-btn').classList.remove('active');
+            document.getElementById('tab-excluded-btn').classList.remove('active');
+            
+            const targetBtn = document.getElementById(`tab-${tabName}-btn`);
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            renderVideoList(artistVideos[tabName], tabName);
+        }
+
+        function renderVideoList(items, type) {
+            videoListContent.innerHTML = '';
+            if (!items || items.length === 0) {
+                videoListContent.innerHTML = `
+                    <div style="text-align: center; padding: 48px; border: 1px dashed var(--border-warm); border-radius: var(--radius-card); background-color: var(--bg-parchment-light);">
+                        <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">No videos in this section.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            items.forEach(video => {
+                const card = document.createElement('div');
+                const isExcluded = (type === 'excluded');
+                card.className = `video-card ${isExcluded ? 'excluded-card' : ''}`;
+                
+                let badgesHtml = '';
+                if (isExcluded) {
+                    badgesHtml += `<span class="v-badge v-badge-excluded">Filtered Out</span>`;
+                } else if (video.category !== 'Standard') {
+                    badgesHtml += `<span class="v-badge v-badge-priority">${video.category}</span>`;
+                } else {
+                    badgesHtml += `<span class="v-badge v-badge-standard">Standard</span>`;
+                }
+                if (video.quality) badgesHtml += `<span class="v-badge v-badge-hd">${video.quality}</span>`;
+                if (video.explicit) badgesHtml += `<span class="v-badge v-badge-explicit">E</span>`;
+                
+                const artistsList = video.artists && video.artists.length > 0 ? video.artists.join(', ') : 'Artist';
+                let imgHtml = video.thumbnail ? `<img src="${video.thumbnail}" class="video-thumb" alt="${video.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : '';
+                const fallbackImgHtml = `<div class="thumb-fallback" style="${video.thumbnail ? 'display:none;' : 'display:flex;'}">🎥</div>`;
+
+                card.innerHTML = `
+                    <div class="thumb-wrapper">
+                        ${imgHtml}
+                        ${fallbackImgHtml}
+                        <span class="duration-badge">${video.duration}</span>
+                    </div>
+                    <div class="card-details">
+                        <div>
+                            <div class="card-header-row">
+                                <div class="card-badges">${badgesHtml}</div>
+                                <span class="v-date">${video.releaseDate}</span>
+                            </div>
+                            <div class="card-body-row" style="margin-top: 8px;">
+                                <h3 class="video-title">${video.title}</h3>
+                                <p class="video-artists">${artistsList}</p>
+                            </div>
+                        </div>
+                        <div class="card-action-row">
+                            <div class="popularity-container">
+                                <span class="pop-label">Pop</span>
+                                <div class="pop-bar-track" title="Popularity score: ${video.popularity}%">
+                                    <div class="pop-bar-fill" style="width: ${video.popularity}%;"></div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" id="yt-group-${video.id}">
+                                ${isExcluded ? 
+                                  `<span class="exclusion-info">❌ ${video.exclusion_reason}</span>` :
+                                  (video.id && String(video.id).startsWith('pl_') ? '' :
+                                  `<a href="${video.url}" target="_blank" class="btn-play-outline">Watch on TIDAL</a>`)
+                                }
+                                ${video.youtubeId ? 
+                                  getYouTubeControlsHtml(video.youtubeId, video.youtubeUrl, video.title, artistsList, video.id) :
+                                  `<button id="yt-btn-${video.id}" class="btn-play-outline" style="border-color:#ef4444; color:#ef4444;" onclick="findYouTubeVideo('${video.id}', '${encodeURIComponent(artistsList + " - " + video.title).replace(/'/g, "%27")}')">Find on YT</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+                videoListContent.appendChild(card);
+            });
+        }
+
+        // BILLBOARD CHART EXPLORER
+        async function fetchBillboardChart() {
+            const chartSlug = document.getElementById('chart-preset-select').value;
+            const chartDate = document.getElementById('chart-date-input').value;
+            const chartYear = document.getElementById('chart-year-input').value.trim();
+            
+            showView('loader');
+            statsPanel.style.display = 'none';
+            try {
+                const response = await fetch('/api/billboard/chart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chart: chartSlug, date: chartDate, year: chartYear })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    loadedChartData = result.data;
+                    renderBillboardChart(result.data);
+                } else {
+                    showError("Failed to Query Chart", result.message);
+                }
+            } catch (err) {
+                showError("Network Error", "Could not connect to local server backend.");
+            }
+        }
+
+        function renderBillboardChart(data) {
+            document.getElementById('chart-view-title').textContent = data.title;
+            document.getElementById('chart-view-meta').textContent = `Date / Year: ${data.date}`;
+            
+            // Stats panel
+            statTotal.textContent = data.entries.length;
+            statPriority.textContent = data.entries.filter(e => e.isNew).length;
+            statStandardCard.style.display = 'none';
+            statExcludedCard.style.display = 'none';
+            statPriorityLabel.textContent = 'New Entries';
+            statsPanel.style.display = 'flex';
+
+            const tbody = document.getElementById('chart-table-body');
+            tbody.innerHTML = '';
+            
+            data.entries.forEach(entry => {
+                const tr = document.createElement('tr');
+                const isTop3 = (entry.rank <= 3);
+                
+                const virtualId = `bb_${entry.rank}`;
+                
+                tr.innerHTML = `
+                    <td class="rank-cell ${isTop3 ? 'top3' : ''}">
+                        <span class="rank-badge ${isTop3 ? 'top3' : ''}">${entry.rank}</span>
+                    </td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            ${entry.image ? `<img src="${entry.image}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid var(--border-warm);">` : '<div style="width:40px; height:40px; border-radius:6px; background-color:var(--border-warm); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🎵</div>'}
+                            <div>
+                                <div class="song-title-cell">${entry.title}</div>
+                                <div class="song-artist-cell">${entry.artist}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span style="font-weight:600;">#${entry.peakPos}</span></td>
+                    <td><span style="font-weight:600;">${entry.weeks}w</span></td>
+                    <td style="text-align: right;">
+                        <div style="display: flex; gap: 6px; justify-content: flex-end; align-items: center; flex-wrap: wrap;" id="yt-group-${virtualId}">
+                            ${entry.youtubeId ? 
+                              getYouTubeControlsHtml(entry.youtubeId, entry.youtubeUrl, entry.title, entry.artist, virtualId) :
+                              `<button id="yt-btn-${virtualId}" class="btn-play-outline" style="border-color:#ef4444; color:#ef4444; padding:5px 10px; font-size:0.75rem;" onclick="findYouTubeVideo('${virtualId}', '${encodeURIComponent(entry.artist + " - " + entry.title).replace(/'/g, "%27")}')">Find on YT</button>`
+                            }
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            showView('chart-data');
+        }
+
+        // BILLBOARD ARTIST HISTORY
+        async function fetchArtistChartHistory() {
+            const query = document.getElementById('history-artist-input').value.trim();
+            if (!query) {
+                alert("Please enter an artist name.");
+                return;
+            }
+            showView('loader');
+            statsPanel.style.display = 'none';
+            try {
+                const response = await fetch('/api/billboard/artist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ artist: query })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    loadedArtistHistory = result.data;
+                    renderArtistHistory(result.data);
+                } else {
+                    showError("Failed to Query History", result.message);
+                }
+            } catch (err) {
+                showError("Network Error", "Could not connect to local server backend.");
+            }
+        }
+
+        function renderArtistHistory(data) {
+            document.getElementById('history-view-title').textContent = data.artist.replace(/-/g, ' ').toUpperCase();
+            
+            // Stats panel
+            statTotal.textContent = data.stats.songs || 0;
+            statPriority.textContent = data.stats.no1_hits || 0;
+            statStandard.textContent = data.stats.top10_hits || 0;
+            statStandardCard.style.display = 'flex';
+            statExcludedCard.style.display = 'none';
+            statPriorityLabel.textContent = 'No. 1 Hits';
+            document.getElementById('stat-standard-card').querySelector('.stat-label').textContent = 'Top 10 Hits';
+            statsPanel.style.display = 'flex';
+
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = '';
+            
+            data.entries.forEach((entry, idx) => {
+                const virtualId = `bb_hist_${idx}`;
+                tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="song-title-cell">${entry.title}</div>
+                        <div class="song-artist-cell">Debut Date: ${entry.debutDate}</div>
+                    </td>
+                    <td><span style="font-weight:700; color:var(--accent-warm);">#${entry.peakPos}</span></td>
+                    <td><span style="font-weight:600;">${entry.peakWeeks}</span></td>
+                    <td><span style="font-weight:600;">${entry.weeksOnChart}w</span></td>
+                    <td style="text-align: right;">
+                        <div style="display: flex; gap: 6px; justify-content: flex-end; align-items: center; flex-wrap: wrap;" id="yt-group-${virtualId}">
+                            ${entry.youtubeId ? 
+                              getYouTubeControlsHtml(entry.youtubeId, entry.youtubeUrl, entry.title, entry.artist, virtualId) :
+                              `<button id="yt-btn-${virtualId}" class="btn-play-outline" style="border-color:#ef4444; color:#ef4444; padding:5px 10px; font-size:0.75rem;" onclick="findYouTubeVideo('${virtualId}', '${encodeURIComponent(entry.artist + " - " + entry.title).replace(/'/g, "%27")}')">Find on YT</button>`
+                            }
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            showView('history-data');
+        }
+
+        // YOUTUBE SEARCH AND DOWNLOAD ACTIONS
+        function getYouTubeControlsHtml(videoId, videoUrl, title, artistsList, rowId) {
+            const qSelectId = `quality-select-${rowId}`;
+            return `
+                <a href="${videoUrl}" target="_blank" class="btn-play-outline" style="border-color:#ef4444; background-color:#ef4444; color:#ffffff; padding:4px 8px; font-size:0.72rem;">Watch</a>
+                <button class="btn-play-outline" style="border-color:#7c2d12; color:#7c2d12; padding:4px 8px; font-size:0.72rem;" onclick="copyToClipboard('${videoUrl}', this)">Copy Link</button>
+                <select id="${qSelectId}" class="select-input" style="width:auto; padding:2px 4px; font-size:0.72rem; height:24px; border-radius:var(--radius-pill); border-color:#10b981; color:#10b981; background-color:transparent;">
+                    <option value="best" style="color:var(--text-primary)">Best</option>
+                    <option value="1080p" style="color:var(--text-primary)">1080p</option>
+                    <option value="720p" style="color:var(--text-primary)">720p</option>
+                    <option value="audio" style="color:var(--text-primary)">Audio (M4A)</option>
+                </select>
+                <button class="btn-play-outline" style="border-color:#10b981; color:#10b981; padding:4px 8px; font-size:0.72rem;" onclick="downloadYouTubeVideo('${videoId}', '${artistsList} - ${title}', '${qSelectId}', this)">Download</button>
+            `;
+        }
+
+        async function findYouTubeVideo(rowId, query) {
+            const btn = document.getElementById(`yt-btn-${rowId}`);
+            if (!btn) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = `Searching...`;
+            
+            try {
+                const response = await fetch('/api/youtube/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: decodeURIComponent(query), tidalId: rowId })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    const parent = document.getElementById(`yt-group-${rowId}`);
+                    const rawQuery = decodeURIComponent(query);
+                    const parts = rawQuery.split(" - ");
+                    const artists = parts[0] || 'Artist';
+                    const title = parts.slice(1).join(" - ") || 'Track';
+                    
+                    btn.remove();
+                    const wrapper = document.createElement('div');
+                    wrapper.style.display = 'contents';
+                    wrapper.innerHTML = getYouTubeControlsHtml(result.videoId, result.videoUrl, title, artists, rowId);
+                    parent.appendChild(wrapper);
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = 'YT Not Found';
+                    alert(`YouTube search failed: ${result.message}`);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = 'Search Error';
+                alert('YouTube search failed: Could not connect to local server.');
+            }
+        }
+
+        async function downloadYouTubeVideo(videoId, title, qualitySelectId, btnElement) {
+            const qualitySelect = document.getElementById(qualitySelectId);
+            const selectedQuality = qualitySelect ? qualitySelect.value : 'best';
+            
+            btnElement.disabled = true;
+            const originalHtml = btnElement.innerHTML;
+            btnElement.innerHTML = `Queuing...`;
+            
+            try {
+                const response = await fetch('/api/youtube/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoId: videoId, title: title, quality: selectedQuality })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    btnElement.innerHTML = `Queued`;
+                    startDownloadsPolling();
+                } else {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = originalHtml;
+                    alert(`Download failed: ${result.message}`);
+                }
+            } catch (err) {
+                btnElement.disabled = false;
+                btnElement.innerHTML = originalHtml;
+                alert('Download failed: connection error.');
+            }
+        }
+
+        // TEXT EXPORT CATALOGUE
+        async function exportAsText() {
+            const artist = artistName.textContent;
+            const totalVideos = (artistVideos.priority ? artistVideos.priority.length : 0) +
+                                (artistVideos.standard ? artistVideos.standard.length : 0) +
+                                (artistVideos.excluded ? artistVideos.excluded.length : 0);
+            if (totalVideos === 0) {
+                alert("No videos to export.");
+                return;
+            }
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ artistName: artist, videos: artistVideos })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    alert(`Exported successfully!\n\nFile saved locally:\n${result.filepath}`);
+                } else {
+                    alert(`Export failed: ${result.message}`);
+                }
+            } catch (err) {
+                alert(`Export error: connection error.`);
+            }
+        }
+
+        // EXPORT BILLBOARD CHART
+        async function exportBillboardChart() {
+            if (!loadedChartData) return;
+            try {
+                const response = await fetch('/api/billboard/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loadedChartData)
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    alert(`Billboard Chart exported successfully!\n\nSaved locally at:\n${result.filepath}`);
+                } else {
+                    alert(`Export failed: ${result.message}`);
+                }
+            } catch (err) {
+                alert(`Export error: connection error.`);
+            }
+        }
+
+        // EXPORT BILLBOARD ARTIST HISTORY
+        async function exportBillboardArtistHistory() {
+            if (!loadedArtistHistory) return;
+            try {
+                const response = await fetch('/api/billboard/export_artist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loadedArtistHistory)
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    alert(`Artist History exported successfully!\n\nSaved locally at:\n${result.filepath}`);
+                } else {
+                    alert(`Export failed: ${result.message}`);
+                }
+            } catch (err) {
+                alert(`Export error: connection error.`);
+            }
+        }
+
+        // DOWNLOADS LIST POLLING
+        let downloadsInterval = null;
+        function startDownloadsPolling() {
+            refreshDownloadsList();
+            if (!downloadsInterval) {
+                downloadsInterval = setInterval(refreshDownloadsList, 1500);
+            }
+        }
+        function stopDownloadsPolling() {
+            if (downloadsInterval) {
+                clearInterval(downloadsInterval);
+                downloadsInterval = null;
+            }
+        }
+
+        async function refreshDownloadsList() {
+            const listContainer = document.getElementById('download-list');
+            if (!listContainer) return;
+            try {
+                const response = await fetch('/api/downloads/status');
+                const list = await response.json();
+                if (!list || list.length === 0) {
+                    listContainer.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted); text-align:center; padding:8px 0;">No active downloads.</p>`;
+                    stopDownloadsPolling();
+                    return;
+                }
+                listContainer.innerHTML = '';
+                let hasActive = false;
+                list.forEach(item => {
+                    const dlItem = document.createElement('div');
+                    dlItem.className = 'dl-item';
+                    const isAudio = (item.type === 'audio');
+                    const badgeClass = isAudio ? 'dl-badge-audio' : 'dl-badge-video';
+                    
+                    if (item.status === 'queued' || item.status === 'downloading') hasActive = true;
+                    
+                    let statusLabel = item.status.toUpperCase();
+                    let progressFillClass = '';
+                    if (item.status === 'completed') { statusLabel = 'COMPLETED'; progressFillClass = 'completed'; }
+                    else if (item.status === 'failed') { statusLabel = 'FAILED'; progressFillClass = 'failed'; }
+                    else if (item.status === 'downloading') { statusLabel = `DOWNLOADING - ${item.progress}%`; }
+                    
+                    let metaText = '';
+                    if (item.status === 'downloading') {
+                        metaText = `<span>Speed: ${item.speed}</span><span>ETA: ${item.eta}</span>`;
+                    } else if (item.status === 'completed') {
+                        metaText = `<span>Saved in Exports</span>`;
+                    } else if (item.status === 'failed') {
+                        metaText = `<span style="color:var(--danger);" title="${item.error}">Error: ${item.error.substring(0, 20)}...</span>`;
+                    } else {
+                        metaText = `<span>Waiting in Queue...</span>`;
+                    }
+                    
+                    dlItem.innerHTML = `
+                        <div class="dl-header">
+                            <span class="dl-title" title="${item.title}">${item.title}</span>
+                            <span class="dl-badge ${badgeClass}">${item.quality}</span>
+                        </div>
+                        <div class="dl-progress-track">
+                            <div class="dl-progress-fill ${progressFillClass}" style="width: ${item.progress}%;"></div>
+                        </div>
+                        <div class="dl-meta">${metaText}</div>
+                    `;
+                    listContainer.appendChild(dlItem);
+                });
+                if (!hasActive) stopDownloadsPolling();
+                else if (!downloadsInterval) downloadsInterval = setInterval(refreshDownloadsList, 1500);
+            } catch (err) {
+                console.error("Downloads poll error:", err);
+            }
+        }
+
+        async function openExportsFolder() {
+            try {
+                const response = await fetch('/api/downloads/open_folder', { method: 'POST' });
+                const result = await response.json();
+                if (result.status !== 'success') alert('Could not open exports folder: ' + result.message);
+            } catch (err) {
+                alert('Could not open folder.');
+            }
+        }
+
+        async function clearCompletedDownloads() {
+            try {
+                await fetch('/api/downloads/clear', { method: 'POST' });
+                refreshDownloadsList();
+            } catch (err) {
+                console.error("Error clearing downloads:", err);
+            }
+        }
+
+        // COPY TO CLIPBOARD
+        function copyToClipboard(text, btnElement) {
+            const orig = btnElement.innerHTML;
+            function done() {
+                btnElement.innerHTML = 'Copied!';
+                setTimeout(() => { btnElement.innerHTML = orig; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, btnElement));
+            } else {
+                fallbackCopy(text, btnElement);
+            }
+        }
+
+        function fallbackCopy(text, btnElement) {
+            try {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                if (success) {
+                    btnElement.innerHTML = 'Copied!';
+                    setTimeout(() => { btnElement.innerHTML = 'Copy Link'; }, 2000);
+                } else {
+                    alert("Failed to copy.");
+                }
+            } catch (err) {
+                alert("Failed to copy: " + err);
+            }
+        }
+
+        // STARTUP INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBillboardPresets();
+            refreshDownloadsList();
+            setTimeout(startDownloadsPolling, 1000);
+        });
+    </script>
+</body>
+</html>
