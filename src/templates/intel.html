@@ -149,8 +149,8 @@
             <div class="form-group relative flex flex-col gap-2">
                 <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Tidal Artist Search</label>
                 <div class="flex gap-2">
-                    <input type="text" id="artist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Rosalía" oninput="fetchArtist(this.value)">
-                    <button onclick="fetchArtist(document.getElementById('artist-input').value)" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Search</button>
+                    <input type="text" id="artist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Rosalía" oninput="fetchArtist(this.value)" onkeydown="if(event.key === 'Enter') submitSearch()">
+                    <button onclick="submitSearch()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Search</button>
                 </div>
                 <div id="suggestions-dropdown" class="absolute left-0 right-0 top-[75px] bg-[#10111a] border border-border-glow rounded-lg overflow-hidden hidden z-50 shadow-lg max-h-[300px] overflow-y-auto"></div>
             </div>
@@ -296,6 +296,14 @@
         }
 
         async function selectArtistFromList(artistId) {
+            submitSearch(artistId);
+        }
+
+        async function submitSearch(inputVal) {
+            const input = inputVal !== undefined ? String(inputVal) : artistInput.value.trim();
+            if (!input) return;
+            
+            suggestionsDropdown.classList.add('hidden');
             loaderView.classList.remove('hidden');
             artistBanner.classList.add('hidden');
             videoListContent.innerHTML = '';
@@ -304,15 +312,17 @@
                 const response = await fetch('/api/fetch', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ input: String(artistId) })
+                    body: JSON.stringify({ input: input })
                 });
-                const data = await response.json();
+                const res = await response.json();
                 loaderView.classList.add('hidden');
                 
-                if (data.status === 'success') {
-                    loadCatalogData(data);
+                if (res.status === 'success') {
+                    loadCatalogData(res);
+                } else if (res.status === 'search_results') {
+                    renderSuggestions(res.data);
                 } else {
-                    alert("Error searching artist: " + data.message);
+                    alert("Error searching artist: " + res.message);
                 }
             } catch (err) {
                 loaderView.classList.add('hidden');
@@ -320,21 +330,32 @@
             }
         }
 
-        function loadCatalogData(data) {
-            activeArtistId = data.artist_id;
-            artistPhoto.src = data.artist_picture || '';
-            artistName.textContent = data.artist_name || 'Artist';
-            artistMeta.textContent = `${data.tracks_count || 0} Tracks found in catalog`;
+        function loadCatalogData(res) {
+            // Handle flat/nested response formats
+            const data = res.data || res;
+            const artist = data.artist || {};
+            const videos = data.videos || {};
+            const stats = data.stats || {};
+            
+            activeArtistId = artist.id || res.artist_id;
+            artistPhoto.src = artist.picture || res.artist_picture || '';
+            artistName.textContent = artist.name || res.artist_name || 'Artist';
+            
+            const totalCount = stats.total !== undefined ? stats.total : (res.tracks_count || 0);
+            artistMeta.textContent = `${totalCount} Tracks found in catalog`;
             artistBanner.classList.remove('hidden');
             
-            // Combine priority and standard tracks for unified display
+            // Combine priority, standard, and excluded tracks for unified display
             const tracks = [];
-            if (data.priority_tracks) {
-                data.priority_tracks.forEach(t => { t.category = 'Priority'; tracks.push(t); });
-            }
-            if (data.standard_tracks) {
-                data.standard_tracks.forEach(t => { t.category = 'Standard'; tracks.push(t); });
-            }
+            
+            const priorityTracks = videos.priority || res.priority_tracks || [];
+            priorityTracks.forEach(t => { t.category = 'Priority'; tracks.push(t); });
+            
+            const standardTracks = videos.standard || res.standard_tracks || [];
+            standardTracks.forEach(t => { t.category = 'Standard'; tracks.push(t); });
+            
+            const excludedTracks = videos.excluded || res.excluded_tracks || [];
+            excludedTracks.forEach(t => { t.category = 'Excluded'; tracks.push(t); });
             
             renderVideoList(tracks);
         }
@@ -358,24 +379,14 @@
                 loaderView.classList.add('hidden');
                 
                 if (data.status === 'success') {
-                    loadPlaylistData(data);
+                    loadCatalogData(data);
                 } else {
-                    alert("Error matches playlist: " + data.message);
+                    alert("Error matching playlist: " + data.message);
                 }
             } catch (err) {
                 loaderView.classList.add('hidden');
                 alert("Network error matching playlist.");
             }
-        }
-
-        function loadPlaylistData(data) {
-            activeArtistId = data.playlist_id;
-            artistPhoto.src = '';
-            artistName.textContent = data.playlist_name || 'Playlist Matches';
-            artistMeta.textContent = `${data.tracks ? data.tracks.length : 0} Tracks matched`;
-            artistBanner.classList.remove('hidden');
-            
-            renderVideoList(data.tracks);
         }
 
         // Billboard charts
@@ -410,14 +421,23 @@
                 loaderView.classList.add('hidden');
                 
                 if (data.status === 'success') {
+                    const chartData = data.data || {};
                     loadedChartData = data;
                     activeArtistId = 'bb_' + chartVal;
                     artistPhoto.src = '';
-                    artistName.textContent = data.title || 'Billboard Chart';
-                    artistMeta.textContent = `Date: ${data.date || 'Current'} • ${data.tracks ? data.tracks.length : 0} Chart Hits`;
+                    artistName.textContent = chartData.title || 'Billboard Chart';
+                    
+                    const entries = chartData.entries || [];
+                    entries.forEach(entry => {
+                        entry.id = `bb_${chartVal}_${entry.rank}`;
+                        entry.category = 'Chart Hit';
+                        entry.artists = [entry.artist];
+                    });
+                    
+                    artistMeta.textContent = `Date: ${chartData.date || 'Current'} • ${entries.length} Chart Hits`;
                     artistBanner.classList.remove('hidden');
                     
-                    renderVideoList(data.tracks);
+                    renderVideoList(entries);
                 } else {
                     alert("Error loading chart: " + data.message);
                 }
