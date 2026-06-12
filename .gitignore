@@ -1,8 +1,14 @@
 venv/
+src/venv/
 __pycache__/
 *.pyc
 exports/*.mp4
 exports/*.m4a
 exports/*.txt
+src/exports/
 yt_cache.json
+src/yt_cache.json
+music_video_history.json
+src/music_video_history.json
 *.log
+src/*.log

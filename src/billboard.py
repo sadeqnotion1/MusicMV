@@ -648,6 +648,9 @@ def get_artist_history(artist_slug, max_retries=5, timeout=25):
 
 def _get_session_with_retries(max_retries):
     session = requests.Session()
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+    })
     session.mount(
         "https://www.billboard.com",
         requests.adapters.HTTPAdapter(max_retries=max_retries),
