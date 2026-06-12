@@ -2,33 +2,43 @@
 
 This section is dedicated to finding, analyzing, and matching tracks to download from TIDAL, Playlists, or Billboard charts.
 
-## 🛠️ Correction Prompt for Google Stitch (Widescreen Desktop Lock)
-If your initial Stitch layout feels like a phone app or stacks vertically, copy and paste this correction prompt into Stitch:
+---
+
+## 🛠️ Complete Intel Screen Correction Prompt for Google Stitch
+
+Copy and paste this exact prompt into Stitch to build or correct the **Intel / Media Sourcing** dashboard:
 
 ```text
-Correction: Overhaul this layout to target a 1080p widescreen desktop viewport (1920x1080 resolution).
-- Do NOT stack search fields vertically; arrange the 'Tidal Artist Search', 'Playlist Scraper URL', and 'Billboard Chart Select' inputs horizontally side-by-side in a single flex row.
-- Ensure the main content grid is locked to a 3-column or 4-column layout on desktop screens with wide 16:9 video cards.
-- Remove all default text/emoji indicators and replace them with high-fidelity inline SVG icons.
-- Anchor the Left Navigation Sidebar as a fixed 260px wide panel that does not shrink, and lock the Downloads Drawer to a fixed 350px panel on the far right.
+Correction: Overhaul this layout into a 16:9 widescreen desktop interface (1920px minimum viewport width) for the 'MusicMV Sourcing Center'.
+
+Key Requirements for the Intel Section:
+
+1. Sidebar Navigation (Left Panel, 260px wide):
+   - Fixed width, does not shrink.
+   - Links: 'Intel Search' (Radar SVG), 'Local Library' (Folder SVG), and 'Control Console' (Terminal SVG).
+   - Sidebar footer features a pulsing 'Downloads' count badge (e.g., '2 active').
+
+2. Horizontal Desktop Sourcing Bar (Center Top):
+   - Arrange the following inputs in a single horizontal row across the screen:
+     * 'TIDAL Artist Lookup': input field with a search glass SVG icon and a 'Search' button.
+     * 'Playlist Scraper': input field with a link SVG icon and a 'Load' button.
+     * 'Billboard Charts Selector': dropdown select menu (with options like 'Hot 100', 'Global 200', 'Top R&B') and a 'Load Chart' button.
+
+3. Media Search Results Grid (Center Main):
+   - 4-column widescreen grid displaying 16:9 aspect-ratio video thumbnail cards.
+   - Each card must include:
+     * Video thumbnail with a duration badge in the bottom-right corner.
+     * Large track title (white, bold) and artist name (slate-gray).
+     * Bottom footer with a green '1080p' quality tag and a circular 'Quick Download' button (downward arrow tray SVG).
+     * Card hover state: overlay gradient showing a play icon button.
+
+4. Downloads Queue Drawer (Right Panel, 350px wide):
+   - Fixed side panel on the far right.
+   - List item format: File name, file size, progress percentage, download speed (e.g. '4.2 MB/s'), and remaining time (e.g. 'ETA 0:45').
+   - Progress bar: neon trail gradient (#8B5CF6 to #06B6D4) reflecting the progress percentage.
 ```
 
-## 💻 Google Stitch Master Prompt
-```text
-Design a ultra-premium, modern, responsive widescreen desktop dashboard named 'MusicMV Sourcing Center' (Viewport 1920x1080).
-Aesthetic: Dark cyber-obsidian with glassmorphic cards.
-Colors: Base background (#05060A), card background (rgba(13, 17, 28, 0.7)), glowing borders (rgba(139, 92, 246, 0.15)), highlights (#8B5CF6) and (#06B6D4).
-
-Layout Grid (Left-to-Right):
-1. Left Widescreen Sidebar (260px): brand title, SVG icons for navigation ('Intel Search', 'Library Explorer', 'Console Panel'). No emojis.
-2. Center Main Panel: Horizontal filter bar (3 side-by-side input fields with inline search SVG icons). Below, a 4-column wide grid of 16:9 video thumbnail cards (card hover expands details with a glowing violet shadow).
-3. Right Side Downloads Drawer (350px): Translucent panel showing download progress lines, download speed, and remaining time.
-```
-
-## 🌄 Image Generator Prompt (Midjourney / DALL-E)
-```text
-A high-fidelity modern UI design mockup of a music cataloging and downloading web app dashboard, widescreen desktop interface (1920x1080), dark mode, rich dark purple and obsidian color scheme. Left sidebar navigation has glowing violet icons. Main grid displays stunning 16:9 movie/video card thumbnails with sharp neon border overlays. Search bars with glowing borders are arranged at the top in a single row. On the right side, a translucent glassmorphic panel displays downloading progress lines in vibrant cyan and magenta colors. 8k resolution, clean minimal typography, user interface, Figma design, award-winning dashboard UI --ar 16:9
-```
+---
 
 ## 📂 Files inside this directory:
 * [intel.html](file:///G:/Music/MusicMV/redesign/intel/intel.html): Interactive desktop-first HTML mockup.
