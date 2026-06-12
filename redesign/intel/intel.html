@@ -1,670 +1,470 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intel Center Mockup - Media Sourcing</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-base: #05060a;
-            --bg-surface: rgba(13, 17, 28, 0.75);
-            --bg-card: rgba(20, 24, 38, 0.65);
-            --border-glow: rgba(139, 92, 246, 0.15);
-            --border-glow-focus: rgba(6, 182, 212, 0.6);
-            --accent-primary: #8b5cf6;
-            --accent-secondary: #06b6d4;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #475569;
-            --glass-blur: blur(16px);
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MusicMV Media Sourcing Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Outfit:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#93000a",
+                    "on-primary-container": "#340080",
+                    "on-tertiary": "#2e303a",
+                    "on-background": "#e0e3e5",
+                    "surface-tint": "#d0bcff",
+                    "on-surface-variant": "#cbc3d7",
+                    "secondary-container": "#03b5d3",
+                    "surface-container-low": "#191c1e",
+                    "primary-container": "#a078ff",
+                    "secondary-fixed": "#acedff",
+                    "inverse-primary": "#6d3bd7",
+                    "surface-container": "#1d2022",
+                    "on-tertiary-fixed": "#191b24",
+                    "background": "#101415",
+                    "inverse-surface": "#e0e3e5",
+                    "surface-dim": "#101415",
+                    "tertiary-fixed": "#e1e1ef",
+                    "tertiary-container": "#8f909c",
+                    "on-secondary": "#003640",
+                    "on-secondary-container": "#00424e",
+                    "surface-container-highest": "#323537",
+                    "inverse-on-surface": "#2d3133",
+                    "on-secondary-fixed": "#001f26",
+                    "surface-bright": "#363a3b",
+                    "surface": "#101415",
+                    "tertiary": "#c5c5d2",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed": "#23005c",
+                    "primary-fixed-dim": "#d0bcff",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "secondary": "#4cd7f6",
+                    "primary": "#d0bcff",
+                    "on-tertiary-container": "#272933",
+                    "primary-fixed": "#e9ddff",
+                    "on-primary-fixed-variant": "#5516be",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#494454",
+                    "on-error": "#690005",
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "outline": "#958ea0",
+                    "surface-container-high": "#272a2c",
+                    "tertiary-fixed-dim": "#c5c5d2",
+                    "on-surface": "#e0e3e5",
+                    "on-primary": "#3c0091",
+                    "on-tertiary-fixed-variant": "#454651",
+                    "surface-container-lowest": "#0b0f10",
+                    "surface-variant": "#323537"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack_sm": "8px",
+                    "panel_padding": "20px",
+                    "sidebar_left_width": "260px",
+                    "stack_lg": "32px",
+                    "stack_md": "16px",
+                    "drawer_right_width": "350px",
+                    "container_margin": "32px",
+                    "grid_gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-xl": [
+                            "Outfit"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "headline-sm": [
+                            "Outfit"
+                    ],
+                    "headline-md": [
+                            "Outfit"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Outfit"
+                    ],
+                    "display-lg-mobile": [
+                            "Outfit"
+                    ]
+            },
+            "fontSize": {
+                    "display-xl": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-sm": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+          }
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 5% 15%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 95% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
-        }
-
-        /* SIDEBAR (Desktop Fixed 260px) */
-        .sidebar {
-            width: 260px;
-            background: var(--bg-surface);
-            backdrop-filter: var(--glass-blur);
-            border-right: 1px solid var(--border-glow);
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 36px;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: white;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        }
-
-        .brand-text h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .brand-text p {
-            font-size: 0.72rem;
-            color: var(--accent-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            list-style: none;
-        }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.92rem;
-            font-weight: 500;
-            transition: var(--transition-smooth);
-            border: 1px solid transparent;
-        }
-
-        .nav-item.active a, .nav-item a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.03);
-            border-color: var(--border-glow);
-        }
-
-        .nav-item.active a {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.05));
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: inset 0 0 12px rgba(139, 92, 246, 0.1);
-        }
-
-        .nav-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-        }
-
-        .nav-item.active .nav-icon, .nav-item:hover .nav-icon {
-            color: var(--accent-secondary);
-        }
-
-        /* MAIN CONTAINER */
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        /* HEADER & SEARCH BAR */
-        .top-header {
-            padding: 30px 40px 10px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-title h2 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        .header-title p {
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            margin-top: 4px;
-        }
-
-        .mockup-toggle-btn {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
-            transition: var(--transition-smooth);
-        }
-
-        .mockup-toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
-        }
-
-        /* CONTROLS BAR (Desktop Horizontal Lock) */
-        .controls-grid {
-            margin: 20px 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--border-glow);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent-secondary);
-        }
-
-        .input-box {
-            background: rgba(10, 12, 22, 0.8);
-            border: 1px solid var(--border-glow);
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: white;
-            font-size: 0.88rem;
-            outline: none;
-            transition: var(--transition-smooth);
-        }
-
-        .input-box:focus {
-            border-color: var(--accent-secondary);
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
-        }
-
-        /* GRID VIEW (Desktop Multi-Column Widescreen Grid) */
-        .content-grid {
-            flex: 1;
-            padding: 10px 40px 40px 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-        }
-
-        .video-card {
-            background: var(--bg-card);
-            border-radius: 14px;
-            border: 1px solid var(--border-glow);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition-smooth);
-        }
-
-        .video-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
-        }
-
-        .thumbnail-container {
-            aspect-ratio: 16/9;
-            background: #050508;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .thumbnail-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.85;
-            transition: var(--transition-smooth);
-        }
-
-        .video-card:hover .thumbnail-container img {
-            transform: scale(1.05);
-            opacity: 0.95;
-        }
-
-        .duration-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        .card-details {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .track-title {
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: white;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .track-artist {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-        }
-
-        .card-footer {
-            margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .quality-tag {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--accent-secondary);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .download-btn {
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            color: var(--accent-primary);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .video-card:hover .download-btn {
-            background: var(--accent-primary);
-            color: white;
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
-        }
-
-        /* DOWNLOADS DRAWER (Desktop Fixed 350px) */
-        .downloads-drawer {
-            width: 350px;
-            background: var(--bg-surface);
-            backdrop-filter: var(--glass-blur);
-            border-left: 1px solid var(--border-glow);
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-
-        .drawer-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge-count {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 99px;
-            font-weight: 700;
-        }
-
-        .download-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            list-style: none;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .download-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-glow);
-            padding: 14px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .download-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .download-name {
-            font-size: 0.82rem;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .download-speed {
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .progress-bar-container {
+      }
+    </script>
+<style>
+        /* Custom scrollbar for deep dark aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
             height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
         }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
-            border-radius: 3px;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-
-        /* OVERLAY MOCKUP IMAGE VIEW */
-        .overlay-mockup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 40px;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
         }
-
-        .overlay-mockup img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-        }
-
-        .close-instruction {
-            position: absolute;
-            bottom: 30px;
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--border-glow);
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
         }
     </style>
 </head>
-<body>
-
-    <!-- SIDEBAR (Widescreen Locked Controls) -->
-    <div class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">M</div>
-            <div class="brand-text">
-                <h1>Media Intel</h1>
-                <p>Pipeline Sorter</p>
-            </div>
-        </div>
-
-        <ul class="nav-menu">
-            <li class="nav-item active">
-                <a href="#intel">
-                    <span class="nav-icon">
-                        <!-- Radar/Search SVG -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            <path d="M2 12h20"></path>
-                        </svg>
-                    </span>
-                    Intel Search
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../library/library.html">
-                    <span class="nav-icon">
-                        <!-- Stacked Folders SVG -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                            <path d="M2 10h20"></path>
-                        </svg>
-                    </span>
-                    Local Library
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../pipeline/pipeline.html">
-                    <span class="nav-icon">
-                        <!-- Chip Processor SVG -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                            <rect x="9" y="9" width="6" height="6"></rect>
-                            <line x1="9" y1="1" x2="9" y2="4"></line>
-                            <line x1="15" y1="1" x2="15" y2="4"></line>
-                            <line x1="9" y1="20" x2="9" y2="23"></line>
-                            <line x1="15" y1="20" x2="15" y2="23"></line>
-                            <line x1="20" y1="9" x2="23" y2="9"></line>
-                            <line x1="20" y1="15" x2="23" y2="15"></line>
-                        </svg>
-                    </span>
-                    Control Panel
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- MAIN CONTAINER -->
-    <div class="main-container">
-        <!-- HEADER -->
-        <div class="top-header">
-            <div class="header-title">
-                <h2>Media Intel Sourcing</h2>
-                <p>Query artists from TIDAL or download Billboard chart hits directly.</p>
-            </div>
-            <button class="mockup-toggle-btn" onclick="toggleMockup(true)">View AI Concept Mockup</button>
-        </div>
-
-        <!-- SEARCH FILTERS (Desktop Widescreen Flex Row) -->
-        <div class="controls-grid">
-            <div class="form-group">
-                <label>Tidal Artist Search</label>
-                <input type="text" class="input-box" placeholder="e.g. Rosalía" value="Rosalía">
-            </div>
-            <div class="form-group">
-                <label>Playlist URL / Track ID</label>
-                <input type="text" class="input-box" placeholder="https://tidal.com/playlist/...">
-            </div>
-            <div class="form-group">
-                <label>Billboard Charts Presets</label>
-                <input type="text" class="input-box" placeholder="Hot 100 / R&B Songs" value="Hot 100">
-            </div>
-        </div>
-
-        <!-- VIDEO GRID (Widescreen Grid Layout) -->
-        <div class="content-grid">
-            <!-- card 1 -->
-            <div class="video-card">
-                <div class="thumbnail-container">
-                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60" alt="New Rules">
-                    <div class="duration-badge">3:45</div>
-                </div>
-                <div class="card-details">
-                    <div class="track-title">New Rules (Official Music Video)</div>
-                    <div class="track-artist">Dua Lipa</div>
-                    <div class="card-footer">
-                        <span class="quality-tag">1080p</span>
-                        <div class="download-btn">
-                            <!-- Download Tray SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- card 2 -->
-            <div class="video-card">
-                <div class="thumbnail-container">
-                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=60" alt="Blinding Lights">
-                    <div class="duration-badge">4:21</div>
-                </div>
-                <div class="card-details">
-                    <div class="track-title">Blinding Lights</div>
-                    <div class="track-artist">The Weeknd</div>
-                    <div class="card-footer">
-                        <span class="quality-tag">1080p</span>
-                        <div class="download-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- card 3 -->
-            <div class="video-card">
-                <div class="thumbnail-container">
-                    <img src="https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=500&auto=format&fit=crop&q=60" alt="Saoko">
-                    <div class="duration-badge">2:30</div>
-                </div>
-                <div class="card-details">
-                    <div class="track-title">SAOKO (Official Video)</div>
-                    <div class="track-artist">Rosalía</div>
-                    <div class="card-footer">
-                        <span class="quality-tag">1080p</span>
-                        <div class="download-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DOWNLOADS DRAWER (Desktop locked) -->
-    <div class="downloads-drawer">
-        <div class="drawer-title">
-            <span>Downloads Queue</span>
-            <span class="badge-count">2</span>
-        </div>
-        <ul class="download-list">
-            <li class="download-item">
-                <div class="download-info">
-                    <div class="download-name">Dua Lipa - Fever.mp4</div>
-                    <div class="download-speed">
-                        <span>4.2 MB/s</span>
-                        <span>ETA 0:45 (62%)</span>
-                    </div>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-fill" style="width: 62%;"></div>
-                </div>
-            </li>
-            <li class="download-item">
-                <div class="download-info">
-                    <div class="download-name">The Weeknd - Save Your Tears.mp4</div>
-                    <div class="download-speed">
-                        <span>1.8 MB/s</span>
-                        <span>ETA 1:12 (35%)</span>
-                    </div>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-fill" style="width: 35%;"></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <!-- OVERLAY MOCKUP CONTAINER -->
-    <div class="overlay-mockup" id="mockupOverlay" onclick="toggleMockup(false)">
-        <img src="mockup_intel.png" alt="AI Concept Mockup">
-        <div class="close-instruction">Click anywhere to close concepts view</div>
-    </div>
-
-    <script>
-        function toggleMockup(show) {
-            document.getElementById('mockupOverlay').style.display = show ? 'flex' : 'none';
-        }
-    </script>
-</body>
-</html>
+<body class="bg-[#07080C] text-on-surface min-h-screen overflow-hidden selection:bg-primary/30 selection:text-white min-w-[1920px]">
+<!-- LEFT SIDEBAR -->
+<nav class="bg-surface/90 dark:bg-surface/90 text-primary dark:text-primary font-body-md text-body-md fixed left-0 top-0 h-full w-[260px] backdrop-blur-xl border-r border-primary/15 shadow-none flex flex-col z-50">
+<!-- Header area -->
+<div class="px-panel_padding py-stack_lg flex items-center gap-stack_sm border-b border-primary/10">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-0.5">
+<div class="w-full h-full rounded-full bg-surface overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover mix-blend-luminosity opacity-80" data-alt="A highly stylized, hyper-realistic macro shot of glowing violet and cyan digital circuitry forming a human profile silhouette. Deep obsidian background with intense light-mode contrast, emphasizing ultra-premium technological aesthetics and high-end media processing vibes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBIDEcMlF5L3aIxPQrAW1q4YAtZMs8eKV6inqP4rsd4PcCWD2wLai8iez-xikTk-WC8jFVRoAfapP-yqkkexxwWXBOOAYHYgp7RnUcZRUqC260wH3x-zVC88YTNUunJlLUZ-s5lLLCoAdDpZOT0VbRGQHeLMNAB94_FmjKCS1bbvAfH5t0-ni8Qy6l1-sd7Zz6xieezK4NzG7mb7PjB_ebIstdY7DvOTRIfa0RvWqu4qmczdm5Etw1BRQXQm-VlwGa9WBco9Qhngh2"/>
+</div>
+</div>
+<div>
+<h1 class="font-display-lg text-display-lg font-bold text-primary dark:text-primary tracking-tighter leading-none" style="font-size: 28px;">MusicMV</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Sourcing Center</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex flex-col flex-1 py-stack_md">
+<!-- Active Tab: Intel Search -->
+<a class="text-primary dark:text-primary font-bold flex items-center gap-stack_md py-stack_sm px-panel_padding bg-primary/5 border-l-2 border-primary group" href="#">
+<svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Intel Search
+            </a>
+<!-- Inactive Tabs -->
+<a class="text-on-surface-variant dark:text-on-surface-variant flex items-center gap-stack_md py-stack_sm px-panel_padding hover:bg-primary/10 hover:text-primary transition-all duration-300" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Local Library
+            </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant flex items-center gap-stack_md py-stack_sm px-panel_padding hover:bg-primary/10 hover:text-primary transition-all duration-300" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Control Console
+            </a>
+</div>
+<!-- Footer Badge -->
+<div class="p-panel_padding border-t border-primary/10 mt-auto">
+<div class="flex items-center gap-3 bg-surface-container/50 p-3 rounded-lg border border-primary/10">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_rgba(76,215,246,0.8)]"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Downloads: <span class="text-secondary font-bold">2 active</span></span>
+</div>
+</div>
+</nav>
+<!-- MAIN FLUID CONTENT CANVAS -->
+<main class="ml-[260px] mr-[350px] h-screen overflow-y-auto flex flex-col relative z-0 bg-[#0A0C10]">
+<!-- Ambient Background Glow -->
+<div class="absolute top-0 left-1/4 w-[800px] h-[500px] bg-[#8B5CF6]/5 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+<div class="absolute bottom-0 right-1/4 w-[600px] h-[400px] bg-[#06B6D4]/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+<!-- TOP SOURCING BAR -->
+<header class="bg-surface-container/60 backdrop-blur-2xl border-b border-primary/10 sticky top-0 z-40 p-container_margin flex flex-col gap-stack_md">
+<h2 class="font-headline-md text-headline-md text-white mb-2">Media Sourcing</h2>
+<div class="flex gap-grid_gutter w-full">
+<!-- TIDAL Lookup -->
+<div class="flex-1 flex gap-2">
+<div class="relative flex-1 group">
+<svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="w-full bg-black/40 border border-outline-variant/30 rounded-lg py-3 pl-12 pr-4 font-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all backdrop-blur-md" placeholder="TIDAL Artist Lookup..." type="text"/>
+</div>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-6 rounded-lg font-label-md transition-colors">Search</button>
+</div>
+<!-- Playlist Scraper -->
+<div class="flex-1 flex gap-2">
+<div class="relative flex-1 group">
+<svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-secondary transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="w-full bg-black/40 border border-outline-variant/30 rounded-lg py-3 pl-12 pr-4 font-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 transition-all backdrop-blur-md" placeholder="Playlist Scraper URL..." type="text"/>
+</div>
+<button class="bg-secondary/10 hover:bg-secondary/20 text-secondary border border-secondary/20 px-6 rounded-lg font-label-md transition-colors">Load</button>
+</div>
+<!-- Billboard Charts -->
+<div class="flex-1 flex gap-2">
+<div class="relative flex-1 group">
+<select class="w-full bg-black/40 border border-outline-variant/30 rounded-lg py-3 pl-4 pr-10 font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all backdrop-blur-md appearance-none">
+<option disabled="" selected="" value="">Billboard Charts Selector...</option>
+<option value="hot100">Hot 100</option>
+<option value="global200">Global 200</option>
+<option value="toprb">Top R&amp;B</option>
+</select>
+<svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<button class="bg-surface-variant hover:bg-surface-bright text-on-surface border border-outline-variant/30 px-6 rounded-lg font-label-md transition-colors">Load Chart</button>
+</div>
+</div>
+</header>
+<!-- Media Grid Stage -->
+<section class="p-container_margin">
+<div class="grid grid-cols-4 gap-grid_gutter pb-stack_lg">
+<!-- Video Card 1 -->
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface border border-white/5 shadow-lg group-hover:border-primary/50 transition-colors duration-300">
+<img alt="Music Video Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArilGt8AcyERiBg_C1pxg8c31hsBUml2e-sq7_5fOOPC78CkOwlylooH3Ir1FqcGZoIot5XIElCrb-xiq-KMlVB2bT267lkuYgqu-wD6UgSS9ipPkUpbB44ISMP6n9jXeK8HLrHkJp0BY1NaeTk0PtgRAQQ7wGxyNrb5VtO8zefC4-ZTmxUVOgCuMzgG1-G9e-Omugk1KZl4e5oJyWSPx7f2sjC4cuZbbSq8-Lsz1dWkeqCRlNOnxPI45d4Dqplmz2X859OZuB3YCi"/>
+<div class="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white">04:12</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0C10]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-primary/40 hover:border-primary/50 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 duration-300">
+<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-start gap-4">
+<div class="min-w-0">
+<h3 class="font-headline-sm text-[18px] text-white font-bold truncate">Neon Nights Protocol</h3>
+<p class="font-body-sm text-[#94A3B8] text-sm truncate mt-0.5">The Midnight Syndicate</p>
+</div>
+<div class="flex flex-col items-end gap-2 shrink-0">
+<span class="text-[#10B981] bg-[#10B981]/10 border border-[#10B981]/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">1080p</span>
+<button class="w-8 h-8 rounded-full bg-surface-variant hover:bg-primary/20 text-on-surface-variant hover:text-primary flex items-center justify-center transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</article>
+<!-- Video Card 2 -->
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface border border-white/5 shadow-lg group-hover:border-primary/50 transition-colors duration-300">
+<img alt="Live Concert Footage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN_C6rHwrHuiPqxj3jQYZrVCFuzuVFoqsk-jgiuUXnCyslT13hNr9q7eF-YqEiuX9HKefVP-rYpOXxrO-e3gKhVpI-5H-XEe1MVylYN33VpmUkzjsmZ_6MGTPrjEswAXm4akVQBEAFylDcajTbeVGVzy_2mwkHFzPGvrqSN3mLo5XsJ1Q5nSgTQddSomSpOJ79OlFbwTjARg4cN5-JnuvJjS1-w3SIym41NYsNj1utz3C2Ii1YP4_SvsZvz95dl2oZnBZ6m3zu0qxJ"/>
+<div class="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white">06:45</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0C10]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-primary/40 hover:border-primary/50 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 duration-300">
+<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-start gap-4">
+<div class="min-w-0">
+<h3 class="font-headline-sm text-[18px] text-white font-bold truncate">Mainstage Anthem Vol 3</h3>
+<p class="font-body-sm text-[#94A3B8] text-sm truncate mt-0.5">Electric Horizon</p>
+</div>
+<div class="flex flex-col items-end gap-2 shrink-0">
+<span class="text-[#10B981] bg-[#10B981]/10 border border-[#10B981]/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">1080p</span>
+<button class="w-8 h-8 rounded-full bg-surface-variant hover:bg-primary/20 text-on-surface-variant hover:text-primary flex items-center justify-center transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</article>
+<!-- Video Card 3 -->
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface border border-white/5 shadow-lg group-hover:border-primary/50 transition-colors duration-300">
+<img alt="Abstract Visualizer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt8A7SO1-863I0Rv7c3Jr4u2NdLkVDOb1-5qy_oUDAyw7DGlF89xAbg3VTqh_zGQnj5ZL9hTdrW-fhhjSqG2LP0e4_IA9e0Mu8rcKTFSb5Xo9tQmuZXXKtF8ElS3idTki1zpV3kMGwKilv1a1CvTVhy_wCD7XR51IVH-BnmM84IPE3CgAoRmgNu5uP_kIXdaja3p2MgyzzmHvoEZBfpta7ZHmOrpkc3ZTfkIpeMtdoVai2EKf5-axu-Y_LeqarcHtP5yA3qIJ0HRou"/>
+<div class="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white">01:00</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0C10]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-primary/40 hover:border-primary/50 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 duration-300">
+<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-start gap-4">
+<div class="min-w-0">
+<h3 class="font-headline-sm text-[18px] text-white font-bold truncate">Cybernetic Flow Loop</h3>
+<p class="font-body-sm text-[#94A3B8] text-sm truncate mt-0.5">Visual Architect</p>
+</div>
+<div class="flex flex-col items-end gap-2 shrink-0">
+<span class="text-[#10B981] bg-[#10B981]/10 border border-[#10B981]/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">1080p</span>
+<button class="w-8 h-8 rounded-full bg-surface-variant hover:bg-primary/20 text-on-surface-variant hover:text-primary flex items-center justify-center transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</article>
+<!-- Video Card 4 -->
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface border border-white/5 shadow-lg group-hover:border-primary/50 transition-colors duration-300">
+<img alt="Studio Session" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLETRoEvg_QDKztBhoEZ_94AVwnlBzJml75ha1PZDotDwP1Pz6n5ojMPFlXtEzzM3dMRAGG0BF_QB3AvMyK5UYUuRrLsWZ2CDoZ4pugFqESsUd_p7PmsmxjhbVXkSGFeomTM83myPPlT3tt3SVrA61qNIHo6I3uMUrxC7yntJvajT0bx4i_timVjzgAnu98u0UUZCNWqCURrHdtjCxPzK6F6CGnCA5CbP5i9ygm-mZCV27tXlhAOpFzDtSNKt1Gzql1Dxe8TwjIX_S"/>
+<div class="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white">02:15</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0C10]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-primary/40 hover:border-primary/50 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 duration-300">
+<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-start gap-4">
+<div class="min-w-0">
+<h3 class="font-headline-sm text-[18px] text-white font-bold truncate">Analog Synth B-Roll</h3>
+<p class="font-body-sm text-[#94A3B8] text-sm truncate mt-0.5">Studio Sessions</p>
+</div>
+<div class="flex flex-col items-end gap-2 shrink-0">
+<span class="text-[#10B981] bg-[#10B981]/10 border border-[#10B981]/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">1080p</span>
+<button class="w-8 h-8 rounded-full bg-surface-variant hover:bg-primary/20 text-on-surface-variant hover:text-primary flex items-center justify-center transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- RIGHT DRAWER -->
+<aside class="bg-surface/95 dark:bg-surface/95 text-secondary dark:text-secondary font-label-sm text-label-sm fixed right-0 top-0 h-full w-[350px] backdrop-blur-2xl border-l border-primary/15 shadow-[-20px_0_40px_rgba(0,0,0,0.5)] flex flex-col p-panel_padding gap-stack_md z-50">
+<!-- Header -->
+<div class="pb-stack_sm border-b border-primary/10 flex justify-between items-end">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-white font-bold">Downloads Queue</h2>
+<p class="text-on-surface-variant/70 mt-1">Active Sourcing</p>
+</div>
+<svg class="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<!-- Download List -->
+<div class="flex-1 overflow-y-auto flex flex-col gap-4 pr-2 -mr-2">
+<!-- Active Download -->
+<div class="bg-surface-variant/30 border border-primary/20 rounded-lg p-4 flex flex-col gap-3 relative overflow-hidden">
+<div class="flex justify-between items-start gap-3">
+<div class="min-w-0 flex-1">
+<span class="text-white font-label-md text-sm font-medium truncate block mb-1">Neon_Nights_Protocol_Master.mp4</span>
+<div class="flex items-center gap-3 text-xs text-[#94A3B8]">
+<span>4.2 GB</span>
+<span class="w-1 h-1 rounded-full bg-primary/50"></span>
+<span class="text-secondary">4.2 MB/s</span>
+<span class="w-1 h-1 rounded-full bg-primary/50"></span>
+<span>~3m 12s left</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors shrink-0 pt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<!-- Progress Bar -->
+<div class="w-full">
+<div class="flex justify-between text-[10px] text-white font-mono mb-1">
+<span>78%</span>
+</div>
+<div class="h-1.5 w-full bg-black rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4] shadow-[0_0_10px_rgba(6,182,212,0.8)] rounded-full w-[78%] relative">
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Queued Download 1 -->
+<div class="bg-black/20 border border-white/5 rounded-lg p-4 flex flex-col gap-3 opacity-60">
+<div class="flex justify-between items-start gap-3">
+<div class="min-w-0 flex-1">
+<span class="text-white font-label-md text-sm font-medium truncate block mb-1">Cybernetic_Flow_Loop.raw</span>
+<div class="flex items-center gap-3 text-xs text-[#94A3B8]">
+<span>12.5 GB</span>
+<span class="w-1 h-1 rounded-full bg-white/20"></span>
+<span>Queued</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors shrink-0 pt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full border border-white/5"></div>
+</div>
+<!-- Queued Download 2 -->
+<div class="bg-black/20 border border-white/5 rounded-lg p-4 flex flex-col gap-3 opacity-60">
+<div class="flex justify-between items-start gap-3">
+<div class="min-w-0 flex-1">
+<span class="text-white font-label-md text-sm font-medium truncate block mb-1">Mainstage_Anthem_Vol3_4K.mp4</span>
+<div class="flex items-center gap-3 text-xs text-[#94A3B8]">
+<span>1.8 GB</span>
+<span class="w-1 h-1 rounded-full bg-white/20"></span>
+<span>Queued</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors shrink-0 pt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full border border-white/5"></div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-stack_md border-t border-primary/10 mt-auto">
+<button class="w-full py-2.5 flex items-center justify-center gap-2 text-on-surface-variant hover:text-white bg-surface-variant/50 hover:bg-surface-variant rounded-lg border border-white/5 hover:border-white/10 transition-all font-medium">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Clear Finished
+            </button>
+</div>
+</aside>
+</body></html>
