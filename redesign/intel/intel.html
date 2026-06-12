@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel Center Mockup - Media Sourcing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #07080e;
+            --bg-surface: rgba(15, 17, 30, 0.75);
+            --bg-card: rgba(22, 25, 41, 0.65);
+            --border-glow: rgba(139, 92, 246, 0.25);
+            --border-glow-focus: rgba(6, 182, 212, 0.6);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --glass-blur: blur(16px);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-surface);
+            backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border-glow);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .brand-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            font-size: 0.72rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-glow);
+        }
+
+        .nav-item.active a {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.05));
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: inset 0 0 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.15rem;
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* HEADER & SEARCH BAR */
+        .top-header {
+            padding: 30px 40px 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 4px;
+        }
+
+        .mockup-toggle-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+            transition: var(--transition-smooth);
+        }
+
+        .mockup-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* CONTROLS BAR */
+        .controls-grid {
+            margin: 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glow);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-secondary);
+        }
+
+        .input-box {
+            background: rgba(10, 12, 22, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.88rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-box:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* GRID VIEW */
+        .content-grid {
+            flex: 1;
+            padding: 10px 40px 40px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            border: 1px solid var(--border-glow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+        }
+
+        .thumbnail-container {
+            aspect-ratio: 16/9;
+            background: #050508;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: var(--transition-smooth);
+        }
+
+        .video-card:hover .thumbnail-container img {
+            transform: scale(1.05);
+            opacity: 0.95;
+        }
+
+        .duration-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .card-details {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .track-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .card-footer {
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quality-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .download-btn {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--accent-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .video-card:hover .download-btn {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+        }
+
+        /* DOWNLOADS DRAWER */
+        .downloads-drawer {
+            width: 320px;
+            background: var(--bg-surface);
+            backdrop-filter: var(--glass-blur);
+            border-left: 1px solid var(--border-glow);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .drawer-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-count {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 700;
+        }
+
+        .download-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .download-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glow);
+            padding: 14px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .download-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .download-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .download-speed {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+            border-radius: 3px;
+        }
+
+        /* OVERLAY MOCKUP IMAGE VIEW */
+        .overlay-mockup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 40px;
+        }
+
+        .overlay-mockup img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .close-instruction {
+            position: absolute;
+            bottom: 30px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">M</div>
+            <div class="brand-text">
+                <h1>Media Intel</h1>
+                <p>Pipeline Sorter</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item active">
+                <a href="#intel"><span class="nav-icon">⚡</span> Intel Search</a>
+            </li>
+            <li class="nav-item">
+                <a href="../library/library.html"><span class="nav-icon">📂</span> Local Library</a>
+            </li>
+            <li class="nav-item">
+                <a href="../pipeline/pipeline.html"><span class="nav-icon">⚙️</span> Control Panel</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- HEADER -->
+        <div class="top-header">
+            <div class="header-title">
+                <h2>Media Intel Sourcing</h2>
+                <p>Query artists from TIDAL or download Billboard chart hits directly.</p>
+            </div>
+            <button class="mockup-toggle-btn" onclick="toggleMockup(true)">View AI Concept Mockup</button>
+        </div>
+
+        <!-- SEARCH FILTERS -->
+        <div class="controls-grid">
+            <div class="form-group">
+                <label>Tidal Artist Search</label>
+                <input type="text" class="input-box" placeholder="e.g. Rosalía" value="Rosalía">
+            </div>
+            <div class="form-group">
+                <label>Playlist URL / Track ID</label>
+                <input type="text" class="input-box" placeholder="https://tidal.com/playlist/...">
+            </div>
+            <div class="form-group">
+                <label>Billboard Charts Presets</label>
+                <input type="text" class="input-box" placeholder="Hot 100 / R&B Songs" value="Hot 100">
+            </div>
+        </div>
+
+        <!-- VIDEO GRID -->
+        <div class="content-grid">
+            <!-- card 1 -->
+            <div class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60" alt="New Rules">
+                    <div class="duration-badge">3:45</div>
+                </div>
+                <div class="card-details">
+                    <div class="track-title">New Rules (Official Music Video)</div>
+                    <div class="track-artist">Dua Lipa</div>
+                    <div class="card-footer">
+                        <span class="quality-tag">1080p</span>
+                        <div class="download-btn">↓</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- card 2 -->
+            <div class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=60" alt="Blinding Lights">
+                    <div class="duration-badge">4:21</div>
+                </div>
+                <div class="card-details">
+                    <div class="track-title">Blinding Lights</div>
+                    <div class="track-artist">The Weeknd</div>
+                    <div class="card-footer">
+                        <span class="quality-tag">1080p</span>
+                        <div class="download-btn">↓</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- card 3 -->
+            <div class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=500&auto=format&fit=crop&q=60" alt="Saoko">
+                    <div class="duration-badge">2:30</div>
+                </div>
+                <div class="card-details">
+                    <div class="track-title">SAOKO (Official Video)</div>
+                    <div class="track-artist">Rosalía</div>
+                    <div class="card-footer">
+                        <span class="quality-tag">1080p</span>
+                        <div class="download-btn">↓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOWNLOADS DRAWER -->
+    <div class="downloads-drawer">
+        <div class="drawer-title">
+            <span>Downloads</span>
+            <span class="badge-count">2</span>
+        </div>
+        <ul class="download-list">
+            <li class="download-item">
+                <div class="download-info">
+                    <div class="download-name">Dua Lipa - Fever.mp4</div>
+                    <div class="download-speed">
+                        <span>4.2 MB/s</span>
+                        <span>ETA 0:45 (62%)</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: 62%;"></div>
+                </div>
+            </li>
+            <li class="download-item">
+                <div class="download-info">
+                    <div class="download-name">The Weeknd - Save Your Tears.mp4</div>
+                    <div class="download-speed">
+                        <span>1.8 MB/s</span>
+                        <span>ETA 1:12 (35%)</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: 35%;"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- OVERLAY MOCKUP CONTAINER -->
+    <div class="overlay-mockup" id="mockupOverlay" onclick="toggleMockup(false)">
+        <img src="mockup_intel.png" alt="AI Concept Mockup">
+        <div class="close-instruction">Click anywhere to close concepts view</div>
+    </div>
+
+    <script>
+        function toggleMockup(show) {
+            document.getElementById('mockupOverlay').style.display = show ? 'flex' : 'none';
+        }
+    </script>
+</body>
+</html>

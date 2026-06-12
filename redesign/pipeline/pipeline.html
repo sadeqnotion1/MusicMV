@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Control Mockup - System Orchestration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #07080e;
+            --bg-surface: rgba(15, 17, 30, 0.75);
+            --bg-card: rgba(22, 25, 41, 0.65);
+            --border-glow: rgba(139, 92, 246, 0.25);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-terminal: #10b981;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --glass-blur: blur(16px);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-surface);
+            backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border-glow);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .brand-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            font-size: 0.72rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-glow);
+        }
+
+        .nav-item.active a {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.05));
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: inset 0 0 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.15rem;
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* HEADER */
+        .top-header {
+            padding: 30px 40px 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 4px;
+        }
+
+        .mockup-toggle-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+            transition: var(--transition-smooth);
+        }
+
+        .mockup-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* DUAL COLUMN WORKSPACE */
+        .workspace-split {
+            flex: 1;
+            padding: 20px 40px 40px 40px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* CONFIGURATION CARDS */
+        .config-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .config-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-secondary);
+        }
+
+        .input-box {
+            background: rgba(10, 12, 22, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.88rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-box:focus {
+            border-color: var(--accent-secondary);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .checkbox-group input {
+            accent-color: var(--accent-primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* CONSOLE TERMINAL COLUMN */
+        .console-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .action-run-btn {
+            background: linear-gradient(135deg, var(--accent-primary), rgba(139, 92, 246, 0.6));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
+        }
+
+        .action-run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .action-secondary-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glow);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .action-secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--accent-secondary);
+        }
+
+        /* TERMINAL PANEL */
+        .terminal-panel {
+            flex: 1;
+            background: #020204;
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-header {
+            background: rgba(15, 17, 30, 0.8);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ef4444; }
+        .dot.yellow { background: #f59e0b; }
+        .dot.green { background: #10b981; }
+
+        .terminal-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: var(--accent-terminal);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .terminal-line {
+            display: flex;
+            gap: 10px;
+        }
+
+        .line-timestamp {
+            color: var(--text-muted);
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .line-text.info { color: #38bdf8; }
+        .line-text.success { color: #4ade80; }
+        .line-text.warn { color: #fbbf24; }
+
+        /* OVERLAY MOCKUP IMAGE VIEW */
+        .overlay-mockup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 40px;
+        }
+
+        .overlay-mockup img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .close-instruction {
+            position: absolute;
+            bottom: 30px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">M</div>
+            <div class="brand-text">
+                <h1>Media Intel</h1>
+                <p>Pipeline Sorter</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../intel/intel.html"><span class="nav-icon">⚡</span> Intel Search</a>
+            </li>
+            <li class="nav-item">
+                <a href="../library/library.html"><span class="nav-icon">📂</span> Local Library</a>
+            </li>
+            <li class="nav-item active">
+                <a href="#pipeline"><span class="nav-icon">⚙️</span> Control Panel</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- HEADER -->
+        <div class="top-header">
+            <div class="header-title">
+                <h2>Pipeline Control Console</h2>
+                <p>Run sorting tasks, trigger guest collaborations, and configure directories.</p>
+            </div>
+            <button class="mockup-toggle-btn" onclick="toggleMockup(true)">View AI Concept Mockup</button>
+        </div>
+
+        <!-- DUAL COLUMN Split workspace -->
+        <div class="workspace-split">
+            <!-- Left Side: config -->
+            <div class="config-wrapper">
+                <h3 class="panel-title">🔧 Pipeline Settings</h3>
+                <div class="config-card">
+                    <div class="form-group">
+                        <label>Root Video Directory</label>
+                        <input type="text" class="input-box" value="G:\Music\Music Video">
+                    </div>
+                    <div class="form-group">
+                        <label>Tidal API Token</label>
+                        <input type="password" class="input-box" value="CzET4vdadNUFQ5JU">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="syncAvatars" checked>
+                        <label for="syncAvatars">Sync Deezer Circular Avatars</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="genCatalogs" checked>
+                        <label for="genCatalogs">Generate music_videos.txt Catalogs</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="reconcileGuests" checked>
+                        <label for="reconcileGuests">Create Featured Guest Lnk Pointers</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: terminal console -->
+            <div class="console-column">
+                <h3 class="panel-title">💻 Orchestrator Console</h3>
+                
+                <div class="actions-row">
+                    <button class="action-run-btn">🚀 Run Master Pipeline</button>
+                    <button class="action-secondary-btn">Process Guests Only</button>
+                    <button class="action-secondary-btn">Fetch Avatars Only</button>
+                </div>
+
+                <div class="terminal-panel">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">system_orchestrator.log</span>
+                        <span></span>
+                    </div>
+
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:14]</span>
+                            <span class="line-text info">Initializing music video pipeline orchestrator...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:15]</span>
+                            <span class="line-text info">Loading configurations from config.json</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:15]</span>
+                            <span class="line-text success">Successfully loaded local video index: 1,840 items.</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:17]</span>
+                            <span class="line-text info">Scanning root sorter path: G:\Music\Music Video...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:20]</span>
+                            <span class="line-text warn">Found 3 unclassified tracks. Initiating auto-move process...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:22]</span>
+                            <span class="line-text info">Moving 'Rosalia - Despecha.mp4' -> 'G:\Music\Music Video\Rosalía\DESPECHÁ.mp4'</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:23]</span>
+                            <span class="line-text success">Moved file successfully. Updating catalog.</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:25]</span>
+                            <span class="line-text info">Running guest collaborator shortcut pass...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="line-timestamp">[11:02:27]</span>
+                            <span class="line-text success">Orchestration pass complete. System idle.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MOCKUP CONTAINER -->
+    <div class="overlay-mockup" id="mockupOverlay" onclick="toggleMockup(false)">
+        <img src="mockup_pipeline.png" alt="AI Concept Mockup">
+        <div class="close-instruction">Click anywhere to close concepts view</div>
+    </div>
+
+    <script>
+        function toggleMockup(show) {
+            document.getElementById('mockupOverlay').style.display = show ? 'flex' : 'none';
+        }
+    </script>
+</body>
+</html>

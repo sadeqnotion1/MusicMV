@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Explorer Mockup - Local Catalogs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #07080e;
+            --bg-surface: rgba(15, 17, 30, 0.75);
+            --bg-card: rgba(22, 25, 41, 0.65);
+            --border-glow: rgba(139, 92, 246, 0.25);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --glass-blur: blur(16px);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-surface);
+            backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border-glow);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .brand-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            font-size: 0.72rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-glow);
+        }
+
+        .nav-item.active a {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.05));
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: inset 0 0 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.15rem;
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* HEADER */
+        .top-header {
+            padding: 30px 40px 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 4px;
+        }
+
+        .mockup-toggle-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+            transition: var(--transition-smooth);
+        }
+
+        .mockup-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            margin: 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .stat-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-footer {
+            font-size: 0.72rem;
+            color: var(--accent-secondary);
+        }
+
+        .stat-footer.warning {
+            color: var(--accent-warning);
+        }
+
+        /* DUAL COLUMN CONTENT */
+        .workspace-split {
+            flex: 1;
+            padding: 10px 40px 40px 40px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .panel-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* LIBRARY GRID (CIRCULAR CARDS) */
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            height: fit-content;
+        }
+
+        .artist-circle-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .artist-circle-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent-secondary);
+            transform: scale(1.03);
+        }
+
+        .avatar-container {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .artist-circle-card:hover .avatar-img {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .avatar-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(139, 92, 246, 0.5);
+            pointer-events: none;
+        }
+
+        .artist-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .artist-count-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* MISSING TRACK ANALYZER */
+        .analyzer-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: fit-content;
+        }
+
+        .analyzer-artist {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 16px;
+        }
+
+        .analyzer-artist img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-primary);
+        }
+
+        .analyzer-artist-details h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .analyzer-artist-details p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .missing-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .missing-item {
+            background: rgba(10, 12, 22, 0.5);
+            border: 1px solid var(--border-glow);
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            transition: var(--transition-smooth);
+        }
+
+        .missing-item:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .missing-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-width: 70%;
+        }
+
+        .missing-title {
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .missing-album {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .missing-action {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-link {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-secondary);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .action-link:hover {
+            background: var(--accent-secondary);
+            color: black;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+        }
+
+        /* OVERLAY MOCKUP IMAGE VIEW */
+        .overlay-mockup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 40px;
+        }
+
+        .overlay-mockup img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(6, 182, 212, 0.4);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .close-instruction {
+            position: absolute;
+            bottom: 30px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">M</div>
+            <div class="brand-text">
+                <h1>Media Intel</h1>
+                <p>Pipeline Sorter</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../intel/intel.html"><span class="nav-icon">⚡</span> Intel Search</a>
+            </li>
+            <li class="nav-item active">
+                <a href="#library"><span class="nav-icon">📂</span> Local Library</a>
+            </li>
+            <li class="nav-item">
+                <a href="../pipeline/pipeline.html"><span class="nav-icon">⚙️</span> Control Panel</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- HEADER -->
+        <div class="top-header">
+            <div class="header-title">
+                <h2>Local Library & Catalogs</h2>
+                <p>Browse sorted folders, audit guest shortcut links, and track missing hits.</p>
+            </div>
+            <button class="mockup-toggle-btn" onclick="toggleMockup(true)">View AI Concept Mockup</button>
+        </div>
+
+        <!-- STATS BAR -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-title">Sorted Artists</span>
+                <span class="stat-value">142</span>
+                <span class="stat-footer">▲ 4 new this week</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">Total Music Videos</span>
+                <span class="stat-value">1,840</span>
+                <span class="stat-footer">▲ 14,352 GB archived</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">Missing Hits Detected</span>
+                <span class="stat-value">56</span>
+                <span class="stat-footer warning">⚡ Needs audit action</span>
+            </div>
+        </div>
+
+        <!-- split workspace -->
+        <div class="workspace-split">
+            <!-- Left Side: Artists list -->
+            <div>
+                <h3 class="panel-title">👥 Local Sorted Artists</h3>
+                <div class="artists-grid">
+                    <!-- artist 1 -->
+                    <div class="artist-circle-card">
+                        <div class="avatar-container">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Rosalía" class="avatar-img">
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <span class="artist-name">Rosalía</span>
+                        <span class="artist-count-badge">12 Videos</span>
+                    </div>
+
+                    <!-- artist 2 -->
+                    <div class="artist-circle-card">
+                        <div class="avatar-container">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80" alt="The Weeknd" class="avatar-img">
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <span class="artist-name">The Weeknd</span>
+                        <span class="artist-count-badge">24 Videos</span>
+                    </div>
+
+                    <!-- artist 3 -->
+                    <div class="artist-circle-card">
+                        <div class="avatar-container">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80" alt="Dua Lipa" class="avatar-img">
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <span class="artist-name">Dua Lipa</span>
+                        <span class="artist-count-badge">18 Videos</span>
+                    </div>
+
+                    <!-- artist 4 -->
+                    <div class="artist-circle-card">
+                        <div class="avatar-container">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Billie Eilish" class="avatar-img">
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <span class="artist-name">Billie Eilish</span>
+                        <span class="artist-count-badge">8 Videos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Missing analyzer -->
+            <div>
+                <h3 class="panel-title">🚨 Missing Hits (Top 50 Audit)</h3>
+                <div class="analyzer-panel">
+                    <div class="analyzer-artist">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Rosalía">
+                        <div class="analyzer-artist-details">
+                            <h4>Rosalía</h4>
+                            <p>3 Top 50 Hits Missing</p>
+                        </div>
+                    </div>
+
+                    <ul class="missing-list">
+                        <li class="missing-item">
+                            <div class="missing-info">
+                                <span class="missing-title">DESPECHÁ</span>
+                                <span class="missing-album">Motomami (Deluxe)</span>
+                            </div>
+                            <div class="missing-action">
+                                <a href="#" class="action-link">Get ↓</a>
+                            </div>
+                        </li>
+                        <li class="missing-item">
+                            <div class="missing-info">
+                                <span class="missing-title">Malamente</span>
+                                <span class="missing-album">El Mal Querer</span>
+                            </div>
+                            <div class="missing-action">
+                                <a href="#" class="action-link">Get ↓</a>
+                            </div>
+                        </li>
+                        <li class="missing-item">
+                            <div class="missing-info">
+                                <span class="missing-title">Con Altura</span>
+                                <span class="missing-album">Single</span>
+                            </div>
+                            <div class="missing-action">
+                                <a href="#" class="action-link">Get ↓</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MOCKUP CONTAINER -->
+    <div class="overlay-mockup" id="mockupOverlay" onclick="toggleMockup(false)">
+        <img src="mockup_library.png" alt="AI Concept Mockup">
+        <div class="close-instruction">Click anywhere to close concepts view</div>
+    </div>
+
+    <script>
+        function toggleMockup(show) {
+            document.getElementById('mockupOverlay').style.display = show ? 'flex' : 'none';
+        }
+    </script>
+</body>
+</html>
