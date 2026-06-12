@@ -350,7 +350,15 @@ CHART_PRESETS = {
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('intel.html')
+
+@app.route('/library')
+def library():
+    return render_template('library.html')
+
+@app.route('/pipeline')
+def pipeline():
+    return render_template('pipeline.html')
 
 @app.route('/api/fetch', methods=['POST'])
 def api_fetch():
@@ -1321,16 +1329,40 @@ def run_pipeline_worker(archive_path, commit, skip_icons, skip_deezer, force, hi
         pipeline_running = False
 
 
-@app.route('/api/archive/status', methods=['GET'])
+# Global settings for the archive pipeline
+PIPELINE_PATH = r"G:\Music\Music Video"
+SYNC_DEEZER_AVATARS = True
+GENERATE_CATALOGS = True
+RECONCILE_SHORTCUTS = False
+
+@app.route('/api/archive/status', methods=['GET', 'POST'])
 def api_archive_status():
+    global PIPELINE_PATH, TIDAL_TOKEN, SYNC_DEEZER_AVATARS, GENERATE_CATALOGS, RECONCILE_SHORTCUTS
     if not HAS_LOCAL_MANAGER:
         return jsonify({'status': 'error', 'message': 'Local manager scripts are not loaded.'}), 500
     
+    if request.method == 'POST':
+        req_data = request.json or {}
+        if 'path' in req_data:
+            PIPELINE_PATH = req_data['path'].strip()
+        if 'tidalToken' in req_data:
+            TIDAL_TOKEN = req_data['tidalToken'].strip()
+        if 'syncDeezerAvatars' in req_data:
+            SYNC_DEEZER_AVATARS = bool(req_data['syncDeezerAvatars'])
+        if 'generateCatalogs' in req_data:
+            GENERATE_CATALOGS = bool(req_data['generateCatalogs'])
+        if 'reconcileShortcuts' in req_data:
+            RECONCILE_SHORTCUTS = bool(req_data['reconcileShortcuts'])
+        return jsonify({'status': 'success', 'message': 'Configuration updated.'})
+    
+    # GET method
     archive_path = request.args.get('path', '').strip()
     if not archive_path:
-        archive_path = r"G:\Music\Music Video"
+        archive_path = PIPELINE_PATH
         if not os.path.exists(archive_path):
-            archive_path = os.getcwd()
+            archive_path = r"G:\Music\Music Video"
+            if not os.path.exists(archive_path):
+                archive_path = os.getcwd()
             
     total_artists = 0
     total_videos = 0
@@ -1373,6 +1405,13 @@ def api_archive_status():
         'status': 'success',
         'pipelineRunning': pipeline_running,
         'pipelineStatusText': pipeline_status_text,
+        'config': {
+            'path': PIPELINE_PATH,
+            'tidalToken': TIDAL_TOKEN,
+            'syncDeezerAvatars': SYNC_DEEZER_AVATARS,
+            'generateCatalogs': GENERATE_CATALOGS,
+            'reconcileShortcuts': RECONCILE_SHORTCUTS
+        },
         'stats': {
             'artists': total_artists,
             'videos': total_videos,
@@ -1392,7 +1431,7 @@ def api_archive_run():
         return jsonify({'status': 'error', 'message': 'Pipeline orchestrator is already executing operations.'}), 400
         
     req_data = request.json or {}
-    archive_path = req_data.get('path', '').strip()
+    archive_path = req_data.get('path', '').strip() or PIPELINE_PATH
     commit = req_data.get('commit', True)
     skip_icons = req_data.get('skipIcons', False)
     skip_deezer = req_data.get('skipDeezer', False)

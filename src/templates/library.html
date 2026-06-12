@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicMV - Library Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#8b5cf6",
+                        "secondary": "#06b6d4",
+                        "background": "#05060a",
+                        "surface-glass": "rgba(20, 24, 38, 0.65)",
+                        "border-glow": "rgba(139, 92, 246, 0.15)",
+                        "text-primary": "#f8fafc",
+                        "text-secondary": "#94a3b8",
+                        "text-muted": "#475569"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+        .btn-glass-cyan {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glass-cyan:hover {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.08);
+        }
+        .btn-play-outline {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #8b5cf6;
+            transition: all 0.3s ease;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-play-outline:hover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#05060a] text-[#f8fafc] min-h-screen overflow-hidden flex font-sans antialiased">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar w-[260px] bg-surface-glass border-r border-border-glow backdrop-blur-xl flex flex-col py-8 z-50 flex-shrink-0">
+        <div class="brand px-6 mb-8 flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center font-bold text-white shadow-lg">M</div>
+            <div>
+                <h1 class="font-display-lg text-[18px] font-bold text-white tracking-tighter leading-none">MusicMV</h1>
+                <p class="font-label-sm text-[11px] text-text-secondary uppercase tracking-wider mt-0.5">Sourcing Center</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu flex flex-col gap-2 flex-1">
+            <li class="nav-item">
+                <a href="/" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
+                    <span class="inline-flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            <path d="M2 12h20"></path>
+                        </svg>
+                    </span>
+                    Intel Search
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="#" class="flex items-center gap-4 px-6 py-3 text-white font-bold border-l-2 border-primary bg-primary/10 transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                            <path d="M2 10h20"></path>
+                        </svg>
+                    </span>
+                    Local Library
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/pipeline" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
+                    <span class="inline-flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                        </svg>
+                    </span>
+                    Control Panel
+                </a>
+            </li>
+        </ul>
+        <div class="px-6 py-4 border-t border-border-glow/30">
+            <p id="library-view-path" class="text-[10px] text-text-muted break-all">Path: Loading...</p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container flex-1 h-screen flex flex-col overflow-y-auto relative">
+        <!-- Ambient Background Glow -->
+        <div class="absolute top-0 left-1/4 w-[800px] h-[500px] bg-secondary/5 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[400px] bg-primary/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+        <!-- HEADER -->
+        <div class="top-header px-8 pt-8 pb-4 flex justify-between items-center">
+            <div class="header-title flex-1">
+                <h2 class="font-display-lg text-[22px] font-bold text-white tracking-tight">Local Library Explorer</h2>
+                <p class="text-xs text-text-secondary mt-1">Browse sorted folders, audit guest shortcut links, and track missing hits.</p>
+            </div>
+            <!-- Search bar inside header -->
+            <div class="header-actions w-1/3">
+                <input type="text" id="local-artists-search" class="w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="Search sorted artists..." oninput="filterLocalArtists()">
+            </div>
+        </div>
+
+        <!-- STATS BAR -->
+        <div class="stats-bar mx-8 my-4 grid grid-cols-3 gap-6">
+            <div class="stat-card bg-surface-glass border border-border-glow p-5 rounded-2xl flex flex-col gap-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Sorted Artists</span>
+                <span id="stat-total-artists" class="font-display-lg text-2xl font-bold text-white">---</span>
+                <span class="text-[10px] text-secondary">Verified folders</span>
+            </div>
+            <div class="stat-card bg-surface-glass border border-border-glow p-5 rounded-2xl flex flex-col gap-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Total Videos</span>
+                <span id="stat-total-videos" class="font-display-lg text-2xl font-bold text-secondary">---</span>
+                <span class="text-[10px] text-text-secondary">Archived files</span>
+            </div>
+            <div class="stat-card bg-surface-glass border border-border-glow p-5 rounded-2xl flex flex-col gap-1.5 cursor-pointer hover:border-[#8b5cf6]/50" onclick="loadMissingTracks()">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Missing Hits</span>
+                <span id="stat-total-missing" class="font-display-lg text-2xl font-bold text-[#8b5cf6]">---</span>
+                <span class="text-[10px] text-[#8b5cf6] font-semibold">Action Required</span>
+            </div>
+        </div>
+
+        <!-- DUAL COLUMN Split workspace -->
+        <div class="workspace-split mx-8 mb-8 grid grid-cols-3 gap-8">
+            <!-- Left Side: Artists list (2/3 width) -->
+            <div class="col-span-2 flex flex-col gap-4">
+                <h3 class="font-display-lg text-[16px] font-bold text-white flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Local Sorted Artists
+                </h3>
+                <div id="local-artists-grid" class="grid grid-cols-4 gap-6">
+                    <!-- Dynamic circular cards injected here -->
+                </div>
+            </div>
+
+            <!-- Right Side: Missing analyzer (1/3 width) -->
+            <div class="flex flex-col gap-4">
+                <h3 class="font-display-lg text-[16px] font-bold text-white flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Top 50 Missing Tracks
+                </h3>
+                <div class="bg-surface-glass border border-border-glow rounded-2xl p-5 flex flex-col gap-4">
+                    <div id="missing-tracks-container" class="flex flex-col gap-3 max-h-[480px] overflow-y-auto pr-1">
+                        <p class="text-xs text-text-muted text-center py-8">Select an artist or click 'Missing Hits' stats to view audit list.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let localArtists = [];
+        let archiveRootPath = '';
+
+        // Load metrics and folder configs
+        async function initLibrary() {
+            try {
+                // First get status to get metrics and path
+                const response = await fetch('/api/archive/status');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    archiveRootPath = data.archive_path || r"G:\Music\Music Video";
+                    document.getElementById('library-view-path').textContent = `Path: ${archiveRootPath}`;
+                    
+                    document.getElementById('stat-total-artists').textContent = data.total_artists;
+                    document.getElementById('stat-total-videos').textContent = data.total_videos;
+                    
+                    loadLocalArtists();
+                    loadMissingCounts();
+                }
+            } catch (err) {
+                console.error("Library initialization failed:", err);
+            }
+        }
+
+        async function loadMissingCounts() {
+            try {
+                const response = await fetch('/api/archive/missing');
+                const data = await response.json();
+                let missingCount = 0;
+                for (const [artist, tracks] of Object.entries(data)) {
+                    missingCount += tracks.length;
+                }
+                document.getElementById('stat-total-missing').textContent = missingCount;
+            } catch (err) {
+                console.error("Failed to load missing counts:", err);
+            }
+        }
+
+        // Load local folders
+        async function loadLocalArtists() {
+            const grid = document.getElementById('local-artists-grid');
+            grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-text-muted">Loading roster...</p>';
+            
+            try {
+                const response = await fetch('/api/archive/artists');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    localArtists = data.artists || [];
+                    renderLocalArtistsList(localArtists);
+                } else {
+                    grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-red-500">Error loading roster.</p>';
+                }
+            } catch (err) {
+                grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-red-500">Connection error.</p>';
+            }
+        }
+
+        function renderLocalArtistsList(list) {
+            const grid = document.getElementById('local-artists-grid');
+            grid.innerHTML = '';
+            
+            if (list.length === 0) {
+                grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-text-muted">No artists found.</p>';
+                return;
+            }
+            
+            list.forEach(artist => {
+                const card = document.createElement('div');
+                card.className = "artist-circle-card bg-white/2 border border-border-glow rounded-2xl p-5 flex flex-col items-center text-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/4 hover:border-secondary hover:scale-[1.03]";
+                
+                // Fetch avatar from api
+                const avatarUrl = `/api/archive/avatar?artist=${encodeURIComponent(artist.name)}&path=${encodeURIComponent(archiveRootPath)}`;
+                
+                card.innerHTML = `
+                    <div class="avatar-container w-[80px] height-[80px] aspect-square relative">
+                        <img src="${avatarUrl}" class="w-full h-full rounded-full object-cover border-2 border-border-glow transition-all duration-300 group-hover:border-secondary" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150';">
+                        <div class="avatar-glow absolute inset-0 rounded-full shadow-[inset_0_0_10px_rgba(139,92,246,0.5)] pointer-events-none"></div>
+                    </div>
+                    <span class="artist-name text-xs font-semibold text-white truncate w-full" title="${artist.name}">${artist.name}</span>
+                    <span class="artist-count-badge text-[9px] font-bold text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">${artist.count} Videos</span>
+                `;
+                
+                card.onclick = () => {
+                    openArtistFolder(artist.name);
+                };
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function filterLocalArtists() {
+            const query = document.getElementById('local-artists-search').value.toLowerCase().trim();
+            if (!query) {
+                renderLocalArtistsList(localArtists);
+                return;
+            }
+            const filtered = localArtists.filter(a => a.name.toLowerCase().includes(query));
+            renderLocalArtistsList(filtered);
+        }
+
+        // Open local folder on windows
+        async function openArtistFolder(artistName) {
+            try {
+                await fetch('/api/archive/open_folder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folder: archiveRootPath, artist: artistName })
+                });
+                loadArtistMissingTracks(artistName);
+            } catch (err) {
+                console.error("Failed to open artist folder:", err);
+            }
+        }
+
+        // Load missing tracks for clicked artist
+        async function loadArtistMissingTracks(artistName) {
+            const container = document.getElementById('missing-tracks-container');
+            container.innerHTML = `<p class="text-xs text-text-secondary text-center py-8">Auditing ${artistName} missing tracks...</p>`;
+            
+            try {
+                const response = await fetch('/api/archive/missing');
+                const data = await response.json();
+                
+                const missing = data[artistName] || [];
+                container.innerHTML = '';
+                
+                if (missing.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-text-secondary text-center py-8">✓ All top tracks exist locally for ${artistName}!</p>`;
+                    return;
+                }
+                
+                // Add header info
+                const header = document.createElement('div');
+                header.className = "flex items-center gap-3 border-b border-border-glow pb-3 mb-2";
+                header.innerHTML = `
+                    <div class="text-xs font-bold text-white flex-1">${artistName}</div>
+                    <span class="text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">${missing.length} Missing</span>
+                `;
+                container.appendChild(header);
+                
+                missing.forEach(track => {
+                    const row = document.createElement('div');
+                    row.className = "missing-item bg-black/40 border border-border-glow/50 p-3 rounded-lg flex items-center justify-between hover:bg-black/60 transition-colors";
+                    
+                    const queryStr = `${artistName} - ${track.title}`;
+                    const deezerSearchUrl = `https://www.deezer.com/search/${encodeURIComponent(queryStr)}`;
+                    
+                    row.innerHTML = `
+                        <div class="missing-info flex flex-col gap-0.5 overflow-hidden flex-1 mr-2">
+                            <span class="missing-title text-xs font-semibold text-white truncate" title="${track.title}">${track.title}</span>
+                            <span class="missing-album text-[10px] text-text-secondary truncate">${track.album || 'Single'}</span>
+                        </div>
+                        <a href="${deezerSearchUrl}" target="_blank" class="action-link text-[10px] font-bold text-secondary bg-secondary/10 border border-secondary/30 px-2.5 py-1 rounded hover:bg-secondary hover:text-black transition-all">Get ↓</a>
+                    `;
+                    container.appendChild(row);
+                });
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-red-500 text-center py-8">Failed to fetch missing tracks.</p>`;
+            }
+        }
+
+        // Load all missing tracks when metric box is clicked
+        async function loadMissingTracks() {
+            const container = document.getElementById('missing-tracks-container');
+            container.innerHTML = '<p class="text-xs text-text-secondary text-center py-8">Auditing all artists...</p>';
+            
+            try {
+                const response = await fetch('/api/archive/missing');
+                const data = await response.json();
+                container.innerHTML = '';
+                
+                let hasMissing = false;
+                for (const [artist, tracks] of Object.entries(data)) {
+                    if (tracks.length === 0) continue;
+                    hasMissing = true;
+                    
+                    const header = document.createElement('div');
+                    header.className = "flex items-center gap-3 border-b border-border-glow/20 pb-2 mt-4 mb-2 first:mt-0";
+                    header.innerHTML = `
+                        <div class="text-xs font-bold text-[#8b5cf6] flex-1">${artist}</div>
+                        <span class="text-[9px] text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">${tracks.length}</span>
+                    `;
+                    container.appendChild(header);
+                    
+                    tracks.forEach(track => {
+                        const row = document.createElement('div');
+                        row.className = "missing-item bg-black/40 border border-border-glow/30 p-2.5 rounded-lg flex items-center justify-between hover:bg-black/60 transition-colors mb-1.5";
+                        const queryStr = `${artist} - ${track.title}`;
+                        const deezerSearchUrl = `https://www.deezer.com/search/${encodeURIComponent(queryStr)}`;
+                        row.innerHTML = `
+                            <div class="missing-info flex flex-col gap-0.5 overflow-hidden flex-1 mr-2">
+                                <span class="missing-title text-[11px] font-semibold text-white truncate" title="${track.title}">${track.title}</span>
+                            </div>
+                            <a href="${deezerSearchUrl}" target="_blank" class="action-link text-[9px] font-bold text-secondary bg-secondary/10 border border-secondary/30 px-2 py-0.5 rounded hover:bg-secondary hover:text-black transition-all">Get</a>
+                        `;
+                        container.appendChild(row);
+                    });
+                }
+                
+                if (!hasMissing) {
+                    container.innerHTML = '<p class="text-xs text-text-secondary text-center py-8">No missing tracks detected across all libraries!</p>';
+                }
+            } catch (err) {
+                container.innerHTML = '<p class="text-xs text-red-500 text-center py-8">Failed to fetch missing tracks.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initLibrary();
+        });
+    </script>
+</body>
+</html>

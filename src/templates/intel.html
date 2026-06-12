@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicMV - Media Sourcing Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#8b5cf6",
+                        "secondary": "#06b6d4",
+                        "background": "#05060a",
+                        "surface-glass": "rgba(20, 24, 38, 0.65)",
+                        "border-glow": "rgba(139, 92, 246, 0.15)",
+                        "text-primary": "#f8fafc",
+                        "text-secondary": "#94a3b8",
+                        "text-muted": "#475569"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+        .btn-glass-cyan {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glass-cyan:hover {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.08);
+        }
+        .btn-play-outline {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #8b5cf6;
+            transition: all 0.3s ease;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-play-outline:hover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#05060a] text-[#f8fafc] min-h-screen overflow-hidden flex font-sans antialiased">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar w-[260px] bg-surface-glass border-r border-border-glow backdrop-blur-xl flex flex-col py-8 z-50 flex-shrink-0">
+        <div class="brand px-6 mb-8 flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center font-bold text-white shadow-lg">M</div>
+            <div>
+                <h1 class="font-display-lg text-[18px] font-bold text-white tracking-tighter leading-none">MusicMV</h1>
+                <p class="font-label-sm text-[11px] text-text-secondary uppercase tracking-wider mt-0.5">Sourcing Center</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu flex flex-col gap-2 flex-1">
+            <li class="nav-item active">
+                <a href="#" class="flex items-center gap-4 px-6 py-3 text-white font-bold border-l-2 border-primary bg-primary/10 transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            <path d="M2 12h20"></path>
+                        </svg>
+                    </span>
+                    Intel Search
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/library" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
+                    <span class="inline-flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                            <path d="M2 10h20"></path>
+                        </svg>
+                    </span>
+                    Local Library
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/pipeline" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
+                    <span class="inline-flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                        </svg>
+                    </span>
+                    Control Panel
+                </a>
+            </li>
+        </ul>
+
+        <div class="px-4 border-t border-border-glow/30 pt-4 mt-auto">
+            <div class="flex items-center gap-3 bg-surface-glass p-3 rounded-lg border border-border-glow/50 cursor-pointer" onclick="toggleDownloadsDrawer()">
+                <div class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]"></div>
+                <span class="text-xs text-text-secondary">Downloads: <span id="downloads-badge-text" class="text-secondary font-bold">0 active</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container flex-1 h-screen flex flex-col overflow-y-auto relative">
+        <!-- Ambient Background Glow -->
+        <div class="absolute top-0 left-1/4 w-[800px] h-[500px] bg-primary/5 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[400px] bg-secondary/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+        <!-- HEADER -->
+        <div class="top-header px-8 pt-8 pb-4 flex justify-between items-center">
+            <div class="header-title">
+                <h2 class="font-display-lg text-[22px] font-bold text-white tracking-tight">Media Sourcing</h2>
+                <p class="text-xs text-text-secondary mt-1">Query artists from TIDAL or download Billboard chart hits directly.</p>
+            </div>
+        </div>
+
+        <!-- SEARCH FILTERS (Desktop Widescreen Flex Row) -->
+        <div class="controls-grid mx-8 my-4 grid grid-cols-3 gap-6 bg-surface-glass p-5 rounded-2xl border border-border-glow relative">
+            <!-- Tidal Search -->
+            <div class="form-group relative flex flex-col gap-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Tidal Artist Search</label>
+                <div class="flex gap-2">
+                    <input type="text" id="artist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Rosalía" oninput="fetchArtist(this.value)">
+                    <button onclick="fetchArtist(document.getElementById('artist-input').value)" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Search</button>
+                </div>
+                <div id="suggestions-dropdown" class="absolute left-0 right-0 top-[75px] bg-[#10111a] border border-border-glow rounded-lg overflow-hidden hidden z-50 shadow-lg max-h-[300px] overflow-y-auto"></div>
+            </div>
+            <!-- Playlist Scraper -->
+            <div class="form-group flex flex-col gap-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Playlist URL / Track ID</label>
+                <div class="flex gap-2">
+                    <input type="text" id="playlist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="https://tidal.com/playlist/...">
+                    <button onclick="matchPlaylist()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Load</button>
+                </div>
+            </div>
+            <!-- Billboard Preset -->
+            <div class="form-group flex flex-col gap-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Billboard Charts Presets</label>
+                <div class="flex gap-2">
+                    <select id="chart-select" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all cursor-pointer">
+                        <option disabled selected value="">Select Chart...</option>
+                    </select>
+                    <button onclick="fetchBillboardChart()" class="bg-secondary/20 hover:bg-secondary/30 border border-secondary/30 px-4 rounded-lg font-bold text-xs text-white">Load Chart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTIST BANNER (Only displayed when Tidal artist loads) -->
+        <div id="artist-banner-container" class="mx-8 mb-4 hidden">
+            <div class="bg-surface-glass border border-border-glow rounded-2xl p-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img id="artist-photo" class="w-16 h-16 rounded-full object-cover border-2 border-primary shadow-lg" src="" alt="Artist">
+                    <div>
+                        <h3 id="artist-name" class="font-display-lg text-[20px] font-bold text-white leading-none"></h3>
+                        <p id="artist-meta" class="text-xs text-text-secondary mt-1.5"></p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="exportYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Links</button>
+                    <button onclick="exportAsText()" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Catalog</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADING INDICATOR -->
+        <div id="loader-view" class="mx-8 my-10 hidden flex flex-col items-center justify-center p-12 bg-surface-glass border border-border-glow rounded-2xl">
+            <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-sm text-text-secondary mt-4">Retrieving catalog data from API...</p>
+        </div>
+
+        <!-- VIDEO GRID -->
+        <div class="mx-8 mb-8">
+            <div id="video-list-content" class="grid grid-cols-4 gap-6 pb-8">
+                <!-- Dynamic cards injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- DOWNLOADS DRAWER -->
+    <div id="downloads-drawer" class="downloads-drawer fixed right-[-360px] top-0 h-full w-[350px] bg-surface-glass border-l border-border-glow backdrop-blur-xl flex flex-col py-8 z-50 transition-all duration-300 shadow-[-20px_0_40px_rgba(0,0,0,0.5)]">
+        <div class="drawer-title px-6 pb-4 border-b border-border-glow/30 flex justify-between items-center">
+            <span class="font-bold text-white text-md">Downloads Queue</span>
+            <span id="downloads-badge" class="badge-count bg-gradient-to-br from-primary to-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+        </div>
+        <ul id="downloads-list" class="download-list px-6 py-4 flex-1 overflow-y-auto flex flex-col gap-4">
+            <!-- Dynamic progress item will be appended here -->
+        </ul>
+        <div class="px-6 pt-4 border-t border-border-glow/30">
+            <button onclick="clearCompletedDownloads()" class="w-full py-2.5 flex items-center justify-center gap-2 text-text-secondary hover:text-white bg-white/2 hover:bg-white/5 rounded-lg border border-white/5 transition-all font-medium text-xs">
+                Clear Finished
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const artistInput = document.getElementById('artist-input');
+        const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+        const chartSelect = document.getElementById('chart-select');
+        const videoListContent = document.getElementById('video-list-content');
+        const loaderView = document.getElementById('loader-view');
+        const artistBanner = document.getElementById('artist-banner-container');
+        const artistPhoto = document.getElementById('artist-photo');
+        const artistName = document.getElementById('artist-name');
+        const artistMeta = document.getElementById('artist-meta');
+        
+        let autocompleteTimeout = null;
+        let activeDownloadsPoll = null;
+        let drawerOpen = false;
+        let loadedChartData = null;
+        let activeArtistId = null;
+
+        // Toggle Drawer
+        function toggleDownloadsDrawer() {
+            const drawer = document.getElementById('downloads-drawer');
+            drawerOpen = !drawerOpen;
+            if (drawerOpen) {
+                drawer.classList.remove('right-[-360px]');
+                drawer.classList.add('right-0');
+            } else {
+                drawer.classList.remove('right-0');
+                drawer.classList.add('right-[-360px]');
+            }
+        }
+
+        // Suggestions Auto-Complete
+        async function fetchArtist(inputStr) {
+            if (autocompleteTimeout) clearTimeout(autocompleteTimeout);
+            
+            const q = inputStr.trim();
+            if (!q) {
+                suggestionsDropdown.classList.add('hidden');
+                return;
+            }
+            
+            autocompleteTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch('/api/search?q=' + encodeURIComponent(q));
+                    const data = await response.json();
+                    if (data.status === 'success' && data.artists && data.artists.length > 0) {
+                        renderSuggestions(data.artists);
+                    } else {
+                        suggestionsDropdown.classList.add('hidden');
+                    }
+                } catch (err) {
+                    console.error("Autocomplete error:", err);
+                }
+            }, 300);
+        }
+
+        function renderSuggestions(artists) {
+            suggestionsDropdown.innerHTML = '';
+            suggestionsDropdown.classList.remove('hidden');
+            
+            artists.forEach(artist => {
+                const row = document.createElement('div');
+                row.className = 'px-4 py-2 hover:bg-white/5 cursor-pointer text-sm text-text-secondary hover:text-white transition-colors flex items-center gap-3';
+                const img = artist.picture ? `<img src="${artist.picture}" class="w-6 h-6 rounded-full object-cover">` : '<div class="w-6 h-6 bg-surface-glass rounded-full flex items-center justify-center text-[10px]">?</div>';
+                row.innerHTML = `${img} <span>${artist.name}</span>`;
+                row.onclick = () => {
+                    artistInput.value = artist.name;
+                    suggestionsDropdown.classList.add('hidden');
+                    selectArtistFromList(artist.id);
+                };
+                suggestionsDropdown.appendChild(row);
+            });
+        }
+
+        async function selectArtistFromList(artistId) {
+            loaderView.classList.remove('hidden');
+            artistBanner.classList.add('hidden');
+            videoListContent.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/fetch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: String(artistId) })
+                });
+                const data = await response.json();
+                loaderView.classList.add('hidden');
+                
+                if (data.status === 'success') {
+                    loadCatalogData(data);
+                } else {
+                    alert("Error searching artist: " + data.message);
+                }
+            } catch (err) {
+                loaderView.classList.add('hidden');
+                alert("Network error.");
+            }
+        }
+
+        function loadCatalogData(data) {
+            activeArtistId = data.artist_id;
+            artistPhoto.src = data.artist_picture || '';
+            artistName.textContent = data.artist_name || 'Artist';
+            artistMeta.textContent = `${data.tracks_count || 0} Tracks found in catalog`;
+            artistBanner.classList.remove('hidden');
+            
+            // Combine priority and standard tracks for unified display
+            const tracks = [];
+            if (data.priority_tracks) {
+                data.priority_tracks.forEach(t => { t.category = 'Priority'; tracks.push(t); });
+            }
+            if (data.standard_tracks) {
+                data.standard_tracks.forEach(t => { t.category = 'Standard'; tracks.push(t); });
+            }
+            
+            renderVideoList(tracks);
+        }
+
+        // Playlist Matcher
+        async function matchPlaylist() {
+            const playlistUrl = document.getElementById('playlist-input').value.trim();
+            if (!playlistUrl) return alert("Please enter a Playlist URL.");
+            
+            loaderView.classList.remove('hidden');
+            artistBanner.classList.add('hidden');
+            videoListContent.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/playlist/match', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: playlistUrl })
+                });
+                const data = await response.json();
+                loaderView.classList.add('hidden');
+                
+                if (data.status === 'success') {
+                    loadPlaylistData(data);
+                } else {
+                    alert("Error matches playlist: " + data.message);
+                }
+            } catch (err) {
+                loaderView.classList.add('hidden');
+                alert("Network error matching playlist.");
+            }
+        }
+
+        function loadPlaylistData(data) {
+            activeArtistId = data.playlist_id;
+            artistPhoto.src = '';
+            artistName.textContent = data.playlist_name || 'Playlist Matches';
+            artistMeta.textContent = `${data.tracks ? data.tracks.length : 0} Tracks matched`;
+            artistBanner.classList.remove('hidden');
+            
+            renderVideoList(data.tracks);
+        }
+
+        // Billboard charts
+        async function loadBillboardPresets() {
+            try {
+                const response = await fetch('/api/billboard/presets');
+                const data = await response.json();
+                chartSelect.innerHTML = '<option disabled selected value="">Select Chart...</option>';
+                for (const [name, value] of Object.entries(data)) {
+                    chartSelect.innerHTML += `<option value="${value}">${name}</option>`;
+                }
+            } catch (err) {
+                console.error("Error loading Billboard presets:", err);
+            }
+        }
+
+        async function fetchBillboardChart() {
+            const chartVal = chartSelect.value;
+            if (!chartVal) return alert("Please select a Billboard chart preset.");
+            
+            loaderView.classList.remove('hidden');
+            artistBanner.classList.add('hidden');
+            videoListContent.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/billboard/chart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chart: chartVal })
+                });
+                const data = await response.json();
+                loaderView.classList.add('hidden');
+                
+                if (data.status === 'success') {
+                    loadedChartData = data;
+                    activeArtistId = 'bb_' + chartVal;
+                    artistPhoto.src = '';
+                    artistName.textContent = data.title || 'Billboard Chart';
+                    artistMeta.textContent = `Date: ${data.date || 'Current'} • ${data.tracks ? data.tracks.length : 0} Chart Hits`;
+                    artistBanner.classList.remove('hidden');
+                    
+                    renderVideoList(data.tracks);
+                } else {
+                    alert("Error loading chart: " + data.message);
+                }
+            } catch (err) {
+                loaderView.classList.add('hidden');
+                alert("Network error.");
+            }
+        }
+
+        // Render Cards List
+        function renderVideoList(items) {
+            videoListContent.innerHTML = '';
+            if (!items || items.length === 0) {
+                videoListContent.innerHTML = `
+                    <div class="col-span-4 text-center p-12 bg-surface-glass border border-dashed border-border-glow rounded-xl">
+                        <p class="text-sm text-text-secondary">No tracks in this view.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            items.forEach(video => {
+                const card = document.createElement('div');
+                card.className = "video-card flex flex-col bg-card border border-border-glow rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_25px_rgba(139,92,246,0.15)] bg-surface-glass/40";
+                
+                const artistsList = video.artists && video.artists.length > 0 ? video.artists.join(', ') : 'Artist';
+                const isExcluded = video.exclusion_reason && video.exclusion_reason !== '';
+                
+                let qualityBadge = '';
+                if (video.quality) {
+                    qualityBadge = `<span class="quality-tag text-[9px] font-bold text-secondary border border-secondary/30 px-1.5 py-0.5 rounded uppercase">${video.quality}</span>`;
+                } else {
+                    qualityBadge = `<span class="quality-tag text-[9px] font-bold text-primary border border-primary/30 px-1.5 py-0.5 rounded uppercase">${video.category || 'TIDAL'}</span>`;
+                }
+                
+                const queryStr = `${artistsList} - ${video.title}`;
+                
+                card.innerHTML = `
+                    <div class="thumbnail-container aspect-video bg-black/50 relative overflow-hidden">
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" class="w-full h-full object-cover opacity-85 transition-all duration-500 hover:scale-105" alt="Thumbnail">` : `
+                            <div class="w-full h-full flex items-center justify-center text-text-muted">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                            </div>
+                        `}
+                        <div class="duration-badge absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-mono text-white">${video.duration || '0:00'}</div>
+                    </div>
+                    <div class="card-details p-4 flex flex-col flex-1 gap-2">
+                        <div class="min-w-0">
+                            <h3 class="track-title text-sm font-semibold text-white truncate" title="${video.title.replace(/"/g, '&quot;')}">${video.title}</h3>
+                            <p class="track-artist text-xs text-text-secondary truncate mt-0.5">${artistsList}</p>
+                        </div>
+                        <div class="card-footer mt-auto flex justify-between items-center pt-2">
+                            ${qualityBadge}
+                            <div class="flex items-center gap-2" id="yt-group-${video.id}">
+                                ${video.youtubeId ? 
+                                    getYouTubeControlsHtml(video.youtubeId, video.youtubeUrl, video.title, artistsList, video.id) :
+                                    `<button id="yt-btn-${video.id}" class="btn-play-outline text-xs" style="color:#ef4444; border-color:rgba(239,68,68,0.3);" onclick="findYouTubeVideo('${video.id}', '${encodeURIComponent(queryStr).replace(/'/g, "%27")}')">Find YT</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+                videoListContent.appendChild(card);
+            });
+        }
+
+        function getYouTubeControlsHtml(videoId, videoUrl, title, artistsList, rowId) {
+            const qSelectId = `quality-select-${rowId}`;
+            return `
+                <select id="${qSelectId}" class="input-box bg-black/60 border border-border-glow rounded-md px-2 py-0.5 text-[10px] text-secondary font-bold cursor-pointer h-6 outline-none">
+                    <option value="best">Best</option>
+                    <option value="1080p">1080p</option>
+                    <option value="720p">720p</option>
+                    <option value="audio">Audio</option>
+                </select>
+                <button id="dl-btn-${rowId}" class="download-btn w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xs hover:bg-primary hover:text-white transition-all shadow-[0_0_8px_rgba(139,92,246,0.3)]" onclick="downloadYouTubeVideo('${videoId}', '${title.replace(/'/g, "\\'")}', '${qSelectId}', this)">↓</button>
+            `;
+        }
+
+        async function findYouTubeVideo(rowId, query) {
+            const btn = document.getElementById(`yt-btn-${rowId}`);
+            if (!btn) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = `Searching...`;
+            
+            try {
+                const response = await fetch('/api/youtube/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: decodeURIComponent(query), tidalId: rowId })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    const parent = document.getElementById(`yt-group-${rowId}`);
+                    const rawQuery = decodeURIComponent(query);
+                    const parts = rawQuery.split(" - ");
+                    const artists = parts[0] || 'Artist';
+                    const title = parts.slice(1).join(" - ") || 'Track';
+                    
+                    parent.innerHTML = getYouTubeControlsHtml(result.videoId, result.videoUrl, title, artists, rowId);
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Not Found';
+                    alert(`YouTube search failed: ${result.message}`);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = 'Error';
+                alert('YouTube search failed: Connection error.');
+            }
+        }
+
+        async function downloadYouTubeVideo(videoId, downloadTitle, qualitySelectId, btnElement) {
+            const qualitySelect = document.getElementById(qualitySelectId);
+            const selectedQuality = qualitySelect ? qualitySelect.value : 'best';
+            
+            btnElement.disabled = true;
+            btnElement.innerHTML = `...`;
+            
+            try {
+                const response = await fetch('/api/youtube/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoId: videoId, title: downloadTitle, quality: selectedQuality })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    btnElement.innerHTML = `✓`;
+                    refreshDownloadsList();
+                    startDownloadsPolling();
+                } else {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = `↓`;
+                    alert(`Download failed: ${result.message}`);
+                }
+            } catch (err) {
+                btnElement.disabled = false;
+                btnElement.innerHTML = `↓`;
+                alert('Download failed: connection error.');
+            }
+        }
+
+        // Downloads Drawer Polling
+        async function refreshDownloadsList() {
+            try {
+                const response = await fetch('/api/downloads/status');
+                const data = await response.json();
+                
+                const downloadsList = document.getElementById('downloads-list');
+                downloadsList.innerHTML = '';
+                
+                let activeCount = 0;
+                
+                for (const [taskId, dl] of Object.entries(data)) {
+                    const progress = dl.progress || 0;
+                    const isCompleted = dl.status === 'completed';
+                    
+                    if (!isCompleted) activeCount++;
+                    
+                    const item = document.createElement('li');
+                    item.className = "download-item bg-white/2 border border-border-glow p-4 rounded-xl flex flex-col gap-2.5";
+                    item.innerHTML = `
+                        <div class="download-info flex flex-col gap-1">
+                            <div class="download-name text-xs font-semibold text-white truncate" title="${dl.filename || dl.title}">${dl.filename || dl.title}</div>
+                            <div class="download-speed text-[11px] text-text-secondary flex justify-between">
+                                <span>${isCompleted ? 'Completed' : (dl.speed || '---')}</span>
+                                <span>${isCompleted ? '' : `ETA ${dl.eta || '---'} (${progress}%)`}</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container h-1.5 bg-white/5 rounded-full overflow-hidden relative">
+                            <div class="progress-fill h-full bg-gradient-to-r from-primary to-secondary shadow-[0_0_8px_rgba(139,92,246,0.5)] rounded-full transition-all duration-300" style="width: ${progress}%;"></div>
+                        </div>
+                    `;
+                    downloadsList.appendChild(item);
+                }
+                
+                document.getElementById('downloads-badge').textContent = activeCount;
+                document.getElementById('downloads-badge-text').textContent = `${activeCount} active`;
+                
+                if (activeCount === 0 && activeDownloadsPoll) {
+                    stopDownloadsPolling();
+                }
+            } catch (err) {
+                console.error("Error fetching downloads:", err);
+            }
+        }
+
+        function startDownloadsPolling() {
+            if (!activeDownloadsPoll) {
+                activeDownloadsPoll = setInterval(refreshDownloadsList, 2000);
+            }
+        }
+
+        function stopDownloadsPolling() {
+            if (activeDownloadsPoll) {
+                clearInterval(activeDownloadsPoll);
+                activeDownloadsPoll = null;
+            }
+        }
+
+        async function clearCompletedDownloads() {
+            try {
+                await fetch('/api/downloads/clear', { method: 'POST' });
+                refreshDownloadsList();
+            } catch (err) {
+                console.error("Error clearing downloads:", err);
+            }
+        }
+
+        async function openExportsFolder() {
+            try {
+                await fetch('/api/downloads/open_folder', { method: 'POST' });
+            } catch (err) {
+                console.error("Error opening folder:", err);
+            }
+        }
+
+        // Export Actions
+        async function exportYouTubeLinks(btn) {
+            if (!activeArtistId) return;
+            btn.disabled = true;
+            btn.textContent = 'Exporting...';
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: activeArtistId })
+                });
+                const data = await response.json();
+                btn.disabled = false;
+                btn.textContent = 'Export Links';
+                if (data.status === 'success') {
+                    alert("Successfully exported links:\n" + data.filepath);
+                } else {
+                    alert("Export failed: " + data.message);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = 'Export Links';
+                alert("Network error exporting links.");
+            }
+        }
+
+        async function exportAsText() {
+            if (!activeArtistId) return;
+            try {
+                const response = await fetch('/api/youtube/export_all', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: activeArtistId })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert("Successfully generated catalog:\n" + data.filepath);
+                } else {
+                    alert("Failed to export catalog: " + data.message);
+                }
+            } catch (err) {
+                alert("Network error.");
+            }
+        }
+
+        // Start
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBillboardPresets();
+            refreshDownloadsList();
+            startDownloadsPolling();
+        });
+    </script>
+</body>
+</html>
