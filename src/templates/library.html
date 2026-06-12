@@ -201,11 +201,14 @@
                 const response = await fetch('/api/archive/status');
                 const data = await response.json();
                 if (data.status === 'success') {
-                    archiveRootPath = data.archive_path || r"G:\Music\Music Video";
+                    archiveRootPath = (data.config && data.config.path) || data.archive_path || "G:\\Music\\Music Video";
                     document.getElementById('library-view-path').textContent = `Path: ${archiveRootPath}`;
                     
-                    document.getElementById('stat-total-artists').textContent = data.total_artists;
-                    document.getElementById('stat-total-videos').textContent = data.total_videos;
+                    const artistsCount = (data.stats && data.stats.artists) !== undefined ? data.stats.artists : (data.total_artists || 0);
+                    const videosCount = (data.stats && data.stats.videos) !== undefined ? data.stats.videos : (data.total_videos || 0);
+                    
+                    document.getElementById('stat-total-artists').textContent = artistsCount;
+                    document.getElementById('stat-total-videos').textContent = videosCount;
                     
                     loadLocalArtists();
                     loadMissingCounts();
@@ -218,11 +221,8 @@
         async function loadMissingCounts() {
             try {
                 const response = await fetch('/api/archive/missing');
-                const data = await response.json();
-                let missingCount = 0;
-                for (const [artist, tracks] of Object.entries(data)) {
-                    missingCount += tracks.length;
-                }
+                const data = await response.json(); // flat array
+                let missingCount = Array.isArray(data) ? data.length : 0;
                 document.getElementById('stat-total-missing').textContent = missingCount;
             } catch (err) {
                 console.error("Failed to load missing counts:", err);
@@ -237,12 +237,16 @@
             try {
                 const response = await fetch('/api/archive/artists');
                 const data = await response.json();
-                if (data.status === 'success') {
-                    localArtists = data.artists || [];
-                    renderLocalArtistsList(localArtists);
-                } else {
-                    grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-red-500">Error loading roster.</p>';
+                
+                let list = [];
+                if (Array.isArray(data)) {
+                    list = data;
+                } else if (data && data.status === 'success') {
+                    list = data.artists || [];
                 }
+                
+                localArtists = list;
+                renderLocalArtistsList(localArtists);
             } catch (err) {
                 grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-red-500">Connection error.</p>';
             }
@@ -253,40 +257,42 @@
             grid.innerHTML = '';
             
             if (list.length === 0) {
-                grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-text-muted">No artists found.</p>';
+                grid.innerHTML = '<p class="col-span-4 text-center py-12 text-xs text-text-muted">No artists found in local library.</p>';
                 return;
             }
             
             list.forEach(artist => {
                 const card = document.createElement('div');
-                card.className = "artist-circle-card bg-white/2 border border-border-glow rounded-2xl p-5 flex flex-col items-center text-center gap-3 cursor-pointer transition-all duration-300 hover:bg-white/4 hover:border-secondary hover:scale-[1.03]";
+                card.className = "artist-avatar-card cursor-pointer group flex flex-col items-center bg-[#141826]/40 hover:bg-[#141826]/85 border border-border-glow/50 p-6 rounded-2xl transition-all duration-300 relative";
+                card.onclick = () => loadArtistMissingTracks(artist.name);
                 
-                // Fetch avatar from api
-                const avatarUrl = `/api/archive/avatar?artist=${encodeURIComponent(artist.name)}&path=${encodeURIComponent(archiveRootPath)}`;
+                // Avatar image setup
+                const avatarImg = artist.hasAvatar 
+                    ? `/api/archive/avatar?artist=${encodeURIComponent(artist.name)}`
+                    : `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(artist.name)}&backgroundColor=8b5cf6,06b6d4`;
                 
                 card.innerHTML = `
-                    <div class="avatar-container w-[80px] height-[80px] aspect-square relative">
-                        <img src="${avatarUrl}" class="w-full h-full rounded-full object-cover border-2 border-border-glow transition-all duration-300 group-hover:border-secondary" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150';">
-                        <div class="avatar-glow absolute inset-0 rounded-full shadow-[inset_0_0_10px_rgba(139,92,246,0.5)] pointer-events-none"></div>
+                    <div class="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-border-glow group-hover:border-primary transition-all duration-300 shadow-lg">
+                        <img src="${avatarImg}" alt="${artist.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onError="this.src='https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(artist.name)}'"/>
                     </div>
-                    <span class="artist-name text-xs font-semibold text-white truncate w-full" title="${artist.name}">${artist.name}</span>
-                    <span class="artist-count-badge text-[9px] font-bold text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">${artist.count} Videos</span>
+                    <div class="text-center w-full">
+                        <h4 class="text-sm font-bold text-white truncate max-w-full px-1" title="${artist.name}">${artist.name}</h4>
+                        <p class="text-[10px] text-text-secondary mt-1">${artist.videos} Videos • ${artist.shortcuts} Guest</p>
+                        <span class="text-[9px] text-text-muted mt-2 block">${artist.status || 'No Cache'}</span>
+                    </div>
+                    <button onclick="event.stopPropagation(); openArtistFolder('${artist.name}')" class="absolute top-3 right-3 text-[#94a3b8] hover:text-white opacity-0 group-hover:opacity-100 transition-opacity p-1" title="Open Folder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                            <path d="M2 10h20"></path>
+                        </svg>
+                    </button>
                 `;
-                
-                card.onclick = () => {
-                    openArtistFolder(artist.name);
-                };
-                
                 grid.appendChild(card);
             });
         }
 
         function filterLocalArtists() {
             const query = document.getElementById('local-artists-search').value.toLowerCase().trim();
-            if (!query) {
-                renderLocalArtistsList(localArtists);
-                return;
-            }
             const filtered = localArtists.filter(a => a.name.toLowerCase().includes(query));
             renderLocalArtistsList(filtered);
         }
@@ -297,7 +303,7 @@
                 await fetch('/api/archive/open_folder', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ folder: archiveRootPath, artist: artistName })
+                    body: JSON.stringify({ path: `${archiveRootPath}\\${artistName}` })
                 });
                 loadArtistMissingTracks(artistName);
             } catch (err) {
@@ -312,9 +318,9 @@
             
             try {
                 const response = await fetch('/api/archive/missing');
-                const data = await response.json();
+                const data = await response.json(); // flat array
                 
-                const missing = data[artistName] || [];
+                const missing = data.filter(item => item.artist.toLowerCase() === artistName.toLowerCase());
                 container.innerHTML = '';
                 
                 if (missing.length === 0) {
@@ -362,8 +368,18 @@
                 const data = await response.json();
                 container.innerHTML = '';
                 
+                // Group flat array by artist
+                const groupedData = {};
+                data.forEach(item => {
+                    const artistName = item.artist;
+                    if (!groupedData[artistName]) {
+                        groupedData[artistName] = [];
+                    }
+                    groupedData[artistName].push(item);
+                });
+                
                 let hasMissing = false;
-                for (const [artist, tracks] of Object.entries(data)) {
+                for (const [artist, tracks] of Object.entries(groupedData)) {
                     if (tracks.length === 0) continue;
                     hasMissing = true;
                     

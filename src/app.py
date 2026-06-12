@@ -1484,7 +1484,7 @@ def api_archive_artists():
     if not HAS_LOCAL_MANAGER:
         return jsonify({'status': 'error', 'message': 'Local manager scripts are not loaded.'}), 500
         
-    archive_path = request.args.get('path', '').strip()
+    archive_path = request.args.get('path', '').strip() or PIPELINE_PATH
     search_query = request.args.get('search', '').strip().lower()
     
     if not archive_path or not os.path.exists(archive_path) or not os.path.isdir(archive_path):
@@ -1565,7 +1565,7 @@ def api_archive_artists():
 @app.route('/api/archive/avatar', methods=['GET'])
 def api_archive_avatar():
     artist_name = request.args.get('artist', '').strip()
-    archive_path = request.args.get('path', '').strip()
+    archive_path = request.args.get('path', '').strip() or PIPELINE_PATH
     
     if not artist_name or not archive_path:
         return jsonify({'status': 'error', 'message': 'Parameters missing'}), 400
@@ -1592,7 +1592,7 @@ def api_archive_run_single():
         
     req_data = request.json or {}
     artist_name = req_data.get('artist', '').strip()
-    archive_path = req_data.get('path', '').strip()
+    archive_path = req_data.get('path', '').strip() or PIPELINE_PATH
     action_type = req_data.get('type', 'catalog').strip()
     
     if not artist_name or not archive_path:
@@ -1649,7 +1649,7 @@ def api_archive_missing():
     if not HAS_LOCAL_MANAGER:
         return jsonify({'status': 'error', 'message': 'Local manager scripts are not loaded.'}), 500
         
-    archive_path = request.args.get('path', '').strip()
+    archive_path = request.args.get('path', '').strip() or PIPELINE_PATH
     search_query = request.args.get('search', '').strip().lower()
     
     if not archive_path or not os.path.exists(archive_path) or not os.path.isdir(archive_path):
@@ -1710,7 +1710,7 @@ def api_archive_artist_sync():
         return jsonify({'status': 'error', 'message': 'Local manager scripts are not loaded.'}), 500
         
     artist_name = request.args.get('artist', '').strip()
-    archive_path = request.args.get('path', '').strip()
+    archive_path = request.args.get('path', '').strip() or PIPELINE_PATH
     country_code = request.args.get('countryCode', DEFAULT_COUNTRY).strip().upper()
     
     if not artist_name or not archive_path:
