@@ -144,37 +144,78 @@
         </div>
 
         <!-- SEARCH FILTERS (Desktop Widescreen Flex Row) -->
-        <div class="controls-grid mx-8 my-4 grid grid-cols-3 gap-6 bg-surface-glass p-5 rounded-2xl border border-border-glow relative">
-            <!-- Tidal Search -->
-            <div class="form-group relative flex flex-col gap-2">
-                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Tidal Artist Search</label>
-                <div class="flex gap-2">
-                    <input type="text" id="artist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Rosalía" oninput="fetchArtist(this.value)" onkeydown="if(event.key === 'Enter') submitSearch()">
-                    <button onclick="submitSearch()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Search</button>
+        <div class="controls-grid mx-8 my-4 grid grid-cols-1 lg:grid-cols-3 gap-6 bg-surface-glass p-6 rounded-2xl border border-border-glow relative z-20">
+            <!-- Left Column: Tidal Sourcing -->
+            <div class="flex flex-col gap-4 border-r border-border-glow/30 pr-6 last:border-0">
+                <div class="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
+                    Tidal Sourcing
                 </div>
-                <div id="suggestions-dropdown" class="absolute left-0 right-0 top-[75px] bg-[#10111a] border border-border-glow rounded-lg overflow-hidden hidden z-50 shadow-lg max-h-[300px] overflow-y-auto"></div>
+                <!-- Tidal Search -->
+                <div class="form-group relative flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Artist Search</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="artist-input" class="input-box flex-1 h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Rosalía" oninput="fetchArtist(this.value)" onkeydown="if(event.key === 'Enter') submitSearch()">
+                        <button onclick="submitSearch()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-3 rounded-lg font-bold text-xs text-white">Search</button>
+                    </div>
+                    <div id="suggestions-dropdown" class="absolute left-0 right-0 top-[65px] bg-[#10111a] border border-border-glow rounded-lg overflow-hidden hidden z-50 shadow-lg max-h-[200px] overflow-y-auto"></div>
+                </div>
+                <!-- Playlist Scraper -->
+                <div class="form-group flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Playlist URL / Track ID</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="playlist-input" class="input-box flex-1 h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="https://tidal.com/playlist/...">
+                        <button onclick="matchPlaylist()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-3 rounded-lg font-bold text-xs text-white">Load</button>
+                    </div>
+                </div>
             </div>
-            <!-- Playlist Scraper -->
-            <div class="form-group flex flex-col gap-2">
-                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Playlist URL / Track ID</label>
-                <div class="flex gap-2">
-                    <input type="text" id="playlist-input" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="https://tidal.com/playlist/...">
-                    <button onclick="matchPlaylist()" class="bg-primary/20 hover:bg-primary/30 border border-primary/30 px-4 rounded-lg font-bold text-xs text-white">Load</button>
+
+            <!-- Center Column: Billboard Chart Explorer -->
+            <div class="flex flex-col gap-4 border-r border-border-glow/30 pr-6 last:border-0">
+                <div class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+                    Billboard Explorer
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="form-group flex flex-col gap-1.5 col-span-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Chart Preset</label>
+                        <select id="chart-select" class="input-box w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-3 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all cursor-pointer">
+                            <option disabled selected value="">Select Chart...</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Week Date</label>
+                        <input type="date" id="chart-date-input" class="input-box w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-3 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all" style="color-scheme: dark;">
+                    </div>
+                    <div class="form-group flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Or Year-End</label>
+                        <input type="text" id="chart-year-input" class="input-box w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-3 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. 2024">
+                    </div>
+                </div>
+                <button onclick="fetchBillboardChart()" class="w-full h-[38px] bg-secondary/20 hover:bg-secondary/30 border border-secondary/30 rounded-lg font-bold text-xs text-white flex items-center justify-center gap-1.5 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    Load Billboard Chart
+                </button>
             </div>
-            <!-- Billboard Preset -->
-            <div class="form-group flex flex-col gap-2">
-                <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Billboard Charts Presets</label>
-                <div class="flex gap-2">
-                    <select id="chart-select" class="input-box flex-1 h-[40px] bg-black/40 border border-border-glow rounded-lg px-4 text-sm text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all cursor-pointer">
-                        <option disabled selected value="">Select Chart...</option>
-                    </select>
-                    <button onclick="fetchBillboardChart()" class="bg-secondary/20 hover:bg-secondary/30 border border-secondary/30 px-4 rounded-lg font-bold text-xs text-white">Load Chart</button>
+
+            <!-- Right Column: Artist Billboard History -->
+            <div class="flex flex-col gap-4">
+                <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Artist Chart History
                 </div>
+                <div class="form-group flex flex-col gap-1.5 flex-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Artist Name</label>
+                    <input type="text" id="history-artist-input" class="input-box w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Sabrina Carpenter" onkeydown="if(event.key === 'Enter') fetchArtistChartHistory()">
+                </div>
+                <button onclick="fetchArtistChartHistory()" class="w-full h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg font-bold text-xs text-emerald-400 flex items-center justify-center gap-1.5 transition-all mt-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Query Billboard History
+                </button>
             </div>
         </div>
 
-        <!-- ARTIST BANNER (Only displayed when Tidal artist loads) -->
+        <!-- ARTIST BANNER -->
         <div id="artist-banner-container" class="mx-8 mb-4 hidden">
             <div class="bg-surface-glass border border-border-glow rounded-2xl p-6 flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -185,8 +226,15 @@
                     </div>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="exportYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Links</button>
-                    <button onclick="exportAsText()" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Catalog</button>
+                    <!-- Tidal Sourcing Actions -->
+                    <button id="btn-export-links" onclick="exportYouTubeLinks(this)" class="hidden btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Links</button>
+                    <button id="btn-export-text" onclick="exportAsText()" class="hidden btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Catalog</button>
+                    
+                    <!-- Billboard Chart Actions -->
+                    <button id="btn-export-chart" onclick="exportBillboardChartAction()" class="hidden btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export Chart</button>
+                    
+                    <!-- Artist History Actions -->
+                    <button id="btn-export-history" onclick="exportBillboardArtistHistoryAction()" class="hidden btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white">Export History</button>
                 </div>
             </div>
         </div>
@@ -232,11 +280,16 @@
         const artistPhoto = document.getElementById('artist-photo');
         const artistName = document.getElementById('artist-name');
         const artistMeta = document.getElementById('artist-meta');
+        const chartDateInput = document.getElementById('chart-date-input');
+        const chartYearInput = document.getElementById('chart-year-input');
+        const historyArtistInput = document.getElementById('history-artist-input');
         
         let autocompleteTimeout = null;
         let activeDownloadsPoll = null;
         let drawerOpen = false;
         let loadedChartData = null;
+        let loadedTidalVideos = null;
+        let loadedArtistHistory = null;
         let activeArtistId = null;
 
         // Toggle Drawer
@@ -339,23 +392,36 @@
             
             activeArtistId = artist.id || res.artist_id;
             artistPhoto.src = artist.picture || res.artist_picture || '';
+            if (artistPhoto.src) {
+                artistPhoto.style.display = 'block';
+            } else {
+                artistPhoto.style.display = 'none';
+            }
             artistName.textContent = artist.name || res.artist_name || 'Artist';
             
             const totalCount = stats.total !== undefined ? stats.total : (res.tracks_count || 0);
             artistMeta.textContent = `${totalCount} Tracks found in catalog`;
+            
+            // Save videos to global variable for exporting
+            loadedTidalVideos = {
+                priority: videos.priority || res.priority_tracks || [],
+                standard: videos.standard || res.standard_tracks || [],
+                excluded: videos.excluded || res.excluded_tracks || []
+            };
+            
+            // Show Tidal Sourcing Actions, hide Billboard & History Actions
+            document.getElementById('btn-export-links').classList.remove('hidden');
+            document.getElementById('btn-export-text').classList.remove('hidden');
+            document.getElementById('btn-export-chart').classList.add('hidden');
+            document.getElementById('btn-export-history').classList.add('hidden');
+            
             artistBanner.classList.remove('hidden');
             
             // Combine priority, standard, and excluded tracks for unified display
             const tracks = [];
-            
-            const priorityTracks = videos.priority || res.priority_tracks || [];
-            priorityTracks.forEach(t => { t.category = 'Priority'; tracks.push(t); });
-            
-            const standardTracks = videos.standard || res.standard_tracks || [];
-            standardTracks.forEach(t => { t.category = 'Standard'; tracks.push(t); });
-            
-            const excludedTracks = videos.excluded || res.excluded_tracks || [];
-            excludedTracks.forEach(t => { t.category = 'Excluded'; tracks.push(t); });
+            loadedTidalVideos.priority.forEach(t => { t.category = 'Priority'; tracks.push(t); });
+            loadedTidalVideos.standard.forEach(t => { t.category = 'Standard'; tracks.push(t); });
+            loadedTidalVideos.excluded.forEach(t => { t.category = 'Excluded'; tracks.push(t); });
             
             renderVideoList(tracks);
         }
@@ -407,6 +473,12 @@
             const chartVal = chartSelect.value;
             if (!chartVal) return alert("Please select a Billboard chart preset.");
             
+            const chartDate = chartDateInput.value;
+            const chartYear = chartYearInput.value.trim();
+            if (chartDate && chartYear) {
+                return alert("Please specify either a Week Date or a Year-End, not both.");
+            }
+            
             loaderView.classList.remove('hidden');
             artistBanner.classList.add('hidden');
             videoListContent.innerHTML = '';
@@ -415,16 +487,17 @@
                 const response = await fetch('/api/billboard/chart', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chart: chartVal })
+                    body: JSON.stringify({ chart: chartVal, date: chartDate, year: chartYear })
                 });
                 const data = await response.json();
                 loaderView.classList.add('hidden');
                 
                 if (data.status === 'success') {
                     const chartData = data.data || {};
-                    loadedChartData = data;
+                    loadedChartData = chartData; // Store the exact chart data for export
                     activeArtistId = 'bb_' + chartVal;
                     artistPhoto.src = '';
+                    artistPhoto.style.display = 'none';
                     artistName.textContent = chartData.title || 'Billboard Chart';
                     
                     const entries = chartData.entries || [];
@@ -435,6 +508,13 @@
                     });
                     
                     artistMeta.textContent = `Date: ${chartData.date || 'Current'} • ${entries.length} Chart Hits`;
+                    
+                    // Show Billboard Chart Action, hide others
+                    document.getElementById('btn-export-links').classList.add('hidden');
+                    document.getElementById('btn-export-text').classList.add('hidden');
+                    document.getElementById('btn-export-chart').classList.remove('hidden');
+                    document.getElementById('btn-export-history').classList.add('hidden');
+                    
                     artistBanner.classList.remove('hidden');
                     
                     renderVideoList(entries);
@@ -445,6 +525,75 @@
                 loaderView.classList.add('hidden');
                 alert("Network error.");
             }
+        }
+
+        // Artist Chart History Sourcing
+        async function fetchArtistChartHistory() {
+            const query = historyArtistInput.value.trim();
+            if (!query) {
+                return alert("Please enter an artist name.");
+            }
+            
+            loaderView.classList.remove('hidden');
+            artistBanner.classList.add('hidden');
+            videoListContent.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/billboard/artist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ artist: query })
+                });
+                const data = await response.json();
+                loaderView.classList.add('hidden');
+                
+                if (data.status === 'success') {
+                    const historyData = data.data || {};
+                    loadedArtistHistory = historyData; // Store history data for export
+                    
+                    artistPhoto.src = '';
+                    artistPhoto.style.display = 'none';
+                    artistName.textContent = query;
+                    
+                    const no1Count = historyData.stats && historyData.stats.no1_hits !== undefined ? historyData.stats.no1_hits : '—';
+                    const songCount = historyData.stats && historyData.stats.songs !== undefined ? historyData.stats.songs : '—';
+                    const top10Count = historyData.stats && historyData.stats.top10_hits !== undefined ? historyData.stats.top10_hits : '—';
+                    
+                    artistMeta.textContent = `Songs: ${songCount} • No.1 Hits: ${no1Count} • Top 10 Hits: ${top10Count}`;
+                    
+                    // Show History Action, hide others
+                    document.getElementById('btn-export-links').classList.add('hidden');
+                    document.getElementById('btn-export-text').classList.add('hidden');
+                    document.getElementById('btn-export-chart').classList.add('hidden');
+                    document.getElementById('btn-export-history').classList.remove('hidden');
+                    
+                    artistBanner.classList.remove('hidden');
+                    
+                    renderArtistHistory(historyData);
+                } else {
+                    alert("Error loading artist history: " + data.message);
+                }
+            } catch (err) {
+                loaderView.classList.add('hidden');
+                alert("Network error querying history.");
+            }
+        }
+
+        function renderArtistHistory(historyData) {
+            const entries = historyData.entries || [];
+            const mappedEntries = entries.map((entry, idx) => {
+                return {
+                    id: `bb_hist_${idx}`,
+                    title: entry.title,
+                    artists: [entry.artist || historyArtistInput.value.trim()],
+                    category: `Peak: #${entry.peakPos}`,
+                    quality: `Peak: #${entry.peakPos} (${entry.weeksOnChart}w)`,
+                    duration: `Debut: ${entry.debutDate}`,
+                    youtubeId: entry.youtubeId || null,
+                    youtubeUrl: entry.youtubeUrl || null
+                };
+            });
+            renderVideoList(mappedEntries);
         }
 
         // Render Cards List
@@ -658,37 +807,42 @@
 
         // Export Actions
         async function exportYouTubeLinks(btn) {
-            if (!activeArtistId) return;
+            if (!loadedTidalVideos) return alert("No Tidal videos loaded to export.");
+            const artist = artistName.textContent;
+            const originalHtml = btn.textContent;
             btn.disabled = true;
             btn.textContent = 'Exporting...';
             try {
-                const response = await fetch('/api/export', {
+                const response = await fetch('/api/youtube/export_all', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: activeArtistId })
+                    body: JSON.stringify({ artistName: artist, videos: loadedTidalVideos })
                 });
                 const data = await response.json();
                 btn.disabled = false;
-                btn.textContent = 'Export Links';
+                btn.textContent = originalHtml;
                 if (data.status === 'success') {
-                    alert("Successfully exported links:\n" + data.filepath);
+                    if (confirm(`Exported successfully!\n\nFile saved locally:\n${data.filepath}\n\nWould you like to open the exports folder?`)) {
+                        openExportsFolder();
+                    }
                 } else {
                     alert("Export failed: " + data.message);
                 }
             } catch (err) {
                 btn.disabled = false;
-                btn.textContent = 'Export Links';
+                btn.textContent = originalHtml;
                 alert("Network error exporting links.");
             }
         }
 
         async function exportAsText() {
-            if (!activeArtistId) return;
+            if (!loadedTidalVideos) return alert("No Tidal videos loaded to export.");
+            const artist = artistName.textContent;
             try {
-                const response = await fetch('/api/youtube/export_all', {
+                const response = await fetch('/api/export', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: activeArtistId })
+                    body: JSON.stringify({ artistName: artist, videos: loadedTidalVideos })
                 });
                 const data = await response.json();
                 if (data.status === 'success') {
@@ -698,6 +852,44 @@
                 }
             } catch (err) {
                 alert("Network error.");
+            }
+        }
+
+        async function exportBillboardChartAction() {
+            if (!loadedChartData) return alert("No Billboard chart loaded to export.");
+            try {
+                const response = await fetch('/api/billboard/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loadedChartData)
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert("Billboard Chart exported successfully!\n\nSaved locally at:\n" + result.filepath);
+                } else {
+                    alert("Export failed: " + result.message);
+                }
+            } catch (err) {
+                alert("Network error exporting billboard chart.");
+            }
+        }
+
+        async function exportBillboardArtistHistoryAction() {
+            if (!loadedArtistHistory) return alert("No Artist History loaded to export.");
+            try {
+                const response = await fetch('/api/billboard/export_artist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loadedArtistHistory)
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert("Artist History exported successfully!\n\nSaved locally at:\n" + result.filepath);
+                } else {
+                    alert("Export failed: " + result.message);
+                }
+            } catch (err) {
+                alert("Network error exporting artist history.");
             }
         }
 
