@@ -1,694 +1,367 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Explorer Mockup - Local Catalogs</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-base: #05060a;
-            --bg-surface: rgba(13, 17, 28, 0.75);
-            --bg-card: rgba(20, 24, 38, 0.65);
-            --border-glow: rgba(139, 92, 246, 0.15);
-            --accent-primary: #8b5cf6;
-            --accent-secondary: #06b6d4;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #475569;
-            --glass-blur: blur(16px);
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 5% 15%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 95% 85%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
-        }
-
-        /* SIDEBAR (Desktop Fixed 260px) */
-        .sidebar {
-            width: 260px;
-            background: var(--bg-surface);
-            backdrop-filter: var(--glass-blur);
-            border-right: 1px solid var(--border-glow);
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 36px;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: white;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        }
-
-        .brand-text h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .brand-text p {
-            font-size: 0.72rem;
-            color: var(--accent-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            list-style: none;
-        }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.92rem;
-            font-weight: 500;
-            transition: var(--transition-smooth);
-            border: 1px solid transparent;
-        }
-
-        .nav-item.active a, .nav-item a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.03);
-            border-color: var(--border-glow);
-        }
-
-        .nav-item.active a {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.05));
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: inset 0 0 12px rgba(139, 92, 246, 0.1);
-        }
-
-        .nav-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-        }
-
-        .nav-item.active .nav-icon, .nav-item:hover .nav-icon {
-            color: var(--accent-secondary);
-        }
-
-        /* MAIN CONTAINER */
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        /* HEADER */
-        .top-header {
-            padding: 30px 40px 10px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-title h2 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        .header-title p {
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            margin-top: 4px;
-        }
-
-        .mockup-toggle-btn {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
-            transition: var(--transition-smooth);
-        }
-
-        .mockup-toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
-        }
-
-        /* STATS BAR */
-        .stats-bar {
-            margin: 20px 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            padding: 24px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transition: var(--transition-smooth);
-        }
-
-        .stat-card:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .stat-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-        }
-
-        .stat-value {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .stat-footer {
-            font-size: 0.72rem;
-            color: var(--accent-secondary);
-        }
-
-        .stat-footer.warning {
-            color: var(--accent-warning);
-        }
-
-        /* DUAL COLUMN CONTENT (Desktop Widescreen Layout) */
-        .workspace-split {
-            flex: 1;
-            padding: 10px 40px 40px 40px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-
-        .panel-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* LIBRARY GRID (CIRCULAR CARDS) */
-        .artists-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 20px;
-            height: fit-content;
-        }
-
-        .artist-circle-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .artist-circle-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--accent-secondary);
-            transform: scale(1.03);
-        }
-
-        .avatar-container {
-            width: 80px;
-            height: 80px;
-            position: relative;
-        }
-
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--border-glow);
-            transition: var(--transition-smooth);
-        }
-
-        .artist-circle-card:hover .avatar-img {
-            border-color: var(--accent-secondary);
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-        }
-
-        .avatar-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            box-shadow: inset 0 0 10px rgba(139, 92, 246, 0.5);
-            pointer-events: none;
-        }
-
-        .artist-name {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: white;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-        }
-
-        .artist-count-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent-secondary);
-            background: rgba(6, 182, 212, 0.1);
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        /* MISSING TRACK ANALYZER */
-        .analyzer-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            height: fit-content;
-        }
-
-        .analyzer-artist {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid var(--border-glow);
-            padding-bottom: 16px;
-        }
-
-        .analyzer-artist img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-primary);
-        }
-
-        .analyzer-artist-details h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        .analyzer-artist-details p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .missing-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            list-style: none;
-        }
-
-        .missing-item {
-            background: rgba(10, 12, 22, 0.5);
-            border: 1px solid var(--border-glow);
-            padding: 12px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.82rem;
-            transition: var(--transition-smooth);
-        }
-
-        .missing-item:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        .missing-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            max-width: 70%;
-        }
-
-        .missing-title {
-            font-weight: 600;
-            color: white;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .missing-album {
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .missing-action {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-link {
-            background: rgba(6, 182, 212, 0.15);
-            color: var(--accent-secondary);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            text-decoration: none;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            transition: var(--transition-smooth);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .action-link:hover {
-            background: var(--accent-secondary);
-            color: black;
-            box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
-        }
-
-        /* OVERLAY MOCKUP IMAGE VIEW */
-        .overlay-mockup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 40px;
-        }
-
-        .overlay-mockup img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 0 50px rgba(6, 182, 212, 0.4);
-            border: 1px solid rgba(6, 182, 212, 0.2);
-        }
-
-        .close-instruction {
-            position: absolute;
-            bottom: 30px;
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--border-glow);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">M</div>
-            <div class="brand-text">
-                <h1>Media Intel</h1>
-                <p>Pipeline Sorter</p>
-            </div>
-        </div>
-
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="../intel/intel.html">
-                    <span class="nav-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            <path d="M2 12h20"></path>
-                        </svg>
-                    </span>
-                    Intel Search
-                </a>
-            </li>
-            <li class="nav-item active">
-                <a href="#library">
-                    <span class="nav-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                            <path d="M2 10h20"></path>
-                        </svg>
-                    </span>
-                    Local Library
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../pipeline/pipeline.html">
-                    <span class="nav-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                            <rect x="9" y="9" width="6" height="6"></rect>
-                            <line x1="9" y1="1" x2="9" y2="4"></line>
-                            <line x1="15" y1="1" x2="15" y2="4"></line>
-                            <line x1="9" y1="20" x2="9" y2="23"></line>
-                            <line x1="15" y1="20" x2="15" y2="23"></line>
-                            <line x1="20" y1="9" x2="23" y2="9"></line>
-                            <line x1="20" y1="15" x2="23" y2="15"></line>
-                        </svg>
-                    </span>
-                    Control Panel
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- MAIN CONTAINER -->
-    <div class="main-container">
-        <!-- HEADER -->
-        <div class="top-header">
-            <div class="header-title">
-                <h2>Local Library & Catalogs</h2>
-                <p>Browse sorted folders, audit guest shortcut links, and track missing hits.</p>
-            </div>
-            <button class="mockup-toggle-btn" onclick="toggleMockup(true)">View AI Concept Mockup</button>
-        </div>
-
-        <!-- STATS BAR -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <span class="stat-title">Sorted Artists</span>
-                <span class="stat-value">142</span>
-                <span class="stat-footer">▲ 4 new this week</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-title">Total Music Videos</span>
-                <span class="stat-value">1,840</span>
-                <span class="stat-footer">▲ 14,352 GB archived</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-title">Missing Hits Detected</span>
-                <span class="stat-value">56</span>
-                <span class="stat-footer warning">⚡ Needs audit action</span>
-            </div>
-        </div>
-
-        <!-- split workspace -->
-        <div class="workspace-split">
-            <!-- Left Side: Artists list -->
-            <div>
-                <h3 class="panel-title">👥 Local Sorted Artists</h3>
-                <div class="artists-grid">
-                    <!-- artist 1 -->
-                    <div class="artist-circle-card">
-                        <div class="avatar-container">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Rosalía" class="avatar-img">
-                            <div class="avatar-glow"></div>
-                        </div>
-                        <span class="artist-name">Rosalía</span>
-                        <span class="artist-count-badge">12 Videos</span>
-                    </div>
-
-                    <!-- artist 2 -->
-                    <div class="artist-circle-card">
-                        <div class="avatar-container">
-                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80" alt="The Weeknd" class="avatar-img">
-                            <div class="avatar-glow"></div>
-                        </div>
-                        <span class="artist-name">The Weeknd</span>
-                        <span class="artist-count-badge">24 Videos</span>
-                    </div>
-
-                    <!-- artist 3 -->
-                    <div class="artist-circle-card">
-                        <div class="avatar-container">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80" alt="Dua Lipa" class="avatar-img">
-                            <div class="avatar-glow"></div>
-                        </div>
-                        <span class="artist-name">Dua Lipa</span>
-                        <span class="artist-count-badge">18 Videos</span>
-                    </div>
-
-                    <!-- artist 4 -->
-                    <div class="artist-circle-card">
-                        <div class="avatar-container">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Billie Eilish" class="avatar-img">
-                            <div class="avatar-glow"></div>
-                        </div>
-                        <span class="artist-name">Billie Eilish</span>
-                        <span class="artist-count-badge">8 Videos</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Side: Missing analyzer -->
-            <div>
-                <h3 class="panel-title">🚨 Missing Hits (Top 50 Audit)</h3>
-                <div class="analyzer-panel">
-                    <div class="analyzer-artist">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Rosalía">
-                        <div class="analyzer-artist-details">
-                            <h4>Rosalía</h4>
-                            <p>3 Top 50 Hits Missing</p>
-                        </div>
-                    </div>
-
-                    <ul class="missing-list">
-                        <li class="missing-item">
-                            <div class="missing-info">
-                                <span class="missing-title">DESPECHÁ</span>
-                                <span class="missing-album">Motomami (Deluxe)</span>
-                            </div>
-                            <div class="missing-action">
-                                <a href="#" class="action-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                        <polyline points="7 10 12 15 17 10"></polyline>
-                                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                                    </svg>
-                                    Get
-                                </a>
-                            </div>
-                        </li>
-                        <li class="missing-item">
-                            <div class="missing-info">
-                                <span class="missing-title">Malamente</span>
-                                <span class="missing-album">El Mal Querer</span>
-                            </div>
-                            <div class="missing-action">
-                                <a href="#" class="action-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                        <polyline points="7 10 12 15 17 10"></polyline>
-                                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                                    </svg>
-                                    Get
-                                </a>
-                            </div>
-                        </li>
-                        <li class="missing-item">
-                            <div class="missing-info">
-                                <span class="missing-title">Con Altura</span>
-                                <span class="missing-album">Single</span>
-                            </div>
-                            <div class="missing-action">
-                                <a href="#" class="action-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                        <polyline points="7 10 12 15 17 10"></polyline>
-                                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                                    </svg>
-                                    Get
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- OVERLAY MOCKUP CONTAINER -->
-    <div class="overlay-mockup" id="mockupOverlay" onclick="toggleMockup(false)">
-        <img src="mockup_library.png" alt="AI Concept Mockup">
-        <div class="close-instruction">Click anywhere to close concepts view</div>
-    </div>
-
-    <script>
-        function toggleMockup(show) {
-            document.getElementById('mockupOverlay').style.display = show ? 'flex' : 'none';
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MusicMV - Library Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#454651",
+                        "primary-container": "#a078ff",
+                        "on-primary-fixed": "#23005c",
+                        "surface-container": "#211e27",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#8f909c",
+                        "on-surface": "#e7e0ed",
+                        "background": "#15121b",
+                        "surface-container-highest": "#37333d",
+                        "primary-fixed-dim": "#d0bcff",
+                        "on-background": "#e7e0ed",
+                        "on-secondary": "#003640",
+                        "accent-cyan-glow": "rgba(6, 182, 212, 0.5)",
+                        "surface-container-lowest": "#0f0d15",
+                        "on-secondary-container": "#00424e",
+                        "on-tertiary-container": "#282933",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e7e0ed",
+                        "outline-glow": "rgba(139, 92, 246, 0.15)",
+                        "outline": "#958ea0",
+                        "on-surface-variant": "#cbc3d7",
+                        "secondary": "#4cd7f6",
+                        "surface-tint": "#d0bcff",
+                        "surface-dim": "#15121b",
+                        "tertiary-fixed-dim": "#c5c5d2",
+                        "surface-bright": "#3b3742",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "secondary-fixed": "#acedff",
+                        "inverse-primary": "#6d3bd7",
+                        "on-primary-container": "#340080",
+                        "outline-variant": "#494454",
+                        "surface-container-low": "#1d1a23",
+                        "on-error-container": "#ffdad6",
+                        "surface-glass": "rgba(20, 24, 38, 0.65)",
+                        "on-secondary-fixed": "#001f26",
+                        "tertiary-fixed": "#e2e1ef",
+                        "surface": "#15121b",
+                        "inverse-on-surface": "#322f39",
+                        "on-primary-fixed-variant": "#5516be",
+                        "surface-container-high": "#2c2832",
+                        "on-primary": "#3c0091",
+                        "on-tertiary-fixed": "#191b24",
+                        "on-tertiary": "#2e303a",
+                        "error": "#ffb4ab",
+                        "surface-obsidian": "#05060A",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "tertiary": "#c5c5d2",
+                        "primary-fixed": "#e9ddff",
+                        "primary": "#d0bcff",
+                        "secondary-container": "#03b5d3",
+                        "surface-variant": "#37333d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "stack-md": "16px",
+                        "drawer_right_width": "350px",
+                        "stack_md": "16px",
+                        "margin-page": "32px",
+                        "panel-padding": "20px",
+                        "container_margin": "32px",
+                        "stack_sm": "8px",
+                        "gutter": "24px",
+                        "drawer-width": "350px",
+                        "sidebar_left_width": "260px",
+                        "stack_lg": "32px",
+                        "grid_gutter": "24px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "panel_padding": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "body-lg": ["Inter"],
+                        "display-xl": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }]
+                    }
+                }
+            }
         }
     </script>
-</body>
-</html>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-surface-obsidian text-on-surface h-screen overflow-hidden flex font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (Left) -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-surface-glass dark:bg-surface-glass border-r border-outline-variant backdrop-blur-[20px] flex flex-col py-stack-lg z-50">
+<!-- Header -->
+<div class="px-6 mb-stack-lg">
+<h1 class="font-headline-md text-headline-md font-bold text-primary mb-1">MusicMV</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Media Sourcing Center</p>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 flex flex-col gap-2">
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant font-medium hover:bg-outline-glow transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]">search</span>
+<span class="font-label-md text-label-md">Intel Search</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-6 py-3 text-primary font-bold border-r-2 border-primary bg-outline-glow/20 scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">library_music</span>
+<span class="font-label-md text-label-md">Library Explorer</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant font-medium hover:bg-outline-glow transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]">settings_input_component</span>
+<span class="font-label-md text-label-md">Control Console</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="px-6 mt-auto mb-stack-lg">
+<button class="w-full py-3 bg-[#8B5CF6] hover:bg-[#7c3aed] text-white font-label-md text-label-md rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Add New Source
+            </button>
+</div>
+<!-- Footer Tabs -->
+<div class="flex flex-col gap-2 border-t border-outline-variant/30 pt-4">
+<a class="flex items-center gap-3 px-6 py-2 text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">sensors</span>
+<span class="font-label-md text-label-md">System Status</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-[260px] right-[350px] w-auto bg-transparent flex justify-between items-center h-16 px-margin-page z-40 pointer-events-none">
+<div class="flex items-center gap-4 pointer-events-auto">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Library Explorer</h2>
+</div>
+<div class="flex items-center gap-4 pointer-events-auto">
+<button class="text-on-surface-variant hover:text-secondary transition-colors opacity-80 p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors opacity-80 p-2">
+<span class="material-symbols-outlined">cloud_download</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors opacity-80 p-2">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Central Stage -->
+<main class="flex-1 ml-[260px] mr-[350px] mt-16 p-margin-page overflow-y-auto overflow-x-hidden relative">
+<!-- Subtle Background Glow -->
+<div class="absolute top-[-20%] left-[20%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<!-- Top Row Stats -->
+<div class="grid grid-cols-3 gap-gutter mb-stack-lg relative z-10">
+<!-- Stat Card 1 -->
+<div class="bg-surface-glass backdrop-blur-[20px] border border-outline-glow rounded-xl p-6 flex flex-col justify-between">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider mb-2">Sorted Artists</span>
+<span class="font-display-lg text-display-lg text-on-surface">1,240</span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed mt-2 opacity-60">Verified Profiles</span>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-glass backdrop-blur-[20px] border border-outline-glow rounded-xl p-6 flex flex-col justify-between group hover:border-secondary/30 transition-colors duration-500">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider mb-2">Total Videos</span>
+<span class="font-display-lg text-display-lg text-secondary">8,432</span>
+<span class="font-label-sm text-label-sm text-secondary mt-2 opacity-60 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% this week
+                </span>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-glass backdrop-blur-[20px] border border-outline-glow rounded-xl p-6 flex flex-col justify-between group hover:border-[#8B5CF6]/30 transition-colors duration-500">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider mb-2">Missing Hits</span>
+<span class="font-display-lg text-display-lg text-[#8B5CF6]">156</span>
+<span class="font-label-sm text-label-sm text-[#8B5CF6] mt-2 opacity-60 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Action Required
+                </span>
+</div>
+</div>
+<!-- Artist Grid Header -->
+<div class="flex justify-between items-end mb-stack-md relative z-10">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Curated Roster</h3>
+<button class="font-label-md text-label-md text-secondary hover:text-secondary-fixed transition-colors flex items-center gap-1">
+                View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Artist Grid (6 Columns) -->
+<div class="grid grid-cols-6 gap-gutter relative z-10 pb-stack-lg">
+<!-- Artist Card 1 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<img alt="Artist Profile" class="w-full h-full object-cover filter brightness-90 group-hover:brightness-110 transition-all" data-alt="A moody, high-contrast portrait of a male R&amp;B artist illuminated by vibrant neon violet and cyan lights. The background is pure dark cyber-obsidian. The lighting is cinematic, highlighting the artist's features against the deep black void, creating a highly premium, futuristic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLC5Wy5-CFbfgrvCHIfNXSs6mTxhgnpeRoxrG9sQXrpMnCKzrSsKwGATy99hdmUb2O17xdSiCeBmjFUxJ6_mseJt46Q37QTVQFetz26vYE4aCK1q2VmmCvGY830picn4KoPRIF8ZmPZXMxo4RzYtEmhDkPPkylQXLSbm8xzE6BqB6_v2loLRRIJYqmx-9XHtGEXyvpvrGNv6oHhyMKNfFUU0s4zLbHGigi9F0dvr7fybqzNnAIPNMSv5RPfXqRJtiAOj9Z01ZriZ0"/>
+</div>
+<!-- Badge -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary/10 border border-secondary text-secondary font-label-sm text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap backdrop-blur-md">
+                        12 Videos
+                    </div>
+</div>
+<span class="font-label-md text-label-md text-on-surface text-center truncate w-full">The Weeknd</span>
+</div>
+<!-- Artist Card 2 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<img alt="Artist Profile" class="w-full h-full object-cover filter brightness-90 group-hover:brightness-110 transition-all" data-alt="A stylized portrait of a female pop artist bathed in dramatic synthwave neon lighting. Soft cyber-cyan edge lighting traces her silhouette against an ultra-dark obsidian background. The mood is energetic yet sleek, capturing a modern corporate glassmorphism vibe perfect for a digital interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfkZ09NyU_vMSOey2yRZzwi_-IO1yXkMpM511tRdB9uOYi3c55Fjls4_5AnrDLmXmFY5UKpKLm6HM_-hI_XJsSuFAo7bMffeKkqe3ML-Ux8AD_Y7EEIJCYuyySBcGQIkaxBjw4yi_T1Uobzrck6K5Twui6uP03bvnRo5BjS7nE1-4EoLMp9qCEfEcR7RICIMXBckfkXM6TxURYuA4Sa2MGbnwynsEN3NcynpqN5QY4lkPAfry6L0OLfdIgNVaPArX2h1p7GTBJY2Y"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary/10 border border-secondary text-secondary font-label-sm text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap backdrop-blur-md">
+                        8 Videos
+                    </div>
+</div>
+<span class="font-label-md text-label-md text-on-surface text-center truncate w-full">Dua Lipa</span>
+</div>
+<!-- Artist Card 3 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-headline-md">DP</div>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary/10 border border-secondary text-secondary font-label-sm text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap backdrop-blur-md">
+                        24 Videos
+                    </div>
+</div>
+<span class="font-label-md text-label-md text-on-surface text-center truncate w-full">Daft Punk</span>
+</div>
+<!-- Artist Card 4 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<img alt="Artist Profile" class="w-full h-full object-cover filter brightness-90 group-hover:brightness-110 transition-all" data-alt="A high-contrast, moody close-up of a synthesizer and DJ equipment in a dark club setting. Deep blacks dominate the frame, with sharp reflections of electric violet and cyan lights bouncing off the metallic surfaces. The imagery evokes an ultra-premium, technical music production environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPBRvIKrY4iMSosY9nz90uC9QqYmGvsRmgh5CMGWcfK-Al0YWC7fNHUmylyR81j5t6_uii-Qukg8LxUszQ2kuNsHKzul8MKBCiPZCrZB4wJWTRIqXLGvxG58J1Z-_3gA8BvNTnXgUgzT7D57wBnBwGcewne9b_fu9zVT950xti477yw0AWpwweTSsrjm2Rl55VDFWHh8VsBIuLmNQvNgXOHA7_AOzlZ9janGdiFkSKropyhRxPV3_3BhA7Vqx_11f3TTmer6gXa2w"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary/10 border border-secondary text-secondary font-label-sm text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap backdrop-blur-md">
+                        4 Videos
+                    </div>
+</div>
+<span class="font-label-md text-label-md text-on-surface text-center truncate w-full">Kavinsky</span>
+</div>
+<!-- Artist Card 5 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-headline-md">FM</div>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary/10 border border-secondary text-secondary font-label-sm text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap backdrop-blur-md">
+                        18 Videos
+                    </div>
+</div>
+<span class="font-label-md text-label-md text-on-surface text-center truncate w-full">Fleetwood Mac</span>
+</div>
+<!-- Artist Card 6 -->
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-accent-cyan-glow group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-headline-md flex-col">
+<span class="material-symbols-outlined text-[24px]">more_horiz</span>
+</div>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant text-center truncate w-full">Explore More</span>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Right) -->
+<aside class="fixed right-0 top-0 h-full w-[350px] bg-surface-glass dark:bg-surface-glass border-l border-outline-variant backdrop-blur-[20px] flex flex-col p-panel-padding z-50">
+<div class="flex items-center justify-between mb-stack-md pb-4 border-b border-outline-glow/30">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-secondary">Missing Tracks Auditor</h2>
+<span class="material-symbols-outlined text-secondary opacity-70">troubleshoot</span>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+<div class="flex flex-col gap-3">
+<!-- Missing Track Row 1 -->
+<div class="bg-surface-container/50 border border-outline-glow/50 rounded-lg p-3 flex items-center justify-between hover:bg-surface-container transition-colors">
+<div class="flex flex-col overflow-hidden mr-2">
+<span class="font-body-md text-body-md text-on-surface truncate">Starboy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">The Weeknd • 12.4 MB</span>
+</div>
+<button class="flex-shrink-0 w-8 h-8 rounded border border-[#8B5CF6]/50 text-[#8B5CF6] hover:bg-[#8B5CF6]/10 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Missing Track Row 2 -->
+<div class="bg-surface-container/50 border border-outline-glow/50 rounded-lg p-3 flex items-center justify-between hover:bg-surface-container transition-colors">
+<div class="flex flex-col overflow-hidden mr-2">
+<span class="font-body-md text-body-md text-on-surface truncate">Blinding Lights</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">The Weeknd • 14.1 MB</span>
+</div>
+<button class="flex-shrink-0 w-8 h-8 rounded border border-[#8B5CF6]/50 text-[#8B5CF6] hover:bg-[#8B5CF6]/10 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Missing Track Row 3 -->
+<div class="bg-surface-container/50 border border-outline-glow/50 rounded-lg p-3 flex items-center justify-between hover:bg-surface-container transition-colors">
+<div class="flex flex-col overflow-hidden mr-2">
+<span class="font-body-md text-body-md text-on-surface truncate">Levitating</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Dua Lipa • 11.2 MB</span>
+</div>
+<button class="flex-shrink-0 w-8 h-8 rounded border border-[#8B5CF6]/50 text-[#8B5CF6] hover:bg-[#8B5CF6]/10 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Missing Track Row 4 -->
+<div class="bg-surface-container/50 border border-outline-glow/50 rounded-lg p-3 flex items-center justify-between hover:bg-surface-container transition-colors opacity-60">
+<div class="flex flex-col overflow-hidden mr-2">
+<span class="font-body-md text-body-md text-on-surface truncate line-through">Nightcall</span>
+<span class="font-label-sm text-label-sm text-secondary">Kavinsky • Downloaded</span>
+</div>
+<button class="flex-shrink-0 w-8 h-8 rounded text-secondary flex items-center justify-center cursor-default">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-glow/30">
+<button class="w-full py-2 border border-outline-variant hover:border-secondary text-on-surface-variant hover:text-secondary font-label-md text-label-md rounded transition-colors">
+                Run Full Audit Scan
+            </button>
+</div>
+</aside>
+<style>
+        /* Custom scrollbar for ultra-premium look */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+    </style>
+</body></html>

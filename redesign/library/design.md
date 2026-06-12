@@ -36,6 +36,22 @@ colors:
   background: '#05060a'
   on-background: '#e0e3e5'
   surface-variant: '#323537'
+  primary-fixed: '#e9ddff'
+  primary-fixed-dim: '#d0bcff'
+  on-primary-fixed: '#23005c'
+  on-primary-fixed-variant: '#5516be'
+  secondary-fixed: '#acedff'
+  secondary-fixed-dim: '#4cd7f6'
+  on-secondary-fixed: '#001f26'
+  on-secondary-fixed-variant: '#004e5c'
+  tertiary-fixed: '#e2e1ef'
+  tertiary-fixed-dim: '#c5c5d2'
+  on-tertiary-fixed: '#191b24'
+  on-tertiary-fixed-variant: '#454651'
+  surface-obsidian: '#05060A'
+  surface-glass: rgba(20, 24, 38, 0.65)
+  outline-glow: rgba(139, 92, 246, 0.15)
+  accent-cyan-glow: rgba(6, 182, 212, 0.5)
 typography:
   display-xl:
     fontFamily: Outfit
@@ -97,6 +113,14 @@ spacing:
   stack_sm: 8px
   stack_md: 16px
   stack_lg: 32px
+  sidebar-width: 260px
+  drawer-width: 350px
+  gutter: 24px
+  panel-padding: 20px
+  margin-page: 32px
+  stack-sm: 8px
+  stack-md: 16px
+  stack-lg: 32px
 ---
 
 ## Brand & Style
