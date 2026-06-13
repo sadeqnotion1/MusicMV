@@ -320,7 +320,7 @@ class ChartData:
     def _pageHasAwardColumn(self, soup):
         cols = soup.select(_CHART_HEADER_CELLS)
         for span in cols:
-            if "award" in span.string.lower():
+            if span.string and "award" in span.string.lower():
                 return True
         return False
 
@@ -335,6 +335,11 @@ class ChartData:
         # update the documentation above.
         self.previousDate = None
         self.nextDate = None
+
+        # Some pages do not show an award column in their chart data.
+        # If missing, this changes the column number offsets.
+        # Cache this outside the loop to prevent N+1 document queries.
+        awardColumnOffset = 0 if self._pageHasAwardColumn(soup) else -1
 
         for entrySoup in soup.select("ul.o-chart-results-list-row"):
 
@@ -388,9 +393,6 @@ class ChartData:
                     message = "Failed to parse metadata value: %s" % attribute
                     raise BillboardParseException(message)
 
-            # Some pages do not show an award column in their chart data.
-            # If missing, this changes the column number offsets.
-            awardColumnOffset = 0 if self._pageHasAwardColumn(soup) else -1
             if self.date:
                 peakPos = getMeta("peak", 4 + awardColumnOffset)
                 lastPos = getMeta("last", 3 + awardColumnOffset, ifNoValue=0)
@@ -410,36 +412,40 @@ class ChartData:
         self.title += " - Year-End"
 
         # Determine the next and previous year-end chart
-        years = [
-            int(li.text.strip()) for li in soup.select("div.a-chart-o-nav-left ul li")
-        ]
-        current_year = int(self.year)
-        min_year, max_year = min(years), max(years)
-        if current_year in years:
-            self.previousYear = (
-                str(current_year - 1) if current_year > min_year else None
-            )
-            self.nextYear = str(current_year + 1) if current_year < max_year else None
-        else:
-            # Warn the user about having requested an unsupported year.
-            msg = """
-            %s is not a supported year-end chart from Billboard.
-            Results may be incomplete, inconsistent, or missing entirely.
-            The min and max supported years for the '%s' chart are %d and %d, respectively.
-            """ % (
-                current_year,
-                self.name,
-                min_year,
-                max_year,
-            )
-            warnings.warn(UnsupportedYearWarning(msg))
-
-            # Assign  next and previous years (can be non-null if outside by 1)
-            if current_year in [min_year - 1, max_year + 1]:
-                self.nextYear = min_year if current_year < min_year else None
-                self.previousYear = max_year if current_year > max_year else None
+        self.previousYear = None
+        self.nextYear = None
+        years_el = soup.select("div.a-chart-o-nav-left ul li")
+        if years_el:
+            years = [
+                int(li.text.strip()) for li in years_el
+            ]
+            current_year = int(self.year)
+            min_year, max_year = min(years), max(years)
+            if current_year in years:
+                self.previousYear = (
+                    str(current_year - 1) if current_year > min_year else None
+                )
+                self.nextYear = str(current_year + 1) if current_year < max_year else None
             else:
-                self.previousYear = self.nextYear = None
+                # Warn the user about having requested an unsupported year.
+                msg = """
+                %s is not a supported year-end chart from Billboard.
+                Results may be incomplete, inconsistent, or missing entirely.
+                The min and max supported years for the '%s' chart are %d and %d, respectively.
+                """ % (
+                    current_year,
+                    self.name,
+                    min_year,
+                    max_year,
+                )
+                warnings.warn(UnsupportedYearWarning(msg))
+
+                # Assign next and previous years (can be non-null if outside by 1)
+                if current_year in [min_year - 1, max_year + 1]:
+                    self.nextYear = min_year if current_year < min_year else None
+                    self.previousYear = max_year if current_year > max_year else None
+                else:
+                    self.previousYear = self.nextYear = None
 
         # TODO: This is all copied from `_parseNewStylePage` above, but with
         # worse error-handling. They should be merged.

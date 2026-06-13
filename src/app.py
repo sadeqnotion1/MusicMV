@@ -14,8 +14,16 @@ import billboard
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
+def log_to_file(message):
+    try:
+        log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "flask_app.log")
+        with open(log_path, 'a', encoding='utf-8') as f:
+            f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}\n")
+    except Exception as e:
+        print(f"Error writing to flask_app.log: {e}")
+
 # Publicly available Tidal Web Client Token
-TIDAL_TOKEN = "CzET4vdadNUFQ5JU"
+TIDAL_TOKEN = os.environ.get("TIDAL_TOKEN", "")
 DEFAULT_COUNTRY = "US"
 
 # YT matches history cache file path
@@ -50,8 +58,9 @@ def normalize_query(query):
     q = re.sub(r'_+', '_', q)
     return q.strip('_')
 
-def get_from_yt_cache(tidal_id=None, query=None):
-    cache = load_yt_cache()
+def get_from_yt_cache(tidal_id=None, query=None, cache=None):
+    if cache is None:
+        cache = load_yt_cache()
     if tidal_id and not str(tidal_id).startswith('pl_') and not str(tidal_id).startswith('bb_'):
         if str(tidal_id) in cache:
             return cache[str(tidal_id)]
@@ -61,20 +70,197 @@ def get_from_yt_cache(tidal_id=None, query=None):
             return cache[norm]
     return None
 
-def update_yt_cache(tidal_id, query, video_id, video_url):
+def update_yt_cache(tidal_id, query, video_id, video_url, max_res=None, duration=None, thumbnail=None):
     cache = load_yt_cache()
+    
+    # Check if there is existing entry to preserve fields
+    norm = normalize_query(query) if query else None
+    existing = None
+    if tidal_id and not str(tidal_id).startswith('pl_') and not str(tidal_id).startswith('bb_'):
+        existing = cache.get(str(tidal_id))
+    elif norm:
+        existing = cache.get(norm)
+        
     entry = {
         'videoId': video_id,
         'videoUrl': video_url,
         'matched_at': datetime.now().isoformat()
     }
+    if max_res:
+        entry['maxResolution'] = max_res
+    elif existing and isinstance(existing, dict) and 'maxResolution' in existing:
+        entry['maxResolution'] = existing['maxResolution']
+        
+    if duration:
+        entry['duration'] = duration
+    elif existing and isinstance(existing, dict) and 'duration' in existing:
+        entry['duration'] = existing['duration']
+        
+    if thumbnail:
+        entry['thumbnail'] = thumbnail
+    elif existing and isinstance(existing, dict) and 'thumbnail' in existing:
+        entry['thumbnail'] = existing['thumbnail']
+        
     if tidal_id and not str(tidal_id).startswith('pl_') and not str(tidal_id).startswith('bb_'):
         cache[str(tidal_id)] = entry
-    if query:
-        norm = normalize_query(query)
-        if norm:
-            cache[norm] = entry
+    if norm:
+        cache[norm] = entry
     save_yt_cache(cache)
+
+def update_max_res_in_cache(video_id, max_res):
+    if not max_res:
+        return
+    cache = load_yt_cache()
+    changed = False
+    for key, entry in cache.items():
+        if isinstance(entry, dict) and entry.get('videoId') == video_id:
+            entry['maxResolution'] = max_res
+            changed = True
+    if changed:
+        save_yt_cache(cache)
+
+# TIDAL SEARCH CACHE FOR ENRICHING BILLBOARD CHARTS
+TIDAL_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tidal_cache.json')
+tidal_cache_lock = threading.Lock()
+
+def load_tidal_cache():
+    if not os.path.exists(TIDAL_CACHE_FILE):
+        return {}
+    try:
+        with tidal_cache_lock:
+            with open(TIDAL_CACHE_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading Tidal cache: {e}")
+        return {}
+
+def save_tidal_cache(cache):
+    try:
+        with tidal_cache_lock:
+            with open(TIDAL_CACHE_FILE, 'w', encoding='utf-8') as f:
+                json.dump(cache, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Error saving Tidal cache: {e}")
+
+def search_tidal_metadata(query_str):
+    headers = {
+        'x-tidal-token': TIDAL_TOKEN,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+    }
+    url = "https://api.tidal.com/v1/search"
+    params = {
+        'query': query_str,
+        'limit': 1,
+        'types': 'TRACKS,VIDEOS',
+        'countryCode': DEFAULT_COUNTRY
+    }
+    try:
+        response = requests.get(url, params=params, headers=headers, timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            
+            # Check videos first
+            videos = data.get('videos', {}).get('items', [])
+            if videos:
+                video = videos[0]
+                duration_sec = video.get('duration', 0)
+                duration_str = format_duration(duration_sec)
+                image_id = video.get('imageId')
+                thumbnail = ""
+                if image_id:
+                    thumbnail = f"https://resources.tidal.com/images/{image_id.replace('-', '/')}/640x360.jpg"
+                return {
+                    'thumbnail': thumbnail,
+                    'duration': duration_str,
+                    'source': 'tidal_video'
+                }
+                
+            # Check tracks next
+            tracks = data.get('tracks', {}).get('items', [])
+            if tracks:
+                track = tracks[0]
+                duration_sec = track.get('duration', 0)
+                duration_str = format_duration(duration_sec)
+                album = track.get('album', {})
+                cover = album.get('cover')
+                thumbnail = ""
+                if cover:
+                    thumbnail = f"https://resources.tidal.com/images/{cover.replace('-', '/')}/640x360.jpg"
+                return {
+                    'thumbnail': thumbnail,
+                    'duration': duration_str,
+                    'source': 'tidal_track'
+                }
+    except Exception as e:
+        print(f"Tidal search metadata error for '{query_str}': {e}")
+    return None
+
+def populate_entries_metadata(entries_list, yt_cache):
+    """Enrich entries with Tidal thumbnails & durations, falling back to YouTube cache if available."""
+    tidal_cache = load_tidal_cache()
+    
+    queries_to_fetch = []
+    for entry in entries_list:
+        query_str = f"{entry['artist']} - {entry['title']}"
+        norm = normalize_query(query_str)
+        if norm and norm not in tidal_cache:
+            # Check if it has YouTube match in cache to avoid unnecessary request
+            cached_yt = get_from_yt_cache(None, query_str, yt_cache)
+            if cached_yt and cached_yt.get('duration') and cached_yt.get('thumbnail'):
+                continue
+            queries_to_fetch.append(query_str)
+            
+    if queries_to_fetch:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=15) as executor:
+            results = list(executor.map(search_tidal_metadata, queries_to_fetch))
+            
+        cache_changed = False
+        for q, res in zip(queries_to_fetch, results):
+            if res:
+                norm = normalize_query(q)
+                if norm:
+                    tidal_cache[norm] = res
+                    cache_changed = True
+        if cache_changed:
+            save_tidal_cache(tidal_cache)
+            
+    # Now assign thumbnails and durations
+    for entry in entries_list:
+        query_str = f"{entry['artist']} - {entry['title']}"
+        norm = normalize_query(query_str)
+        
+        # 1. Try YT cache first
+        cached_yt = get_from_yt_cache(None, query_str, yt_cache)
+        if cached_yt:
+            entry['youtubeId'] = cached_yt['videoId']
+            entry['youtubeUrl'] = cached_yt['videoUrl']
+            if 'maxResolution' in cached_yt:
+                entry['maxResolution'] = cached_yt['maxResolution']
+            
+            if cached_yt.get('thumbnail'):
+                entry['thumbnail'] = cached_yt['thumbnail']
+            else:
+                entry['thumbnail'] = f"https://img.youtube.com/vi/{cached_yt['videoId']}/0.jpg"
+                
+            if cached_yt.get('duration'):
+                entry['duration'] = cached_yt['duration']
+            
+        # 2. Try Tidal cache fallback
+        if not entry.get('thumbnail') or not entry.get('duration') or entry.get('duration') == '0:00':
+            if norm and norm in tidal_cache:
+                res = tidal_cache[norm]
+                if not entry.get('thumbnail') and res.get('thumbnail'):
+                    entry['thumbnail'] = res['thumbnail']
+                if (not entry.get('duration') or entry.get('duration') == '0:00') and res.get('duration'):
+                    entry['duration'] = res['duration']
+                
+        # If still no duration/thumbnail, set defaults
+        if not entry.get('thumbnail'):
+            entry['thumbnail'] = ""
+        if not entry.get('duration'):
+            entry['duration'] = "0:00"
+
 
 # Active downloads registry for real-time progress monitoring
 active_downloads = {}
@@ -106,12 +292,20 @@ def update_download_progress(task_id, data):
                 
             eta = data.get('eta')
             if eta:
-                mins = eta // 60
-                secs = eta % 60
-                dl_info['eta'] = f"{mins}:{secs:02d}"
+                try:
+                    eta_val = int(float(eta))
+                    mins = eta_val // 60
+                    secs = eta_val % 60
+                    dl_info['eta'] = f"{mins}:{secs:02d}"
+                except (ValueError, TypeError):
+                    dl_info['eta'] = '---'
             else:
                 dl_info['eta'] = '---'
                 
+            downloaded_mb = downloaded / (1024 * 1024)
+            total_mb = total / (1024 * 1024) if total > 0 else 0
+            dl_info['size_status'] = f"{downloaded_mb:.1f} MB / {total_mb:.1f} MB" if total > 0 else f"{downloaded_mb:.1f} MB"
+            
             dl_info['status'] = 'downloading'
             
         elif data.get('status') == 'finished':
@@ -132,6 +326,10 @@ def find_free_port():
 def format_duration(seconds):
     """Format duration in seconds to MM:SS."""
     if not seconds:
+        return "0:00"
+    try:
+        seconds = int(float(seconds))
+    except (ValueError, TypeError):
         return "0:00"
     mins = seconds // 60
     secs = seconds % 60
@@ -360,6 +558,53 @@ def library():
 def pipeline():
     return render_template('pipeline.html')
 
+def get_norm(val, art_name):
+    v = val.lower().strip()
+    v = os.path.splitext(v)[0]
+    if art_name:
+        v = v.replace(art_name.lower().strip(), "")
+    common = ["official music video", "official video", "music video", "lyric video", "lyrics video", 
+              "official lyrics", "official lyric", "official audio", "audio video", "shortcut", "collab", 
+              "video", "audio", "lyrics", "hd", "hq", "1080p", "720p", "4k", "banned", "excluded"]
+    for term in common:
+        v = v.replace(term, "")
+    v = re.sub(r'[^a-z0-9]', '', v)
+    return v
+
+def get_global_library_norms():
+    import manage_music_videos
+    global_norms = {}
+    path = PIPELINE_PATH
+    if not path or not os.path.exists(path) or not os.path.isdir(path):
+        return global_norms
+    try:
+        for artist_dir in os.scandir(path):
+            if artist_dir.is_dir():
+                artist_name = artist_dir.name
+                for item in os.scandir(artist_dir.path):
+                    if item.is_file():
+                        ext = os.path.splitext(item.name.lower())[1]
+                        if ext in manage_music_videos.video_extensions:
+                            v_norm = get_norm(item.name, artist_name)
+                            if v_norm:
+                                global_norms[v_norm] = {
+                                    'artist': artist_name,
+                                    'filename': item.name,
+                                    'path': item.path
+                                }
+    except Exception as e:
+        print(f"Error building global library norms: {e}")
+    return global_norms
+
+def check_library_status(title, artist, global_norms):
+    v_norm = get_norm(title, artist)
+    if not v_norm:
+        return False, None, None
+    for g_norm, info in global_norms.items():
+        if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
+            return True, info['filename'], os.path.dirname(info['path'])
+    return False, None, None
+
 @app.route('/api/fetch', methods=['POST'])
 def api_fetch():
     req_data = request.json or {}
@@ -394,16 +639,67 @@ def api_fetch():
             
         classified = process_and_filter_videos(videos)
         
+        # Check local files for this artist to see which ones are already downloaded
+        local_files_dict = {}
+        artist_dir = os.path.join(PIPELINE_PATH, name)
+        if os.path.exists(artist_dir) and os.path.isdir(artist_dir):
+            try:
+                for item in os.listdir(artist_dir):
+                    item_path = os.path.join(artist_dir, item)
+                    if os.path.isfile(item_path):
+                        ext = os.path.splitext(item.lower())[1]
+                        if ext in manage_music_videos.video_extensions:
+                            v_norm = get_norm(item, name)
+                            if v_norm:
+                                local_files_dict[v_norm] = {
+                                    'filename': item,
+                                    'dir': artist_dir
+                                }
+            except Exception as e:
+                print(f"Error reading local files for artist {name}: {e}")
+
+        # Get global library norms to check across the entire library
+        global_norms = get_global_library_norms()
+        
         try:
+            yt_cache = load_yt_cache()
             for cat in ['priority', 'standard', 'excluded']:
                 for video in classified[cat]:
                     t_id = str(video['id'])
                     artists_str = ", ".join(video.get('artists', [])) if video.get('artists') else name
                     v_query = f"{artists_str} - {video['title']}"
-                    cached_entry = get_from_yt_cache(t_id, v_query)
+                    
+                    # Check download status
+                    v_norm = get_norm(video['title'], name)
+                    video['isDownloaded'] = False
+                    video['localFile'] = None
+                    video['localDir'] = None
+                    
+                    # 1. Check current artist folder first
+                    matched = False
+                    for l_norm, info in local_files_dict.items():
+                        if l_norm == v_norm or v_norm in l_norm or l_norm in v_norm:
+                            video['isDownloaded'] = True
+                            video['localFile'] = info['filename']
+                            video['localDir'] = info['dir']
+                            matched = True
+                            break
+                            
+                    # 2. Check globally if not matched in current artist folder
+                    if not matched:
+                        for g_norm, info in global_norms.items():
+                            if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
+                                video['isDownloaded'] = True
+                                video['localFile'] = info['filename']
+                                video['localDir'] = os.path.dirname(info['path'])
+                                video['differentArtist'] = info['artist']
+                                break
+                            
+                    cached_entry = get_from_yt_cache(t_id, v_query, yt_cache)
                     if cached_entry:
                         video['youtubeId'] = cached_entry['videoId']
                         video['youtubeUrl'] = cached_entry['videoUrl']
+                        video['maxResolution'] = cached_entry.get('maxResolution')
         except Exception as e:
             print(f"Error injecting YT cache: {e}")
         
@@ -434,6 +730,8 @@ def api_fetch():
 def api_playlist_match():
     req_data = request.json or {}
     playlist_text = req_data.get('playlist', '').strip()
+    if not playlist_text:
+        playlist_text = req_data.get('url', '').strip()
     country_code = req_data.get('countryCode', DEFAULT_COUNTRY).strip().upper()
     
     if not playlist_text:
@@ -448,6 +746,8 @@ def api_playlist_match():
     
     import urllib.parse
     from concurrent.futures import ThreadPoolExecutor
+    
+    global_norms = get_global_library_norms()
     
     def process_playlist_line(idx, line):
         parts = line.split('-', 1)
@@ -528,6 +828,22 @@ def api_playlist_match():
             video_data['youtubeId'] = cached_entry['videoId']
             video_data['youtubeUrl'] = cached_entry['videoUrl']
             
+        # Check download status globally
+        v_title = video_data['title']
+        first_artist = video_data['artists'][0] if video_data['artists'] else ""
+        v_norm = get_norm(v_title, first_artist)
+        video_data['isDownloaded'] = False
+        video_data['localFile'] = None
+        video_data['localDir'] = None
+        
+        for g_norm, info in global_norms.items():
+            if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
+                video_data['isDownloaded'] = True
+                video_data['localFile'] = info['filename']
+                video_data['localDir'] = os.path.dirname(info['path'])
+                video_data['differentArtist'] = info['artist']
+                break
+                
         return video_data
 
     with ThreadPoolExecutor(max_workers=10) as executor:
@@ -700,6 +1016,9 @@ def api_youtube_export_all():
     artist_name = req_data.get('artistName', 'unknown_artist').strip()
     videos = req_data.get('videos', {})
     
+    if isinstance(videos, list):
+        videos = {'videos': videos}
+        
     categories = list(videos.keys())
     all_videos_to_resolve = []
     
@@ -718,7 +1037,7 @@ def api_youtube_export_all():
         artists_list = ", ".join(video.get('artists', [])) if video.get('artists') else artist_name
         query = f"{artists_list} - {video.get('title')}"
         tidal_id = video.get('id')
-        yt_url = resolve_youtube_link(tidal_id, query)
+        yt_url = video.get('youtubeUrl') or video.get('videoUrl') or resolve_youtube_link(tidal_id, query)
         return cat, video, yt_url
 
     resolved_results = []
@@ -726,7 +1045,15 @@ def api_youtube_export_all():
         results = executor.map(resolve_task, all_videos_to_resolve)
         resolved_results = list(results)
         
-    text_content = f"YOUTUBE LINKS FOR TIDAL VIDEOS - {artist_name.upper()}\n"
+    export_title = "YOUTUBE LINKS"
+    if "billboard" in artist_name.lower():
+        export_title = f"YOUTUBE LINKS FOR BILLBOARD CHART - {artist_name.upper()}"
+    elif "youtube" in artist_name.lower():
+        export_title = f"YOUTUBE LINKS FOR YOUTUBE LIST - {artist_name.upper()}"
+    else:
+        export_title = f"YOUTUBE LINKS FOR {artist_name.upper()}"
+        
+    text_content = f"{export_title}\n"
     text_content += f"Exported on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
     text_content += f"======================================================================\n\n"
     
@@ -736,6 +1063,9 @@ def api_youtube_export_all():
         'excluded': 'FILTERED OUT VIDEOS (LYRIC VIDEOS / VISUALIZERS / BEHIND THE SCENES)',
         'existing': 'DOWNLOADED VIDEOS IN LIBRARY',
         'waiting': 'AVAILABLE VIDEOS TO DOWNLOAD',
+        'videos': 'EXPORTED VIDEOS',
+        'chart': 'BILLBOARD CHART ENTRIES',
+        'youtube': 'YOUTUBE VIDEOS',
     }
     
     total_exported = 0
@@ -755,8 +1085,13 @@ def api_youtube_export_all():
                 artists_list = ", ".join(video.get('artists', [])) if video.get('artists') else artist_name
                 text_content += f"{idx + 1}. {video.get('title')}\n"
                 text_content += f"   Artist(s): {artists_list}\n"
-                text_content += f"   Duration: {video.get('duration')} | Quality: {video.get('quality', '—')}\n"
-                text_content += f"   Released: {video.get('releaseDate')}\n"
+                duration = video.get('duration') or '—'
+                quality = video.get('quality') or '—'
+                text_content += f"   Duration: {duration} | Quality: {quality}\n"
+                if video.get('releaseDate'):
+                    text_content += f"   Released: {video.get('releaseDate')}\n"
+                elif video.get('debutDate'):
+                    text_content += f"   Debut Date: {video.get('debutDate')}\n"
                 if video.get('url'):
                     text_content += f"   Tidal URL: {video.get('url')}\n"
                 if yt_url:
@@ -795,16 +1130,55 @@ def api_youtube_search():
     query = req_data.get('query', '').strip()
     tidal_id = req_data.get('tidalId', '').strip()
     
+    log_to_file(f"SEARCH REQUEST: query='{query}', tidalId='{tidal_id}'")
+    
     if not query:
         return jsonify({'status': 'error', 'message': 'Query cannot be empty'}), 400
         
+    global_norms = get_global_library_norms()
+    parts = query.split(' - ', 1)
+    artist_part = parts[0].strip() if len(parts) > 1 else ""
+    title_part = parts[1].strip() if len(parts) > 1 else query.strip()
+    is_dl, local_file, local_dir = check_library_status(title_part, artist_part, global_norms)
+        
     cached_entry = get_from_yt_cache(tidal_id, query)
     if cached_entry:
+        try:
+            formats = get_available_formats(cached_entry['videoId'])
+            if 'maxResolution' not in cached_entry or not cached_entry.get('maxResolution'):
+                video_formats = [f for f in formats if f.get('id') != 'audio' and f.get('id') != 'best']
+                if video_formats:
+                    video_formats.sort(key=lambda x: x.get('height', 0), reverse=True)
+                    max_h = video_formats[0].get('height', 0)
+                    if max_h >= 2160:
+                        max_res = "4K"
+                    elif max_h >= 1440:
+                        max_res = "2K"
+                    elif max_h >= 1080:
+                        max_res = "1080p"
+                    elif max_h >= 720:
+                        max_res = "720p"
+                    elif max_h > 0:
+                        max_res = f"{max_h}p"
+                    else:
+                        max_res = None
+                    if max_res:
+                        update_yt_cache(tidal_id, query, cached_entry['videoId'], cached_entry['videoUrl'], max_res)
+        except Exception:
+            formats = []
+        
+        # Reload entry to get updated maxResolution
+        cached_entry = get_from_yt_cache(tidal_id, query) or cached_entry
         return jsonify({
             'status': 'success',
             'videoId': cached_entry['videoId'],
             'videoUrl': cached_entry['videoUrl'],
-            'cached': True
+            'formats': formats,
+            'maxResolution': cached_entry.get('maxResolution'),
+            'cached': True,
+            'isDownloaded': is_dl,
+            'localFile': local_file,
+            'localDir': local_dir
         })
             
     import yt_dlp
@@ -860,15 +1234,45 @@ def api_youtube_search():
             video_id = best_match.get('id')
             video_url = f"https://www.youtube.com/watch?v={video_id}"
             
+            duration_sec = best_match.get('duration')
+            duration_str = format_duration(duration_sec) if duration_sec else None
+            thumbnail_url = f"https://img.youtube.com/vi/{video_id}/0.jpg"
+            
             try:
-                update_yt_cache(tidal_id, query, video_id, video_url)
+                formats = get_available_formats(video_id)
+            except Exception:
+                formats = []
+                
+            max_res = None
+            video_formats = [f for f in formats if f.get('id') != 'audio' and f.get('id') != 'best']
+            if video_formats:
+                video_formats.sort(key=lambda x: x.get('height', 0), reverse=True)
+                max_h = video_formats[0].get('height', 0)
+                if max_h >= 2160:
+                    max_res = "4K"
+                elif max_h >= 1440:
+                    max_res = "2K"
+                elif max_h >= 1080:
+                    max_res = "1080p"
+                elif max_h >= 720:
+                    max_res = "720p"
+                elif max_h > 0:
+                    max_res = f"{max_h}p"
+            
+            try:
+                update_yt_cache(tidal_id, query, video_id, video_url, max_res, duration_str, thumbnail_url)
             except Exception as e:
                 print(f"Error saving to cache: {e}")
                 
             return jsonify({
                 'status': 'success',
                 'videoId': video_id,
-                'videoUrl': video_url
+                'videoUrl': video_url,
+                'formats': formats,
+                'maxResolution': max_res,
+                'isDownloaded': is_dl,
+                'localFile': local_file,
+                'localDir': local_dir
             })
             
         # Fallback if all matches were banned: return the first result
@@ -876,14 +1280,188 @@ def api_youtube_search():
             first_entry = entries[0]
             video_id = first_entry.get('id')
             video_url = f"https://www.youtube.com/watch?v={video_id}"
+            
+            duration_sec = first_entry.get('duration')
+            duration_str = format_duration(duration_sec) if duration_sec else None
+            thumbnail_url = f"https://img.youtube.com/vi/{video_id}/0.jpg"
+            
+            try:
+                formats = get_available_formats(video_id)
+            except Exception:
+                formats = []
+                
+            max_res = None
+            video_formats = [f for f in formats if f.get('id') != 'audio' and f.get('id') != 'best']
+            if video_formats:
+                video_formats.sort(key=lambda x: x.get('height', 0), reverse=True)
+                max_h = video_formats[0].get('height', 0)
+                if max_h >= 2160:
+                    max_res = "4K"
+                elif max_h >= 1440:
+                    max_res = "2K"
+                elif max_h >= 1080:
+                    max_res = "1080p"
+                elif max_h >= 720:
+                    max_res = "720p"
+                elif max_h > 0:
+                    max_res = f"{max_h}p"
+            
+            try:
+                update_yt_cache(tidal_id, query, video_id, video_url, max_res, duration_str, thumbnail_url)
+            except Exception as e:
+                print(f"Error saving to cache: {e}")
+                
             return jsonify({
                 'status': 'success',
                 'videoId': video_id,
                 'videoUrl': video_url,
-                'warning': 'Matches filtered by keyword; returning first result as fallback.'
+                'formats': formats,
+                'maxResolution': max_res,
+                'warning': 'Matches filtered by keyword; returning first result as fallback.',
+                'isDownloaded': is_dl,
+                'localFile': local_file,
+                'localDir': local_dir
             })
             
         return jsonify({'status': 'error', 'message': 'Could not find any videos on YouTube'}), 404
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+def get_available_formats(video_id):
+    import yt_dlp
+    video_url = f"https://www.youtube.com/watch?v={video_id}"
+    ydl_opts = {
+        'quiet': True,
+        'no_warnings': True,
+    }
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(video_url, download=False)
+            if not info:
+                return []
+            
+            formats = info.get('formats', [])
+            # Find best audio format
+            audio_formats = [f for f in formats if f.get('vcodec') == 'none' and f.get('acodec') != 'none']
+            best_audio_size = 0
+            best_audio_abr = 128
+            if audio_formats:
+                audio_formats.sort(key=lambda x: (x.get('abr') or 0, x.get('filesize') or x.get('filesize_approx') or 0), reverse=True)
+                best_audio = audio_formats[0]
+                best_audio_size = best_audio.get('filesize') or best_audio.get('filesize_approx') or 0
+                best_audio_abr = best_audio.get('abr') or 128
+                
+            # Find best video formats for each height
+            heights_seen = {}
+            for f in formats:
+                h = f.get('height')
+                if not h or f.get('vcodec') == 'none':
+                    continue
+                
+                size = f.get('filesize') or f.get('filesize_approx') or 0
+                if h not in heights_seen:
+                    heights_seen[h] = f
+                else:
+                    existing_size = heights_seen[h].get('filesize') or heights_seen[h].get('filesize_approx') or 0
+                    if size > existing_size:
+                        heights_seen[h] = f
+                        
+            res_list = []
+            
+            # Add audio only option
+            if best_audio_size > 0 or audio_formats:
+                size_mb = best_audio_size / (1024 * 1024) if best_audio_size else 0
+                size_str = f"~{size_mb:.1f} MB" if size_mb else "unknown size"
+                res_list.append({
+                    'id': 'audio',
+                    'label': f'Audio Only ({best_audio_abr}kbps) - {size_str}',
+                    'size_bytes': best_audio_size,
+                    'height': 0
+                })
+                
+            for h in sorted(heights_seen.keys(), reverse=True):
+                f = heights_seen[h]
+                v_size = f.get('filesize') or f.get('filesize_approx') or 0
+                total_size = v_size + best_audio_size if v_size else 0
+                size_mb = total_size / (1024 * 1024) if total_size else 0
+                size_str = f"~{size_mb:.1f} MB" if size_mb else "unknown size"
+                
+                if h >= 2160:
+                    label = f"4K ({h}p) - {size_str}"
+                elif h >= 1440:
+                    label = f"2K ({h}p) - {size_str}"
+                elif h >= 1080:
+                    label = f"{h}p Full HD - {size_str}"
+                elif h >= 720:
+                    label = f"{h}p HD - {size_str}"
+                else:
+                    label = f"{h}p - {size_str}"
+                    
+                res_list.append({
+                    'id': f"{h}p",
+                    'label': label,
+                    'size_bytes': total_size,
+                    'height': h
+                })
+                
+            if res_list:
+                video_res = [r for r in res_list if r['id'] != 'audio']
+                if video_res:
+                    best_video = video_res[0]
+                    best_size_mb = best_video['size_bytes'] / (1024 * 1024) if best_video['size_bytes'] else 0
+                    best_size_str = f"~{best_size_mb:.1f} MB" if best_size_mb else "unknown size"
+                    res_list.insert(0, {
+                        'id': 'best',
+                        'label': f"Best Quality ({best_video['id']}) - {best_size_str}",
+                        'size_bytes': best_video['size_bytes'],
+                        'height': best_video['height']
+                    })
+                else:
+                    res_list.insert(0, {
+                        'id': 'best',
+                        'label': 'Best Quality',
+                        'size_bytes': 0,
+                        'height': 9999
+                    })
+            return res_list
+    except Exception as e:
+        print(f"Error getting formats for {video_id}: {e}")
+        return []
+
+@app.route('/api/youtube/formats', methods=['GET'])
+def api_youtube_formats():
+    video_id = request.args.get('videoId', '').strip()
+    if not video_id:
+        return jsonify({'status': 'error', 'message': 'Video ID cannot be empty'}), 400
+    try:
+        formats = get_available_formats(video_id)
+        max_res = None
+        video_formats = [f for f in formats if f.get('id') != 'audio' and f.get('id') != 'best']
+        if video_formats:
+            video_formats.sort(key=lambda x: x.get('height', 0), reverse=True)
+            max_h = video_formats[0].get('height', 0)
+            if max_h >= 2160:
+                max_res = "4K"
+            elif max_h >= 1440:
+                max_res = "2K"
+            elif max_h >= 1080:
+                max_res = "1080p"
+            elif max_h >= 720:
+                max_res = "720p"
+            elif max_h > 0:
+                max_res = f"{max_h}p"
+            
+            if max_res:
+                try:
+                    update_max_res_in_cache(video_id, max_res)
+                except Exception as ex:
+                    print(f"Error updating max resolution in cache: {ex}")
+                    
+        return jsonify({
+            'status': 'success',
+            'formats': formats,
+            'maxResolution': max_res
+        })
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -894,6 +1472,9 @@ def api_youtube_download():
     video_title = req_data.get('title', 'video').strip()
     quality = req_data.get('quality', 'best').strip().lower()
     download_dir = req_data.get('downloadDir', '').strip()
+    artist_name = req_data.get('artistName', '').strip()
+    
+    log_to_file(f"DOWNLOAD REQUEST: videoId='{video_id}', title='{video_title}', quality='{quality}', artist_name='{artist_name}'")
     
     if not video_id:
         return jsonify({'status': 'error', 'message': 'Video ID cannot be empty'}), 400
@@ -901,42 +1482,54 @@ def api_youtube_download():
     import uuid
     task_id = f"yt_dl_{video_id}_{uuid.uuid4().hex[:6]}"
     
+    clean_artist = None
+    if artist_name:
+        clean_artist = artist_name.split(',')[0].strip()
+        clean_artist = re.sub(r'[\\/*?:"<>|]', '_', clean_artist)
+        
     if download_dir:
         os.makedirs(download_dir, exist_ok=True)
         target_dir = download_dir
+        if not clean_artist:
+            try:
+                rel = os.path.relpath(download_dir, PIPELINE_PATH)
+                parts = rel.split(os.sep)
+                if parts and parts[0] != '..' and parts[0] != '.':
+                    clean_artist = parts[0]
+            except Exception:
+                pass
+    elif clean_artist:
+        target_dir = os.path.join(PIPELINE_PATH, clean_artist)
+        os.makedirs(target_dir, exist_ok=True)
     else:
         exports_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'exports')
         os.makedirs(exports_dir, exist_ok=True)
         target_dir = exports_dir
     
-    safe_title = re.sub(r'[^a-zA-Z0-9]', '_', video_title)
+    # Ensure the video title follows the "Artist - Title" naming standard for local library organization
+    display_artist = artist_name or clean_artist
+    if display_artist and ' - ' not in video_title:
+        if not video_title.lower().startswith(display_artist.lower()):
+            video_title = f"{display_artist} - {video_title}"
+            
+    safe_title = re.sub(r'[\\/*?:"<>|]', '', video_title).strip()
     
     import shutil
     ffmpeg_available = shutil.which('ffmpeg') is not None
 
-    if ffmpeg_available:
-        formats = {
-            'best': 'bestvideo[vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo+bestaudio/best',
-            '1080p': 'bestvideo[vcodec^=avc1][height<=1080]+bestaudio[ext=m4a]/bestvideo[height<=1080]+bestaudio/best',
-            '720p': 'bestvideo[vcodec^=avc1][height<=720]+bestaudio[ext=m4a]/bestvideo[height<=720]+bestaudio/best',
-            '480p': 'bestvideo[vcodec^=avc1][height<=480]+bestaudio[ext=m4a]/bestvideo[height<=480]+bestaudio/best',
-            'audio': 'bestaudio[ext=m4a]/bestaudio/best'
-        }
+    height_match = re.match(r'^(\d+)p$', quality)
+    if height_match:
+        h = int(height_match.group(1))
+        if ffmpeg_available:
+            quality_format = f"bestvideo[height={h}][vcodec^=avc1]+bestaudio/bestvideo[height={h}]+bestaudio/bestvideo[height<={h}]+bestaudio/best"
+        else:
+            quality_format = f"best[height<={h}]/best"
+    elif quality == 'audio':
+        quality_format = 'bestaudio[ext=m4a]/bestaudio/best' if ffmpeg_available else 'bestaudio/best'
     else:
-        formats = {
-            'best': 'best',
-            '1080p': 'best[height<=1080]/best',
-            '720p': 'best[height<=720]/best',
-            '480p': 'best[height<=480]/best',
-            'audio': 'bestaudio/best'
-        }
+        quality_format = 'bestvideo+bestaudio/best' if ffmpeg_available else 'best'
     
-    quality_format = formats.get(quality, formats['best'])
-    
-    if quality == 'audio':
-        output_template = os.path.join(target_dir, f"{safe_title}.%(ext)s")
-    else:
-        output_template = os.path.join(target_dir, f"{safe_title}_{quality}.%(ext)s")
+    output_template = os.path.join(target_dir, f"{safe_title}.%(ext)s")
         
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     
@@ -957,14 +1550,49 @@ def api_youtube_download():
             active_downloads[task_id]['error'] = 'FFmpeg not found. Downloading pre-merged video (max 720p).'
         
     def run_ytdlp_download():
+        log_to_file(f"THREAD START: task_id='{task_id}', url='{video_url}', output_template='{final_output_template}'")
         import yt_dlp
         
+        # Extract info first to get the actual YouTube video title for filename formatting
+        yt_title = None
+        try:
+            with yt_dlp.YoutubeDL({'quiet': True, 'no_warnings': True}) as ydl:
+                info = ydl.extract_info(video_url, download=False)
+                yt_title = info.get('title')
+        except Exception as e:
+            print(f"Error extracting yt-dlp info in thread: {e}")
+            
+        final_title = video_title
+        if yt_title:
+            final_title = yt_title
+            
+        # Ensure the title follows "Artist - YouTubeTitle" standard
+        display_artist = artist_name or clean_artist
+        if display_artist:
+            has_separator = ' - ' in final_title or '  ' in final_title
+            starts_with_artist = final_title.lower().startswith(display_artist.lower())
+            
+            if not starts_with_artist:
+                if not has_separator:
+                    final_title = f"{display_artist} - {final_title}"
+                else:
+                    parts = re.split(r'\s*-\s*', final_title, 1)
+                    if parts[0].lower().strip() != display_artist.lower().strip():
+                        final_title = f"{display_artist} - {final_title}"
+                        
+        safe_title = re.sub(r'[\\/*?:"<>|]', '', final_title).strip()
+        final_output_template = os.path.join(target_dir, f"{safe_title}.%(ext)s")
+        
+        with downloads_lock:
+            if task_id in active_downloads:
+                active_downloads[task_id]['title'] = final_title
+                
         def ytdlp_hook(d):
             update_download_progress(task_id, d)
             
         ydl_opts = {
             'format': quality_format,
-            'outtmpl': output_template,
+            'outtmpl': final_output_template,
             'progress_hooks': [ytdlp_hook],
             'quiet': True,
             'no_warnings': True
@@ -975,21 +1603,48 @@ def api_youtube_download():
         
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                try:
-                    info = ydl.extract_info(video_url, download=False)
-                    with downloads_lock:
-                        if task_id in active_downloads:
-                            active_downloads[task_id]['title'] = info.get('title', active_downloads[task_id]['title'])
-                except Exception:
-                    pass
-                
                 ydl.download([video_url])
                 
                 with downloads_lock:
                     if task_id in active_downloads:
                         active_downloads[task_id]['status'] = 'completed'
                         active_downloads[task_id]['progress'] = 100
+                
+                log_to_file(f"THREAD COMPLETE: task_id='{task_id}'")
+                        
+                # After successful download, run pipeline actions on this artist folder
+                if HAS_LOCAL_MANAGER and clean_artist:
+                    try:
+                        import manage_music_videos
+                        original_get_dirs = manage_music_videos.get_existing_dirs
+                        manage_music_videos.get_existing_dirs = lambda path: [clean_artist]
+                        
+                        try:
+                            # 1. Run catalog compilation
+                            manage_music_videos.execute_catalog_generation(
+                                PIPELINE_PATH,
+                                skip_deezer=False,
+                                history_days=0,
+                                force=True
+                            )
+                            # 2. Run avatar/icon application
+                            manage_music_videos.execute_artist_face_download(
+                                PIPELINE_PATH,
+                                overwrite=True,
+                                apply_icons=True,
+                                image_size="xl"
+                            )
+                            # 3. Refresh Explorer if core is loaded
+                            if manage_music_videos.HAS_CORE:
+                                manage_music_videos.core.refresh_explorer()
+                        finally:
+                            manage_music_videos.get_existing_dirs = original_get_dirs
+                    except Exception as pe:
+                        log_to_file(f"PIPELINE ERROR: task_id='{task_id}', clean_artist='{clean_artist}', error='{pe}'")
+                        print(f"Error running pipeline for {clean_artist}: {pe}")
+                        
         except Exception as e:
+            log_to_file(f"THREAD ERROR: task_id='{task_id}', error='{e}'")
             print(f"yt-dlp thread error: {e}")
             with downloads_lock:
                 if task_id in active_downloads:
@@ -1003,6 +1658,273 @@ def api_youtube_download():
         'taskId': task_id,
         'message': 'Download started successfully.'
     })
+
+@app.route('/api/youtube/search_downloader', methods=['POST'])
+def api_youtube_search_downloader():
+    req_data = request.json or {}
+    query = req_data.get('query', '').strip()
+    filter_type = req_data.get('type', 'all').strip().lower() # 'all', 'video', 'playlist', 'channel'
+    limit = int(req_data.get('limit', 15))
+    playlist_start = int(req_data.get('playlist_start', 1))
+    playlist_end = int(req_data.get('playlist_end', limit))
+    
+    if not query:
+        return jsonify({'status': 'error', 'message': 'Query cannot be empty'}), 400
+        
+    import yt_dlp
+    import urllib.parse
+    
+    encoded_query = urllib.parse.quote_plus(query)
+    
+    if filter_type == 'video':
+        url = f"ytsearch{playlist_end}:{query}"
+    elif filter_type == 'playlist':
+        url = f"https://www.youtube.com/results?search_query={encoded_query}&sp=EgIQAw%253D%253D"
+    elif filter_type == 'channel':
+        url = f"https://www.youtube.com/results?search_query={encoded_query}&sp=EgIQAg%253D%253D"
+    else: # 'all'
+        url = f"https://www.youtube.com/results?search_query={encoded_query}"
+        
+    ydl_opts = {
+        'quiet': True,
+        'extract_flat': True,
+        'no_warnings': True,
+        'playliststart': playlist_start,
+        'playlistend': playlist_end,
+    }
+    
+    try:
+        global_norms = get_global_library_norms()
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            res = ydl.extract_info(url, download=False)
+            
+        if not res:
+            return jsonify({'status': 'success', 'entries': []})
+            
+        raw_entries = res.get('entries', [])
+        entries = []
+        
+        for entry in raw_entries:
+            if not entry:
+                continue
+                
+            title = entry.get('title') or 'Unknown'
+            entry_id = entry.get('id')
+            if not entry_id:
+                continue
+                
+            url_str = entry.get('url') or f"https://www.youtube.com/watch?v={entry_id}"
+            
+            # Identify type
+            ie_key = entry.get('ie_key')
+            entry_type = 'video'
+            
+            if filter_type == 'video':
+                entry_type = 'video'
+            elif filter_type == 'playlist':
+                entry_type = 'playlist'
+            elif filter_type == 'channel':
+                entry_type = 'channel'
+            else: # 'all'
+                _type = entry.get('_type')
+                if ie_key == 'YoutubeTab':
+                    if entry_id.startswith('UC') or '/channel/' in url_str or '/@' in url_str:
+                        entry_type = 'channel'
+                    elif entry_id.startswith('PL') or '/playlist' in url_str:
+                        entry_type = 'playlist'
+                    else:
+                        entry_type = 'playlist'
+                elif _type == 'url':
+                    if '/playlist' in url_str:
+                        entry_type = 'playlist'
+                    elif '/channel/' in url_str or '/@' in url_str:
+                        entry_type = 'channel'
+                    else:
+                        entry_type = 'video'
+                        
+            # Extract common fields
+            channel = entry.get('channel') or entry.get('uploader') or 'Unknown Channel'
+            
+            # Thumbnail extraction
+            thumbnails = entry.get('thumbnails', [])
+            thumbnail_url = ""
+            if thumbnails:
+                thumbnail_url = thumbnails[-1].get('url', '')
+            if not thumbnail_url:
+                if entry_type == 'video':
+                    thumbnail_url = f"https://i.ytimg.com/vi/{entry_id}/hqdefault.jpg"
+                else:
+                    thumbnail_url = ""
+                    
+            item = {
+                'id': entry_id,
+                'type': entry_type,
+                'title': title,
+                'url': url_str,
+                'thumbnail': thumbnail_url,
+                'channel': channel,
+            }
+            
+            if entry_type == 'video':
+                duration_sec = entry.get('duration')
+                duration_str = format_duration(duration_sec) if duration_sec else "0:00"
+                
+                is_dl, local_file, local_dir = check_library_status(title, channel, global_norms)
+                
+                item.update({
+                    'duration': duration_str,
+                    'isDownloaded': is_dl,
+                    'localFile': local_file,
+                    'localDir': local_dir,
+                })
+            elif entry_type == 'playlist':
+                item.update({
+                    'playlistCount': entry.get('playlist_count'),
+                })
+            elif entry_type == 'channel':
+                fol_count = entry.get('channel_follower_count')
+                fol_count_str = None
+                if fol_count:
+                    if fol_count >= 1_000_000:
+                        fol_count_str = f"{fol_count / 1_000_000:.1f}M subscribers"
+                    elif fol_count >= 1_000:
+                        fol_count_str = f"{fol_count / 1_000:.1f}K subscribers"
+                    else:
+                        fol_count_str = f"{fol_count} subscribers"
+                        
+                item.update({
+                    'description': entry.get('description'),
+                    'followerCount': fol_count_str,
+                })
+                
+            entries.append(item)
+            
+        return jsonify({
+            'status': 'success',
+            'entries': entries
+        })
+        
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/youtube/resolve', methods=['POST'])
+def api_youtube_resolve():
+    req_data = request.json or {}
+    url = req_data.get('url', '').strip()
+    playlist_start = int(req_data.get('playlist_start', 1))
+    playlist_end = int(req_data.get('playlist_end', 100))
+    
+    if not url:
+        return jsonify({'status': 'error', 'message': 'URL cannot be empty'}), 400
+        
+    import yt_dlp
+    import re
+    
+    # 1. Fast Pattern Check for /channel/UC...
+    channel_id_match = re.search(r'youtube\.com/channel/(UC[a-zA-Z0-9_-]{22})', url)
+    if channel_id_match:
+        channel_id = channel_id_match.group(1)
+        url = f"https://www.youtube.com/channel/{channel_id}/videos"
+        
+    ydl_opts = {
+        'quiet': True,
+        'extract_flat': True,
+        'no_warnings': True,
+        'playliststart': playlist_start,
+        'playlistend': playlist_end,
+    }
+    
+    try:
+        global_norms = get_global_library_norms()
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            
+        if not info:
+            return jsonify({'status': 'error', 'message': 'Could not extract info'}), 400
+            
+        # 2. Check if the resolved info is a channel (e.g. from @handle, /c/, or /user/ links)
+        if (info.get('_type') == 'playlist' and 
+            info.get('id', '').startswith('UC') and 
+            '/videos' not in url and 
+            '/shorts' not in url and 
+            '/streams' not in url):
+            
+            channel_id = info.get('id')
+            uploads_url = f"https://www.youtube.com/channel/{channel_id}/videos"
+            
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(uploads_url, download=False)
+                
+            if not info:
+                return jsonify({'status': 'error', 'message': f'Could not resolve channel uploads for ID {channel_id}'}), 400
+            
+        entries = []
+        is_playlist = info.get('_type') == 'playlist'
+        
+        if is_playlist:
+            raw_entries = info.get('entries', [])
+            playlist_title = info.get('title', 'YouTube Playlist')
+            uploader = info.get('uploader', '')
+        else:
+            raw_entries = [info]
+            playlist_title = None
+            uploader = info.get('uploader', '')
+            
+        for entry in raw_entries:
+            if not entry:
+                continue
+            v_id = entry.get('id') or entry.get('url')
+            if not v_id:
+                continue
+                
+            title = entry.get('title', 'YouTube Video')
+            channel = entry.get('channel') or entry.get('uploader') or uploader or 'Unknown Channel'
+            
+            duration_sec = entry.get('duration')
+            duration_str = format_duration(duration_sec) if duration_sec else "0:00"
+            
+            thumbnails = entry.get('thumbnails', [])
+            thumbnail_url = ""
+            if thumbnails:
+                thumbnail_url = thumbnails[-1].get('url', '')
+            if not thumbnail_url and v_id:
+                thumbnail_url = f"https://i.ytimg.com/vi/{v_id}/hqdefault.jpg"
+                
+            is_dl, local_file, local_dir = check_library_status(title, channel, global_norms)
+            
+            clean_artist = channel
+            clean_title = title
+            if ' - ' in title:
+                parts = title.split(' - ', 1)
+                clean_artist = parts[0].strip()
+                clean_title = parts[1].strip()
+                
+            entries.append({
+                'id': v_id,
+                'videoId': v_id,
+                'videoUrl': f"https://www.youtube.com/watch?v={v_id}" if not v_id.startswith('http') else v_id,
+                'title': clean_title,
+                'channel': channel,
+                'artists': [clean_artist],
+                'thumbnail': thumbnail_url,
+                'duration': duration_str,
+                'isDownloaded': is_dl,
+                'localFile': local_file,
+                'localDir': local_dir,
+                'releaseDate': entry.get('upload_date') or 'Unknown'
+            })
+            
+        return jsonify({
+            'status': 'success',
+            'isPlaylist': is_playlist,
+            'playlistTitle': playlist_title,
+            'entries': entries
+        })
+        
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/downloads/status', methods=['GET'])
 def api_downloads_status():
@@ -1065,15 +1987,17 @@ def api_billboard_chart():
             
         chart = billboard.ChartData(chart_name, date=date_val, year=year_val)
         
+        global_norms = get_global_library_norms()
+        yt_cache = load_yt_cache()
         entries_list = []
         for entry in chart.entries:
-            query_str = f"{entry.artist} - {entry.title}" if entry.title else entry.artist
-            
             # YearEndChartEntry doesn't have peakPos, lastPos, weeks, or isNew attributes
             peak_pos = getattr(entry, 'peakPos', None)
             last_pos = getattr(entry, 'lastPos', None)
             weeks_on_chart = getattr(entry, 'weeks', None)
             is_new = getattr(entry, 'isNew', False)
+            
+            is_dl, local_file, local_dir = check_library_status(entry.title, entry.artist, global_norms)
             
             entry_data = {
                 'rank': entry.rank,
@@ -1083,16 +2007,14 @@ def api_billboard_chart():
                 'peakPos': peak_pos if peak_pos is not None else 0,
                 'lastPos': last_pos if last_pos is not None else 0,
                 'weeks': weeks_on_chart if weeks_on_chart is not None else 0,
-                'isNew': is_new
+                'isNew': is_new,
+                'isDownloaded': is_dl,
+                'localFile': local_file,
+                'localDir': local_dir
             }
-            
-            # Check YT cache by query string
-            cached_entry = get_from_yt_cache(None, query_str)
-            if cached_entry:
-                entry_data['youtubeId'] = cached_entry['videoId']
-                entry_data['youtubeUrl'] = cached_entry['videoUrl']
-                
             entries_list.append(entry_data)
+            
+        populate_entries_metadata(entries_list, yt_cache)
             
         return jsonify({
             'status': 'success',
@@ -1116,9 +2038,12 @@ def api_billboard_artist():
     try:
         history = billboard.get_artist_history(artist_name)
         
+        global_norms = get_global_library_norms()
+        yt_cache = load_yt_cache()
         entries_list = []
         for entry in history.entries:
-            query_str = f"{entry.artist} - {entry.title}"
+            is_dl, local_file, local_dir = check_library_status(entry.title, entry.artist, global_norms)
+            
             entry_data = {
                 'title': entry.title,
                 'artist': entry.artist,
@@ -1126,15 +2051,14 @@ def api_billboard_artist():
                 'peakPos': entry.peak_pos,
                 'peakWeeks': entry.peak_weeks,
                 'peakDate': entry.peak_date,
-                'weeksOnChart': entry.weeks_on_chart
+                'weeksOnChart': entry.weeks_on_chart,
+                'isDownloaded': is_dl,
+                'localFile': local_file,
+                'localDir': local_dir
             }
-            
-            cached_entry = get_from_yt_cache(None, query_str)
-            if cached_entry:
-                entry_data['youtubeId'] = cached_entry['videoId']
-                entry_data['youtubeUrl'] = cached_entry['videoUrl']
-                
             entries_list.append(entry_data)
+            
+        populate_entries_metadata(entries_list, yt_cache)
             
         return jsonify({
             'status': 'success',
@@ -1794,30 +2718,19 @@ def api_archive_artist_sync():
         classified[cat] = new_cat_list
     
     try:
+        yt_cache = load_yt_cache()
         for cat in ['priority', 'standard', 'excluded']:
             for video in classified[cat]:
                 t_id = str(video['id'])
                 artists_str = ", ".join(video.get('artists', [])) if video.get('artists') else tidal_artist_name
                 v_query = f"{artists_str} - {video['title']}"
-                cached_entry = get_from_yt_cache(t_id, v_query)
+                cached_entry = get_from_yt_cache(t_id, v_query, yt_cache)
                 if cached_entry:
                     video['youtubeId'] = cached_entry['videoId']
                     video['youtubeUrl'] = cached_entry['videoUrl']
+                    video['maxResolution'] = cached_entry.get('maxResolution')
     except Exception as e:
         print(f"Error injecting YT cache: {e}")
-        
-    def get_norm(val, art_name):
-        v = val.lower().strip()
-        v = os.path.splitext(v)[0]
-        if art_name:
-            v = v.replace(art_name.lower().strip(), "")
-        common = ["official music video", "official video", "music video", "lyric video", "lyrics video", 
-                  "official lyrics", "official lyric", "official audio", "audio video", "shortcut", "collab", 
-                  "video", "audio", "lyrics", "hd", "hq", "1080p", "720p", "4k", "banned", "excluded"]
-        for term in common:
-            v = v.replace(term, "")
-        v = re.sub(r'[^a-z0-9]', '', v)
-        return v
         
     local_norms = {}
     for lf in local_files:
@@ -2057,7 +2970,14 @@ def run_flask(port):
     app.run(host='127.0.0.1', port=port, debug=False, use_reloader=False)
 
 if __name__ == '__main__':
-    port = find_free_port()
+    # Prefer port 30308 to keep port stable across restarts, fallback if occupied
+    port = 30308
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind(('127.0.0.1', port))
+        s.close()
+    except Exception:
+        port = find_free_port()
     url = f"http://127.0.0.1:{port}"
     
     # Start Flask Server in background thread

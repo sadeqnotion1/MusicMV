@@ -22,6 +22,11 @@
                         "text-primary": "#f8fafc",
                         "text-secondary": "#94a3b8",
                         "text-muted": "#475569"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+                        "display-lg": ["Outfit", "Inter", "sans-serif"],
+                        "label-sm": ["Inter", "ui-sans-serif", "sans-serif"]
                     }
                 }
             }
@@ -68,6 +73,64 @@
             border-color: #8b5cf6;
             background: rgba(139, 92, 246, 0.1);
         }
+        
+        .video-card-faded {
+            opacity: 0.55;
+            filter: grayscale(45%);
+            transition: opacity 0.2s ease, filter 0.2s ease;
+        }
+        .video-card-faded:hover {
+            opacity: 0.85;
+            filter: grayscale(10%);
+        }
+        .btn-action-overlay {
+            background-color: #8b5cf6;
+            color: #ffffff;
+            border: none;
+            padding: 4px 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 24px;
+            text-decoration: none;
+        }
+        .btn-action-overlay:hover {
+            background-color: #7c3aed;
+        }
+        .btn-play-action {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #8b5cf6;
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out, background-color 0.2s;
+        }
+        .btn-play-action:hover {
+            transform: scale(1.08);
+            background-color: #7c3aed;
+        }
+        .btn-play-action svg {
+            fill: currentColor;
+        }
+        .overlay-local-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #10b981;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body class="bg-[#05060a] text-[#f8fafc] min-h-screen overflow-hidden flex font-sans antialiased">
@@ -75,7 +138,37 @@
     <!-- SIDEBAR -->
     <div class="sidebar w-[260px] bg-surface-glass border-r border-border-glow backdrop-blur-xl flex flex-col py-8 z-50 flex-shrink-0">
         <div class="brand px-6 mb-8 flex items-center gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center font-bold text-white shadow-lg">M</div>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden shadow-lg" style="background-color: #000;">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="display: block; width: 100%; height: 100%;" viewBox="0 0 2048 1031" preserveAspectRatio="xMidYMid meet">
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 0 0 L 2048 0 L 2048 1031 L 0 1031 L 0 0 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 870.983 214.995 L 1006.05 214.959 C 1005.29 279.582 1006.02 345.815 1005.96 410.548 C 1033.85 391.69 1066.67 381.456 1100.34 381.12 C 1152.83 380.179 1203.48 400.429 1240.86 437.294 C 1325.2 518.908 1326.45 679.897 1247.34 766.295 C 1244.89 768.968 1242.32 771.597 1239.79 774.196 C 1206.28 805.213 1169.96 825.536 1123.56 828.374 C 1072.4 831.504 1039.8 813.762 1002.87 781.354 L 1002.81 822.912 L 870.905 822.692 L 870.983 214.995 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 1082.32 517.369 C 1083.52 517.279 1084.73 517.212 1085.93 517.169 C 1134.58 515.487 1170.38 553.032 1171.48 600.846 C 1172.16 625.483 1162.91 649.359 1145.81 667.105 C 1128.74 684.775 1109.5 690.449 1085.68 690.92 C 1039.27 686.477 1008.9 655.677 1005.36 608.915 C 1007.32 605.478 1007.22 609.228 1011.55 606.492 L 1011.72 603.484 L 1010.72 602.578 C 1008.55 603.577 1008.11 603.998 1005.85 603.727 C 1005.55 602.957 1005.21 601.854 1005.23 601.041 C 1006.43 555.748 1036.92 522.051 1082.32 517.369 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 290.793 330.554 C 293.505 330.428 296.218 330.323 298.932 330.24 C 351.03 328.61 405.733 330.066 457.764 332.339 C 493.445 333.897 553.418 333.349 580.229 358.706 C 588.098 366.247 594.28 375.37 598.368 385.474 C 607.56 408.606 612.201 470.737 612.343 497.141 C 612.405 546.35 613.381 597.861 601.439 645.837 C 595.758 668.664 576.037 691.898 552.561 697.029 C 500.576 708.39 442.708 708.132 389.5 709.456 C 388.764 709.484 388.028 709.508 387.292 709.528 C 336.384 710.504 285.458 710.002 234.579 708.02 C 195.127 706.387 129.528 706.565 100.227 680.386 C 73.0583 656.113 68.0111 583.456 69.0376 548.084 C 70.6823 491.414 62.1648 406.88 99.101 359.911 C 117.048 338.037 166.923 336.046 193.178 334.381 C 225.684 332.383 258.231 331.107 290.793 330.554 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 284.877 436.014 C 289.006 437.973 294.098 441.171 298.113 443.523 C 342.434 469.485 387.97 493.919 432.044 520.255 C 413.992 529.905 395.254 540.956 377.49 551.253 C 347.465 566.685 315.578 587.907 284.881 603.884 L 284.877 436.014 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 1484.03 325.928 C 1516.56 357.551 1549.07 390.725 1581.52 422.723 C 1613.98 391.586 1646.97 357.873 1679.49 326.218 L 1776.08 422.591 C 1808.36 391.554 1840.54 356.222 1873.89 326.664 C 1884.62 336.427 1897.02 349.443 1907.44 359.871 L 1970.99 423.63 C 1938.99 456.035 1904.19 488.375 1873.09 521.368 C 1841.18 488.744 1807.76 456.573 1775.52 424.051 C 1754.2 445.993 1732.68 467.746 1710.97 489.307 C 1705.83 494.446 1682.75 516.716 1680.23 521.041 L 1681.07 522.661 C 1712.95 552.984 1744.64 586.267 1776.27 617.313 L 1678.24 715.592 C 1674.06 711.018 1669.71 706.392 1665.27 702.069 C 1637.09 674.632 1609.88 644.974 1580.87 618.461 C 1613.36 585.705 1646.18 553.273 1679.32 521.17 C 1669.96 511.06 1658.68 500.919 1648.79 490.979 L 1581.6 423.637 C 1549.43 456.693 1515.86 488.586 1483.61 521.671 C 1451.15 488.366 1417.14 457.203 1385.16 423.362 C 1393.22 413.459 1410.48 397.51 1420.35 387.825 C 1441.36 366.969 1462.58 346.336 1484.03 325.928 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 747.252 365.144 L 834.975 365.232 C 834.993 370.293 835.701 387.419 834.529 391.261 L 831.829 392.312 C 831.371 396.032 836.417 402.654 836.769 406.672 C 839.162 434.013 819.74 450.525 795.403 455.09 C 802.443 456.888 809.072 459.191 815.151 463.251 C 825.348 469.966 832.407 480.51 834.73 492.497 C 836.994 504.167 834.448 516.257 827.671 526.023 C 818.467 539.212 807.25 543.477 792.398 546.156 C 816.212 548.428 839.193 565.061 836.39 592.211 C 835.985 596.132 829.689 604.018 830.424 607.432 C 832.341 607.694 832.871 607.813 834.732 608.352 C 836.073 612.101 835.376 630.368 835.324 635.743 L 804.56 635.754 C 775.048 635.832 745.537 635.749 716.026 635.506 L 716.011 608.788 C 727.808 608.824 739.63 608.999 751.405 608.313 C 737.43 575.247 755.406 553.637 787.842 546.242 C 767.832 542.605 751.859 531.164 747.126 510.506 C 744.481 499.252 746.495 487.406 752.712 477.659 C 761.067 464.519 772.848 458.343 787.512 455.16 C 764.246 451.106 742.425 434.149 747.012 407.067 C 747.748 402.72 751.354 398.104 751.36 393.308 C 749.212 392.924 748.928 392.993 747.298 391.66 C 746.79 383.03 747.109 373.831 747.252 365.144 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 786.6 483.715 C 795.985 481.473 805.401 487.3 807.582 496.7 C 809.763 506.099 803.874 515.477 794.46 517.596 C 785.134 519.695 775.861 513.873 773.701 504.56 C 771.54 495.247 777.302 485.937 786.6 483.715 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 785.393 393.735 C 794.526 390.592 804.47 395.494 807.538 404.653 C 810.606 413.811 805.622 423.715 796.438 426.707 C 787.361 429.665 777.597 424.75 774.565 415.698 C 771.533 406.646 776.366 396.842 785.393 393.735 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 789.436 574.873 C 798.481 573.662 806.875 579.787 808.48 588.77 C 810.085 597.752 804.333 606.406 795.429 608.403 C 789.313 609.774 782.937 607.679 778.827 602.946 C 774.718 598.213 773.537 591.606 775.753 585.743 C 777.969 579.879 783.224 575.705 789.436 574.873 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 715.975 214.939 L 834.884 214.956 C 834.841 222.852 835.851 232.259 834.934 239.781 C 833.447 240.74 832.424 241.336 830.856 242.162 C 830.748 249.174 836.494 255.132 837.037 262.973 C 837.786 273.788 831.768 282.766 825.139 290.585 C 789.871 322.971 731.392 294.858 751.123 242.516 L 715.966 242.367 L 715.975 214.939 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 786.223 242.782 C 795.112 239.662 804.847 244.343 807.96 253.235 C 811.073 262.126 806.384 271.857 797.49 274.963 C 788.606 278.065 778.889 273.382 775.78 264.501 C 772.67 255.62 777.345 245.899 786.223 242.782 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 783.245 749.183 C 810.738 746.588 836.252 758.788 837.051 790.308 C 837.182 795.454 832.384 802.167 830.75 807.682 C 832.854 808.23 833.493 808.475 835.452 809.419 C 836.409 812.712 835.793 831.578 835.747 836.472 L 773.5 836.606 L 715.922 836.475 L 715.916 808.914 C 727.82 808.972 739.724 808.918 751.627 808.753 C 738.551 780.386 753.195 755.221 783.245 749.183 z"/>
+                    <path transform="translate(0,0)" fill="rgb(0,0,0)" d="M 789.771 775.835 C 799.021 774.671 807.489 781.16 808.77 790.394 C 810.052 799.629 803.671 808.178 794.453 809.577 C 788.385 810.497 782.292 808.083 778.502 803.256 C 774.711 798.429 773.81 791.937 776.143 786.261 C 778.476 780.584 783.682 776.602 789.771 775.835 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 716.023 643.66 C 754.558 642.81 796.587 643.479 835.232 643.599 L 835.265 671.039 L 716.041 671.02 L 716.023 643.66 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 716.149 679.182 L 835.299 679.208 L 835.33 706.232 L 716.164 706.128 L 716.149 679.182 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 746.417 307.867 L 777.738 307.837 C 776.9 319.016 778.149 321.973 786.948 328.913 C 798.515 330.193 822.709 329.399 C 835.012 329.399 C 835.063 335.926 836.43 352.457 833.43 356.683 L 830.25 356.928 L 747.231 356.944 C 747.356 350.096 746.438 341.798 747.091 335.263 C 747.87 327.484 753.239 330.068 755.694 328.405 C 748.155 320.594 748.679 318.56 746.417 307.867 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 748.156 715.001 L 835.058 715.061 L 835.131 742.137 L 748.113 742.058 L 748.156 715.001 z"/>
+                    <path transform="translate(0,0)" fill="rgb(5,14,33)" d="M 1305.6 89.2118 L 1306.3 89.2605 L 1306.66 90.3336 C 1301.43 96.2164 1296.34 97.668 1290.53 102.54 C 1285.76 106.571 1292.56 107.97 1292.8 114.067 C 1293.6 134.499 1275.04 127.525 1267.96 135.027 C 1263.99 131.912 1262.09 131.306 1257.36 129.389 C 1249.54 132.75 1244.45 135.616 1237.02 139.876 L 1236.4 138.489 C 1239.06 133.13 1250.86 133.989 1246.89 124.167 C 1246.48 123.152 1244.77 114.992 1244.92 114.631 C 1249.13 104.548 1250.98 107.871 1244.37 98.5369 C 1242.76 98.7944 1255.12 99.582 1253.15 98.7522 C 1256.51 100.171 1261.02 96.6676 1264.73 97.081 C 1273.07 98.0112 1280.81 98.5083 1289.21 98.5042 L 1305.6 89.2118 z"/>
+                    <path transform="translate(0,0)" fill="rgb(5,14,33)" d="M 1534.62 301.619 L 1537.85 303.288 C 1539.9 313.279 1556.85 315.448 1554.39 328.93 C 1554.16 330.145 1554.34 335.52 1554.31 337.19 C 1553.15 338.144 1552.17 338.101 1550.64 338.332 L 1549.96 338.431 C 1547.07 345.493 1543.11 341.172 1539.33 354.283 L 1538.43 353.201 C 1534.92 348.571 1527.59 344.236 1522.5 341.601 C 1520.81 341.958 1519.6 342.478 1518.13 341.726 C 1518.43 341.384 1518.72 341.038 1519.01 340.69 C 1525.17 333.321 1517.04 326.952 1521.46 317.666 C 1525.43 309.344 1529.92 314.916 1534.5 309.772 C 1535.96 305.874 1535.33 306.287 1534.62 301.619 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 724.347 710.889 C 731.238 711.129 738.549 715.491 741.337 721.92 C 743.163 726.134 743.175 730.915 741.371 735.138 C 738.827 741.061 734.777 743.078 729.154 745.346 C 706.967 745.073 703.019 720.755 724.347 710.889 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 1918.64 37.1268 C 1921.13 39.402 1923.1 41.1352 1925.28 43.7321 C 1924.64 46.8495 1925.22 53.0383 1924.74 53.9348 C 1922.58 54.2714 1918.17 53.7124 1915.79 53.4971 L 1915.39 52.7344 C 1913.04 53.5031 1912.69 53.6263 1910.23 53.4717 C 1908.1 50.1849 1910.03 46.958 1908.32 43.3124 C 1909.56 41.998 1916.38 38.4927 1918.64 37.1268 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 5.62178 106.381 C 10.721 106.683 12.9774 106.485 15.4904 111.287 C 15.0043 115.673 15.2819 114.274 12.4468 118.072 C 7.95522 117.919 6.48996 117.506 3.84855 114.009 C 3.48255 109.615 3.65198 110.799 5.62178 106.381 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 1830.33 961.245 C 1833.94 962.052 1834.14 962.589 1835.77 965.481 C 1835.88 969.112 1834.81 970.508 1833.06 973.696 C 1829.26 972.81 1828.38 972.338 1826.73 969.036 C 1826.87 965.36 1828.11 964.193 1830.33 961.245 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 1816.85 936.352 C 1819.35 936.078 1821.62 937.789 1822.05 940.26 C 1822.49 942.731 1820.92 945.112 1818.48 945.699 C 1816.76 946.113 1814.95 945.536 1813.79 944.202 C 1812.63 942.869 1812.3 940.998 1812.94 939.349 C 1813.59 937.7 1815.09 936.545 1816.85 936.352 z"/>
+                    <path transform="translate(0,0)" fill="rgb(254,254,254)" d="M 1965.15 839.249 C 1970.66 839.323 1974.38 842.258 1974.29 847.887 C 1970.25 848.737 1969.34 849.284 1965.95 848.033 C 1964.16 845.388 1964.88 842.633 1965.15 839.249 z"/>
+                    <path transform="translate(0,0)" fill="rgb(233,188,140)" d="M 1414.26 246.686 C 1414.79 246.709 1416.98 247.327 1417.64 247.497 L 1418.24 249.066 C 1416.73 251.587 1413.92 252.839 1411.33 254.316 L 1409.04 254.936 L 1408.49 253.649 C 1409.82 250.173 1411.45 249.118 1414.26 246.686 z"/>
+                </svg>
+            </div>
             <div>
                 <h1 class="font-display-lg text-[18px] font-bold text-white tracking-tighter leading-none">MusicMV</h1>
                 <p class="font-label-sm text-[11px] text-text-secondary uppercase tracking-wider mt-0.5">Sourcing Center</p>
@@ -83,18 +176,37 @@
         </div>
 
         <ul class="nav-menu flex flex-col gap-2 flex-1">
-            <li class="nav-item">
-                <a href="/" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
-                    <span class="inline-flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            <path d="M2 12h20"></path>
-                        </svg>
+            <!-- 1. Tidal Sourcing -->
+            <li id="nav-tidal" class="nav-item">
+                <a href="/?view=tidal" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-[#00f0ff]">
+                        <!-- Tidal Logo SVG (local) -->
+                        <svg viewBox="0 -373 1453 1453" style="width:16px; height:16px; fill:#00f0ff !important;"><path stroke="#000000" stroke-width=".094" d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4zM0 469.9h192.4c.1 15.398.1 30.8 0 46.1h-69.3v182c-.1 3 .2 6-.4 9H69.2c.2-63.7.1-127.3.1-191H0v-46.1zM352.9 469.9c18 0 36 0 54 .1-.1 79 .2 158-.2 237H353c-.3-21-.1-42-.2-63 .1-58 0-116 .1-174.1zM1305 469.9c18 0 36 0 54 .1v189.4c31.3.198 62.7.1 94 .1V707h-147.9c-.3-79 0-158-.1-237.1zM797.4 549.4c-5.4-18.602-15.9-35.5-30.5-48.2-19.3-17.1-44.5-26.4-69.8-29.7-14.3-2.1-28.8-1.5-43.198-1.6h-63.9c-1.2 0-2.5.1-3.7.3.3 78.3 0 156.6.2 234.898-.1.5-.2 1.4-.3 1.9H678.6c8.302-1.5 16.802-1.4 25-3.2 28-5.1 54.9-19 73.2-41.1 13.5-16 21.8-36.102 24.5-56.8 2.4-18.898 1.4-38.298-3.9-56.498zm-60.9 78.7c-6.7 10.7-16.6 19.2-28.1 24.4-10.4 4.8-21.9 7-33.302 7.3-12 .102-24 0-36 .102-.6-13.302-.1-26.602-.3-39.9 0-34.7 0-69.3.102-104H676c18.6.4 37.5 6.8 51 20 12.1 11.7 18.9 28.2 20 44.9 1.1 16.298-1.9 33.198-10.5 47.198zM1138.6 651.2c-22.6-54.9-45.1-109.9-67.898-164.7-2.102-5.5-4.301-11.1-6.801-16.4-18.601-.3-37.199-.3-55.801 0-31.8 76.5-63.6 153-95.398 229.4-1 2.5-2.2 4.9-2.7 7.5h57.5c5.7-15.8 11.8-31.4 17.5-47.2 32.6-.5 65.3-.1 98-.2 1.7-.5 2.2 1.302 2.6 2.5 5.5 15 11.102 29.9 16.5 44.9h59.302c-7.204-18.8-15.204-37.2-22.804-55.8zm-138.4-33.5c-.3-2.102 1-3.9 1.6-5.8 10.9-28.5 22.102-57 32.9-85.5.2-.102.6-.2.8-.2 11.3 30 22.8 59.898 34.2 89.898 0 .4.1 1.2.1 1.602-23.2-.2-46.4-.2-69.6 0z"/></svg>
                     </span>
-                    Intel Search
+                    Tidal Sourcing
                 </a>
             </li>
+            <!-- 2. Billboard Explorer -->
+            <li id="nav-billboard" class="nav-item">
+                <a href="/?view=billboard" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-amber-400">
+                        <!-- Billboard Logo SVG (local) -->
+                        <svg viewBox="0 0 150 150" style="width:16px; height:16px; fill:currentColor !important;"><path d="M39.21,117.31v-5.25H23.04v5.25h16.17"/><path d="M39.2,110.21v-5.25H16.7v5.25h22.5"/><path d="M39.2,103.13v-5.25H16.7v5.25h22.5"/><path d="M22.88,41.98v-5.25h1.67c-1.26-.78-1.76-1.93-1.83-3.51h5.57v.62c0,1.86,1.07,2.89,3.05,2.89h7.71v5.25H22.88"/><path d="M19.01,117.73c-1.7,0-3.08-1.36-3.08-3.04s1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05-1.38,3.04-3.08,3.04"/><path d="M22.9,43.85v5.25h1.2c-.82,.74-1.49,2.45-1.49,3.76,0,4.58,3.53,7.67,8.5,7.67s8.18-3.48,8.18-7.73c0-1.31-.44-2.74-1.16-3.7h.91v-5.25h-7.08c-.29,0-.57,0-.85,0-.28,0-.56,0-.85,0h-7.37Zm11.07,8.71c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M16.55,20.82h7.14c-.72,1.03-1.04,2.21-1.04,3.64,0,4.38,3.43,7.8,8.37,7.8,4.66,0,8.24-3.29,8.24-7.3,0-1.65-.53-2.98-1.7-4.23h1.48v-5.16H16.55v5.25Zm17.53,3.09c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05"/><path d="M22.81,87.11c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M22.81,126.45c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M95.29,48.09c-7.77,0-14.2,1.68-19.77,5.53V15.57h-28.55v119.86h28.05v-7.88c6.76,6.2,14.02,9.05,22.98,9.05,21.79,0,39.7-19.11,39.7-43.92,0-26.32-18.58-44.59-42.4-44.59m-3.04,61.08c-9.15,0-16.56-7.36-16.56-16.43s7.41-16.42,16.56-16.42,16.55,7.36,16.55,16.42-7.41,16.43-16.55,16.43"/><path d="M22.52,69.86c0,4.54,3.78,8.14,8.37,8.14s8.37-3.57,8.37-8.14-3.81-8.14-8.37-8.14-8.37,3.6-8.37,8.14m11.36,0c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/></svg>
+                    </span>
+                    Billboard Explorer
+                </a>
+            </li>
+            <!-- 3. YouTube Downloader -->
+            <li id="nav-youtube" class="nav-item">
+                <a href="/?view=youtube" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-red-500">
+                        <!-- YouTube Icon SVG (local) -->
+                        <svg viewBox="0 0 28.57 20" style="width:16px; height:16px;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg>
+                    </span>
+                    YouTube Downloader
+                </a>
+            </li>
+            <!-- 4. Local Library -->
             <li class="nav-item active">
                 <a href="#" class="flex items-center gap-4 px-6 py-3 text-white font-bold border-l-2 border-primary bg-primary/10 transition-all duration-300">
                     <span class="inline-flex items-center justify-center text-primary">
@@ -106,9 +218,10 @@
                     Local Library
                 </a>
             </li>
+            <!-- 5. Control Panel -->
             <li class="nav-item">
-                <a href="/pipeline" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300 border-l-2 border-transparent">
-                    <span class="inline-flex items-center justify-center">
+                <a href="/pipeline" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300">
+                    <span class="inline-flex items-center justify-center text-text-secondary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
                             <rect x="9" y="9" width="6" height="6"></rect>
@@ -120,6 +233,12 @@
                 </a>
             </li>
         </ul>
+        <div class="px-4 border-t border-border-glow/30 pt-4 mt-auto">
+            <div class="flex items-center gap-3 bg-surface-glass p-3 rounded-lg border border-border-glow/50 cursor-pointer mb-3" onclick="toggleDownloadsDrawer()">
+                <div class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]"></div>
+                <span class="text-xs text-text-secondary">Downloads: <span id="downloads-badge-text" class="text-secondary font-bold">0 active</span></span>
+            </div>
+        </div>
         <div class="px-6 py-4 border-t border-border-glow/30">
             <p id="library-view-path" class="text-[10px] text-text-muted break-all">Path: Loading...</p>
         </div>
@@ -131,12 +250,14 @@
         <div class="absolute top-0 left-1/4 w-[800px] h-[500px] bg-secondary/5 blur-[150px] rounded-full pointer-events-none -z-10"></div>
         <div class="absolute bottom-0 right-1/4 w-[600px] h-[400px] bg-primary/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
 
-        <!-- HEADER -->
-        <div class="top-header px-8 pt-8 pb-4 flex justify-between items-center">
-            <div class="header-title flex-1">
-                <h2 class="font-display-lg text-[22px] font-bold text-white tracking-tight">Local Library Explorer</h2>
-                <p class="text-xs text-text-secondary mt-1">Browse sorted folders, audit guest shortcut links, and track missing hits.</p>
-            </div>
+        <!-- Roster / Split view -->
+        <div id="library-roster-view" class="flex flex-col flex-1">
+            <!-- HEADER -->
+            <div class="top-header px-8 pt-8 pb-4 flex justify-between items-center">
+                <div class="header-title flex-1">
+                    <h2 class="font-display-lg text-[22px] font-bold text-white tracking-tight">Local Library Explorer</h2>
+                    <p class="text-xs text-text-secondary mt-1">Browse sorted folders, audit guest shortcut links, and track missing hits.</p>
+                </div>
             <!-- Search bar inside header -->
             <div class="header-actions w-1/3">
                 <input type="text" id="local-artists-search" class="w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="Search sorted artists..." oninput="filterLocalArtists()">
@@ -186,11 +307,115 @@
                         <p class="text-xs text-text-muted text-center py-8">Select an artist or click 'Missing Hits' stats to view audit list.</p>
                     </div>
                 </div>
+        </div>
+        </div>
+        </div>
+        <!-- Artist Detail/Sync Sub-View -->
+        <div id="archive-artist-detail-view" class="hidden flex-col gap-6 mx-8 my-8 flex-1">
+            <!-- Info Banner/Status -->
+            <div id="detail-loading" class="text-center py-16 text-text-secondary">
+                <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <span class="text-sm font-semibold">Analyzing local files and querying TIDAL catalog...</span>
+            </div>
+
+            <div id="detail-content" class="hidden flex-col gap-6">
+                <!-- Sleek Full-Width Artist Banner -->
+                <div class="artist-banner relative overflow-hidden bg-gradient-to-b from-[#141826]/30 to-[#141826]/95 border border-border-glow/50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between min-h-[140px] shadow-lg">
+                    <!-- Dynamic Backdrop Image -->
+                    <div id="detail-artist-bg-blur" class="absolute inset-0 bg-cover bg-center filter blur-3xl brightness-[0.2] opacity-60 pointer-events-none -z-10"></div>
+                    
+                    <!-- Artist Info Left -->
+                    <div class="flex items-center gap-6 z-10 relative">
+                        <img id="detail-artist-img" src="" class="w-20 h-20 rounded-full object-cover border-2 border-primary shadow-lg bg-surface-glass" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=Artist'">
+                        <div class="flex flex-col gap-1">
+                            <h2 id="detail-artist-name" class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">—</h2>
+                            <div class="flex flex-col gap-0.5">
+                                <p id="detail-artist-meta" class="text-xs text-text-secondary font-medium">—</p>
+                                <p id="detail-artist-path" class="text-[10px] text-text-muted break-all">Path: </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Actions Right -->
+                    <div class="flex flex-wrap gap-3 items-center z-10 relative mt-4 md:mt-0">
+                        <button class="btn-play-outline bg-emerald-500/15 border-emerald-500/40 text-emerald-400 hover:border-emerald-400 hover:bg-emerald-500/25 px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2" onclick="downloadAllLibraryVideos(this)" title="Download All">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            All from <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg>
+                        </button>
+                        <button class="btn-play-outline bg-red-500/15 border-red-500/40 text-red-400 hover:border-red-400 hover:bg-red-500/25 px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2" onclick="findAllLibraryYouTubeLinks(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            Fetch All <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg>
+                        </button>
+                        <button class="btn-play-outline bg-red-500/15 border-red-500/40 text-red-400 hover:border-red-400 hover:bg-red-500/25 px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2" onclick="exportLibraryYouTubeLinks(this)" title="Export Links">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                            Links
+                        </button>
+                        <button class="btn-play-outline bg-white/5 border-white/10 text-white hover:border-white/30 px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2" id="btn-open-detail-folder">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            Open Folder
+                        </button>
+                        <button class="btn-play-outline bg-primary/20 border-primary/30 text-white hover:bg-primary/30 px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2" onclick="closeArtistDetailView()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                            Back
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Bar and Unified Grid -->
+                <div class="flex flex-col gap-4 mt-2">
+                    <!-- Custom Sleek Tab Switcher -->
+                    <div class="flex flex-wrap gap-2 border-b border-border-glow/20 pb-1">
+                        <button class="detail-tab-btn active px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent bg-primary/20 text-primary border-primary/30" data-tab="all" onclick="switchArtistDetailTab('all')">
+                            All Videos
+                            <span id="detail-all-count" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-black/40 text-text-secondary rounded-full">0</span>
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent text-text-secondary hover:text-white hover:bg-white/5" data-tab="waiting" onclick="switchArtistDetailTab('waiting')">
+                            Available to Download
+                            <span id="detail-waiting-count" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-black/40 text-text-secondary rounded-full">0</span>
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent text-text-secondary hover:text-white hover:bg-white/5" data-tab="existing" onclick="switchArtistDetailTab('existing')">
+                            Downloaded in Library
+                            <span id="detail-existing-count" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-black/40 text-text-secondary rounded-full">0</span>
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent text-text-secondary hover:text-white hover:bg-white/5" data-tab="excluded" onclick="switchArtistDetailTab('excluded')">
+                            Banned / Excluded
+                            <span id="detail-excluded-count" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-black/40 text-text-secondary rounded-full">0</span>
+                        </button>
+                    </div>
+
+                    <!-- The Active Premium 5-Column Grid -->
+                    <div id="detail-active-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-2 pb-8">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- DOWNLOADS DRAWER -->
+    <div id="downloads-drawer" class="downloads-drawer fixed right-[-360px] top-0 h-full w-[350px] bg-surface-glass border-l border-border-glow backdrop-blur-xl flex flex-col py-8 z-50 transition-all duration-300 shadow-[-20px_0_40px_rgba(0,0,0,0.5)]">
+        <div class="drawer-title px-6 pb-4 border-b border-border-glow/30 flex justify-between items-center">
+            <span class="font-bold text-white text-md">Downloads Queue</span>
+            <span id="downloads-badge" class="badge-count bg-gradient-to-br from-primary to-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+        </div>
+        <ul id="downloads-list" class="download-list px-6 py-4 flex-1 overflow-y-auto flex flex-col gap-4">
+            <!-- Dynamic progress item will be appended here -->
+        </ul>
+        <div class="px-6 pt-4 border-t border-border-glow/30">
+            <button onclick="clearCompletedDownloads()" class="w-full py-2.5 flex items-center justify-center gap-2 text-text-secondary hover:text-white bg-white/2 hover:bg-white/5 rounded-lg border border-white/5 transition-all font-medium text-xs">
+                Clear Finished
+            </button>
+        </div>
+    </div>
+
     <script>
+        // SVG icon constants
+        const dlIconInnerSvg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+        const exportIconInnerSvg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>`;
+        const ytIconSvg = `<svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg>`;
+        const tidalIconSvg = `<svg viewBox="532 0 387 257" style="width:14px; height:14px; fill:#00f0ff !important; display:inline-block; vertical-align:middle;"><path d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4z"/></svg>`;
+        const billboardIconSvg = `<svg viewBox="0 0 150 150" style="width:14px; height:14px; fill:currentColor !important; display:inline-block; vertical-align:middle;"><path d="M39.21,117.31v-5.25H23.04v5.25h16.17"/><path d="M39.2,110.21v-5.25H16.7v5.25h22.5"/><path d="M39.2,103.13v-5.25H16.7v5.25h22.5"/><path d="M22.88,41.98v-5.25h1.67c-1.26-.78-1.76-1.93-1.83-3.51h5.57v.62c0,1.86,1.07,2.89,3.05,2.89h7.71v5.25H22.88"/><path d="M19.01,117.73c-1.7,0-3.08-1.36-3.08-3.04s1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05-1.38,3.04-3.08,3.04"/><path d="M22.9,43.85v5.25h1.2c-.82,.74-1.49,2.45-1.49,3.76,0,4.58,3.53,7.67,8.5,7.67s8.18-3.48,8.18-7.73c0-1.31-.44-2.74-1.16-3.7h.91v-5.25h-7.08c-.29,0-.57,0-.85,0-.28,0-.56,0-.85,0h-7.37Zm11.07,8.71c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M16.55,20.82h7.14c-.72,1.03-1.04,2.21-1.04,3.64,0,4.38,3.43,7.8,8.37,7.8,4.66,0,8.24-3.29,8.24-7.3,0-1.65-.53-2.98-1.7-4.23h1.48v-5.16H16.55v5.25Zm17.53,3.09c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05"/><path d="M22.81,87.11c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M22.81,126.45c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M95.29,48.09c-7.77,0-14.2,1.68-19.77,5.53V15.57h-28.55v119.86h28.05v-7.88c6.76,6.2,14.02,9.05,22.98,9.05,21.79,0,39.7-19.11,39.7-43.92,0-26.32-18.58-44.59-42.4-44.59m-3.04,61.08c-9.15,0-16.56-7.36-16.56-16.43s7.41-16.42,16.56-16.42,16.55,7.36,16.55,16.42-7.41,16.43-16.55,16.43"/><path d="M22.52,69.86c0,4.54,3.78,8.14,8.37,8.14s8.37-3.57,8.37-8.14-3.81-8.14-8.37-8.14-8.37,3.6-8.37,8.14m11.36,0c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/></svg>`;
+
         let localArtists = [];
         let archiveRootPath = '';
 
@@ -264,7 +489,7 @@
             list.forEach(artist => {
                 const card = document.createElement('div');
                 card.className = "artist-avatar-card cursor-pointer group flex flex-col items-center bg-[#141826]/40 hover:bg-[#141826]/85 border border-border-glow/50 p-6 rounded-2xl transition-all duration-300 relative";
-                card.onclick = () => loadArtistMissingTracks(artist.name);
+                card.onclick = () => openArtistDetailView(artist.name, artist.folder);
                 
                 // Avatar image setup
                 const avatarImg = artist.hasAvatar 
@@ -414,8 +639,867 @@
             }
         }
 
+        let currentArtistExisting = [];
+        let currentArtistWaiting = [];
+        let currentArtistExcluded = [];
+        let currentArtistDownloadDir = '';
+
+        async function openArtistDetailView(artistName, folderPath) {
+            document.getElementById('library-roster-view').classList.add('hidden');
+            
+            const detailView = document.getElementById('archive-artist-detail-view');
+            detailView.classList.remove('hidden');
+            detailView.classList.add('flex');
+            
+            document.getElementById('detail-artist-path').textContent = 'Path: ' + folderPath;
+            
+            document.getElementById('detail-loading').classList.remove('hidden');
+            document.getElementById('detail-content').classList.add('hidden');
+            document.getElementById('detail-content').classList.remove('flex');
+            
+            try {
+                const response = await fetch('/api/archive/artist/sync?artist=' + encodeURIComponent(artistName) + '&path=' + encodeURIComponent(archiveRootPath));
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    document.getElementById('detail-loading').classList.add('hidden');
+                    document.getElementById('detail-content').classList.remove('hidden');
+                    document.getElementById('detail-content').classList.add('flex');
+                    
+                    document.getElementById('detail-artist-name').textContent = result.artist.name;
+                    document.getElementById('detail-artist-meta').textContent = result.artist.tidalId ? 
+                        'TIDAL ID: ' + result.artist.tidalId :
+                        'Local Only (Not found on TIDAL)';
+                        
+                    const artistImg = document.getElementById('detail-artist-img');
+                    const artistBgBlur = document.getElementById('detail-artist-bg-blur');
+                    if (result.artist.picture) {
+                        artistImg.src = result.artist.picture;
+                        artistImg.style.display = 'block';
+                        artistBgBlur.style.backgroundImage = 'url(' + result.artist.picture + ')';
+                    } else {
+                        artistImg.src = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(result.artist.name)}&backgroundColor=8b5cf6,06b6d4`;
+                        artistBgBlur.style.backgroundImage = 'none';
+                    }
+                    
+                    document.getElementById('btn-open-detail-folder').onclick = () => openSingleFolder(result.artist.folderPath);
+                    
+                    currentArtistExisting = result.existing || [];
+                    currentArtistWaiting = result.waiting || [];
+                    currentArtistExcluded = result.excluded || [];
+                    currentArtistDownloadDir = result.artist.folderPath;
+                    
+                    document.getElementById('detail-all-count').textContent = currentArtistExisting.length + currentArtistWaiting.length;
+                    document.getElementById('detail-waiting-count').textContent = currentArtistWaiting.length;
+                    document.getElementById('detail-existing-count').textContent = currentArtistExisting.length;
+                    document.getElementById('detail-excluded-count').textContent = currentArtistExcluded.length;
+                    
+                    switchArtistDetailTab('all');
+                } else {
+                    document.getElementById('detail-loading').innerHTML = `<div class="text-red-500 font-semibold text-sm">Failed to sync artist catalog: ${result.message}</div>`;
+                }
+            } catch (err) {
+                document.getElementById('detail-loading').innerHTML = `<div class="text-red-500 font-semibold text-sm">Network error fetching sync data.</div>`;
+            }
+        }
+
+        function closeArtistDetailView() {
+            document.getElementById('archive-artist-detail-view').classList.add('hidden');
+            document.getElementById('archive-artist-detail-view').classList.remove('flex');
+            document.getElementById('library-roster-view').classList.remove('hidden');
+            loadLocalArtists();
+        }
+
+        function switchArtistDetailTab(tabName) {
+            const tabs = document.querySelectorAll('.detail-tab-btn');
+            tabs.forEach(btn => {
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active', 'bg-primary/20', 'text-primary', 'border-primary/30');
+                    btn.classList.remove('text-text-secondary', 'hover:text-white', 'hover:bg-white/5');
+                } else {
+                    btn.classList.remove('active', 'bg-primary/20', 'text-primary', 'border-primary/30');
+                    btn.classList.add('text-text-secondary', 'hover:text-white', 'hover:bg-white/5');
+                }
+            });
+
+            let listToRender = [];
+
+            if (tabName === 'all') {
+                const waitingWithStatus = currentArtistWaiting.map(v => ({ ...v, isWaiting: !v.localFile }));
+                const existingWithStatus = currentArtistExisting.map(v => ({ ...v, isWaiting: !v.localFile }));
+                listToRender = [...waitingWithStatus, ...existingWithStatus];
+            } else if (tabName === 'waiting') {
+                listToRender = currentArtistWaiting.map(v => ({ ...v, isWaiting: !v.localFile }));
+            } else if (tabName === 'existing') {
+                listToRender = currentArtistExisting.map(v => ({ ...v, isWaiting: !v.localFile }));
+            } else if (tabName === 'excluded') {
+                listToRender = currentArtistExcluded.map(v => ({ ...v, isWaiting: !v.localFile }));
+            }
+
+            renderActiveGridList(listToRender, currentArtistDownloadDir);
+        }
+
+        async function openSingleFolder(folderPath) {
+            try {
+                await fetch('/api/archive/open_folder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: folderPath })
+                });
+            } catch (err) {
+                console.error("Failed to open folder:", err);
+            }
+        }
+
+        async function playLocalFile(filename, folderPath) {
+            const filePath = folderPath + '/' + filename;
+            try {
+                const response = await fetch('/api/archive/open_file', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: filePath })
+                });
+                const result = await response.json();
+                if (result.status !== 'success') alert("Failed to play video file: " + result.message);
+            } catch (err) {
+                alert("Network error.");
+            }
+        }
+
+        async function banLocalVideo(filename, folderPath, ban) {
+            if (!confirm(`Are you sure you want to ${ban ? 'ban' : 'unban'} this video?\n\nFile: ${filename}`)) {
+                return;
+            }
+            try {
+                const response = await fetch('/api/archive/video/ban', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folder: folderPath, filename: filename, ban: ban })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    const artistName = document.getElementById('detail-artist-name').textContent;
+                    await openArtistDetailView(artistName, folderPath);
+                } else {
+                    alert("Error: " + result.message);
+                }
+            } catch (err) {
+                alert("Network error.");
+            }
+        }
+
+        async function banWaitingVideo(title, tidalId, folderPath, ban) {
+            if (!confirm(`Are you sure you want to ${ban ? 'ban' : 'unban'} this video?\n\nTitle: ${title}`)) {
+                return;
+            }
+            try {
+                const response = await fetch('/api/archive/video/ban', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folder: folderPath, filename: '', title: title, tidalId: tidalId, ban: ban })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    const artistName = document.getElementById('detail-artist-name').textContent;
+                    await openArtistDetailView(artistName, folderPath);
+                } else {
+                    alert("Error: " + result.message);
+                }
+            } catch (err) {
+                alert("Network error.");
+            }
+        }
+
+        function renderActiveGridList(videos, artistDownloadDir) {
+            const activeGrid = document.getElementById('detail-active-grid');
+            activeGrid.innerHTML = '';
+
+            if (videos.length === 0) {
+                activeGrid.innerHTML = '<p class="text-xs text-text-secondary text-center py-16 col-span-full">No videos to display in this tab.</p>';
+                return;
+            }
+
+            videos.forEach(video => {
+                const card = document.createElement('div');
+                const isWaiting = video.isWaiting;
+                const isBanned = video.category === 'Excluded';
+                
+                let cardBorderBg = "";
+                if (isWaiting) {
+                    cardBorderBg = "border-border-glow bg-surface-glass/40 hover:border-primary/50 hover:shadow-[0_10px_25px_rgba(139,92,246,0.15)]";
+                } else {
+                    cardBorderBg = "border-emerald-500/35 bg-emerald-950/5 hover:border-emerald-400/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]";
+                }
+                card.className = `video-card flex flex-col rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${cardBorderBg}`;
+                card.setAttribute('data-downloaded', isWaiting ? 'false' : 'true');
+                
+                const artistsList = video.artists && video.artists.length > 0 ? video.artists.join(', ') : 'Artist';
+                let imgHtml = video.thumbnail ? `<img src="${video.thumbnail}" class="w-full h-full object-cover opacity-85 transition-all duration-500 hover:scale-105" alt="${video.title.replace(/"/g, '&quot;')}">` : '';
+                
+                const fallbackImgHtml = `<div class="w-full h-full flex items-center justify-center text-text-muted bg-black/40" style="${video.thumbnail ? 'display:none;' : 'display:flex;'}">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                </div>`;
+
+                const rowId = 'active_dl_' + video.id;
+                const searchQ = artistsList + ' - ' + video.title;
+
+                if (isWaiting) {
+                    if (isBanned) {
+                        banBtnHtml = `<button class="btn-play-outline border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 px-2 py-0.5 text-[10px] h-6 mt-2 flex items-center justify-center" title="Move back to Waiting section"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg></button>`;
+                    } else {
+                        banBtnHtml = `<button class="btn-play-outline border-red-500/40 text-red-400 hover:bg-red-500/10 px-2 py-0.5 text-[10px] h-6 mt-2 flex items-center justify-center" title="Move to Banned section"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>`;
+                    }
+
+                    // Split badges on thumbnail
+                    let cleanRes = video.maxResolution || tidalIconSvg;
+                    let qualityBadgeHtml = `<span class="absolute top-2 left-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#141826]/85 text-[#10b981] shadow-md border border-[#10b981]/15 flex items-center justify-center">${cleanRes}</span>`;
+                    let statusBadgeHtml = '';
+                    if (video.youtubeId) {
+                        statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-500/90 text-black shadow-md border border-amber-400/30">Matched</span>`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="aspect-video bg-black/50 relative overflow-hidden">
+                            ${qualityBadgeHtml}
+                            ${statusBadgeHtml}
+                            ${imgHtml}
+                            ${fallbackImgHtml}
+                            <span class="duration-badge absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-mono text-white flex items-center gap-1">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                ${video.duration}
+                            </span>
+                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-opacity p-2" id="yt-group-${rowId}"></div>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1 gap-2">
+                            <div class="min-w-0">
+                                <h3 class="text-sm font-semibold text-white truncate" title="${video.title.replace(/"/g, '&quot;')}">${video.title}</h3>
+                                <p class="text-xs text-text-secondary truncate mt-0.5">${artistsList}</p>
+                            </div>
+                            <div class="flex items-center gap-2 mt-auto">
+                                ${banBtnHtml}
+                            </div>
+                        </div>
+                    `;
+ 
+                     const group = card.querySelector('#yt-group-' + rowId);
+                     if (video.youtubeId) {
+                         group.innerHTML = getYouTubeControlsHtmlSync(video.youtubeId, video.youtubeUrl, video.title, artistsList, rowId, artistDownloadDir);
+                     } else {
+                         const findBtn = document.createElement('button');
+                         findBtn.id = 'yt-btn-' + rowId;
+                         findBtn.className = 'btn-action-overlay';
+                         findBtn.innerHTML = ytIconSvg;
+                         findBtn.onclick = (e) => {
+                             e.stopPropagation();
+                             findYouTubeSyncVideo(rowId, encodeURIComponent(searchQ).replace(/'/g, "%27"), artistDownloadDir);
+                         };
+                         group.appendChild(findBtn);
+                     }
+ 
+                     const banBtn = card.querySelector('button[title*="Banned"], button[title*="Waiting"]');
+                     if (banBtn) {
+                         banBtn.onclick = (e) => {
+                             e.stopPropagation();
+                             banWaitingVideo(video.title, video.id, artistDownloadDir, !isBanned);
+                         };
+                     }
+                 } else {
+                     const escapedLocalFile = video.localFile.replace(/'/g, "\\'");
+                     const escapedDir = artistDownloadDir.replaceAll('\\', '\\\\').replace(/'/g, "\\'");
+                     
+                     if (isBanned) {
+                         banBtnHtml = `<button class="btn-play-outline border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 px-2 py-0.5 text-[10px] h-6 mt-2 flex items-center justify-center" title="Move to Downloaded section"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg></button>`;
+                     } else {
+                         banBtnHtml = `<button class="btn-play-outline border-red-500/40 text-red-400 hover:bg-red-500/10 px-2 py-0.5 text-[10px] h-6 mt-2 flex items-center justify-center" title="Move to Banned section"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>`;
+                     }
+ 
+                     let cleanRes = video.maxResolution || 'Local';
+                     let qualityBadgeHtml = `<span class="absolute top-2 left-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#141826]/85 text-[#10b981] shadow-md border border-[#10b981]/15">${cleanRes}</span>`;
+                     let statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white shadow-md border border-emerald-400/30">✓ In Library</span>`;
+
+                     card.innerHTML = `
+                         <div class="aspect-video bg-black/50 relative overflow-hidden group">
+                             ${qualityBadgeHtml}
+                             ${statusBadgeHtml}
+                             ${imgHtml}
+                             ${fallbackImgHtml}
+                             <span class="duration-badge absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-mono text-white flex items-center gap-1">
+                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                 ${video.duration || 'Local'}
+                             </span>
+                             <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                 <button class="btn-play-action bg-primary text-white hover:bg-primary-dark w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105" title="Play local file">
+                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="ml-0.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                 </button>
+                                 <span class="text-[9px] font-bold text-emerald-400 uppercase tracking-wider mt-1">${isBanned ? 'Banned' : 'Downloaded'}</span>
+                             </div>
+                         </div>
+                         <div class="p-4 flex flex-col flex-1 gap-2">
+                             <div class="min-w-0">
+                                 <h3 class="text-sm font-semibold text-white truncate" title="${video.localFile.replace(/"/g, '&quot;')}">${video.title}</h3>
+                                 <p class="text-xs text-text-secondary truncate mt-0.5">${artistsList}</p>
+                             </div>
+                             <div class="flex items-center gap-2 mt-auto">
+                                 ${banBtnHtml}
+                             </div>
+                         </div>
+                     `;
+
+                    card.querySelector('.btn-play-action').onclick = (e) => {
+                        e.stopPropagation();
+                        playLocalFile(escapedLocalFile, escapedDir);
+                    };
+                    
+                    const banBtn = card.querySelector('button[title*="Banned"], button[title*="Downloaded"]');
+                    if (banBtn) {
+                        banBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            banLocalVideo(escapedLocalFile, escapedDir, !isBanned);
+                        };
+                    }
+                }
+
+                activeGrid.appendChild(card);
+            });
+        }
+
+        function getYouTubeControlsHtmlSync(videoId, videoUrl, title, artistsList, rowId, downloadDir, formats = null) {
+            const qSelectId = `quality-select-${rowId}`;
+            const cleanTitle = title.replace(/'/g, "\\'");
+            const cleanDir = downloadDir.replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+            
+            let selectOptions = '';
+            if (formats && formats.length > 0) {
+                formats.forEach(f => {
+                    selectOptions += `<option value="${f.id}" class="bg-[#141826] text-white">${f.label}</option>`;
+                });
+            } else {
+                selectOptions = `
+                    <option value="best" class="bg-[#141826] text-white">Best Quality (default)</option>
+                    <option value="audio" class="bg-[#141826] text-white">Audio Only (default)</option>
+                    <option value="" disabled class="bg-[#141826] text-gray-500">--- Click to load resolutions ---</option>
+                `;
+            }
+            
+            const loadedAttr = formats ? 'data-loaded="true"' : 'data-loaded="false"';
+            
+            return `
+                <div class="flex flex-col gap-2 w-full">
+                    <!-- Row 1: Watch & Copy Link -->
+                    <div class="flex items-center gap-2">
+                        <a href="${videoUrl}" target="_blank" class="flex-1 btn-play-outline bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400 hover:text-red-300 px-2 py-1 text-[10px] rounded-md font-semibold transition-all flex items-center justify-center gap-1 h-7">
+                            ${ytIconSvg}
+                        </a>
+                        <button class="flex-1 btn-play-outline bg-white/2 hover:bg-white/5 border-white/10 hover:border-white/20 text-text-secondary hover:text-white px-2 py-1 text-[10px] rounded-md font-semibold transition-all flex items-center justify-center gap-1 h-7" onclick="copyToClipboard('${videoUrl}', this)">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy Link
+                        </button>
+                    </div>
+                    <!-- Row 2: Quality Select & Download -->
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1 flex items-center min-w-0">
+                            <select id="${qSelectId}" onfocus="loadFormatsOnDemand('${videoId}', this)" ${loadedAttr} class="w-full input-box bg-black/60 border border-[#10b981]/30 hover:border-[#10b981]/60 text-[#10b981] rounded-md pl-2 pr-6 py-1 text-[10px] font-bold cursor-pointer h-7 outline-none hover:border-[#10b981]/50 transition-all" style="-webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; background-image: none !important;">
+                                ${selectOptions}
+                            </select>
+                            <div class="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-[#10b981]">
+                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                            </div>
+                        </div>
+                        <button id="dl-btn-${rowId}" class="flex-1 btn-play-outline bg-[#10b981]/10 hover:bg-[#10b981]/20 border-[#10b981]/30 hover:border-[#10b981]/60 text-[#10b981] hover:text-white px-2.5 py-1 text-[10px] rounded-md font-semibold transition-all flex items-center justify-center gap-1 shadow-[0_0_8px_rgba(16,185,129,0.2)] h-7" onclick="downloadCustomYtVideo('${rowId}', '${videoId}', '${cleanTitle.replace(/"/g, '&quot;')}', '${qSelectId}', 'dl-btn-${rowId}', '${cleanDir}', '${artistsList.replace(/'/g, "\\'")}')" title="Download">
+                            ${dlIconInnerSvg}
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        async function loadFormatsOnDemand(videoId, selectElement) {
+            if (selectElement.getAttribute('data-loaded') === 'true' || selectElement.getAttribute('data-loading') === 'true') {
+                return;
+            }
+            
+            selectElement.setAttribute('data-loading', 'true');
+            const originalValue = selectElement.value;
+            
+            selectElement.innerHTML = '';
+            const loadingOpt = document.createElement('option');
+            loadingOpt.value = "loading";
+            loadingOpt.textContent = "Loading sizes...";
+            loadingOpt.selected = true;
+            loadingOpt.disabled = true;
+            
+            const isIndexSelect = selectElement.className.includes('select-input');
+            const isIntelSelect = selectElement.className.includes('input-box');
+            
+            if (isIndexSelect) {
+                loadingOpt.style.color = "var(--text-primary)";
+            } else {
+                loadingOpt.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+            }
+            selectElement.appendChild(loadingOpt);
+            
+            try {
+                const response = await fetch(`/api/youtube/formats?videoId=${videoId}`);
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success' && result.formats && result.formats.length > 0) {
+                    selectElement.innerHTML = '';
+                    result.formats.forEach(f => {
+                        const opt = document.createElement('option');
+                        opt.value = f.id;
+                        opt.textContent = f.label;
+                        if (isIndexSelect) {
+                            opt.style.color = "var(--text-primary)";
+                        } else {
+                            opt.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+                        }
+                        if (f.id === originalValue) {
+                            opt.selected = true;
+                        }
+                        selectElement.appendChild(opt);
+                    });
+                    
+                    if (!Array.from(selectElement.options).some(o => o.value === originalValue)) {
+                        selectElement.value = 'best';
+                    }
+                    selectElement.setAttribute('data-loaded', 'true');
+                } else {
+                    selectElement.innerHTML = '';
+                    const optBest = document.createElement('option');
+                    optBest.value = 'best';
+                    optBest.textContent = 'Best Quality (default)';
+                    const optAudio = document.createElement('option');
+                    optAudio.value = 'audio';
+                    optAudio.textContent = 'Audio Only (default)';
+                    if (isIndexSelect) {
+                        optBest.style.color = "var(--text-primary)";
+                        optAudio.style.color = "var(--text-primary)";
+                    } else {
+                        optBest.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+                        optAudio.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+                    }
+                    selectElement.appendChild(optBest);
+                    selectElement.appendChild(optAudio);
+                    selectElement.value = originalValue;
+                }
+            } catch (err) {
+                console.error('Error loading formats:', err);
+                selectElement.innerHTML = '';
+                const optBest = document.createElement('option');
+                optBest.value = 'best';
+                optBest.textContent = 'Best Quality (default)';
+                const optAudio = document.createElement('option');
+                optAudio.value = 'audio';
+                optAudio.textContent = 'Audio Only (default)';
+                if (isIndexSelect) {
+                    optBest.style.color = "var(--text-primary)";
+                    optAudio.style.color = "var(--text-primary)";
+                } else {
+                    optBest.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+                    optAudio.className = isIntelSelect ? 'bg-[#05060a] text-white' : 'bg-[#141826] text-white';
+                }
+                selectElement.appendChild(optBest);
+                selectElement.appendChild(optAudio);
+                selectElement.value = originalValue;
+            } finally {
+                selectElement.removeAttribute('data-loading');
+            }
+        }
+
+        async function findYouTubeSyncVideo(rowId, query, downloadDir) {
+            const btn = document.getElementById(`yt-btn-${rowId}`);
+            if (!btn) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = `Searching...`;
+            
+            try {
+                const response = await fetch('/api/youtube/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: decodeURIComponent(query), tidalId: rowId })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    // Update frontend state
+                    for (const arr of [currentArtistExisting, currentArtistWaiting, currentArtistExcluded]) {
+                        if (arr) {
+                            const found = arr.find(v => v.id === rowId);
+                            if (found) {
+                                found.youtubeId = result.videoId;
+                                found.youtubeUrl = result.videoUrl;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    const parent = document.getElementById(`yt-group-${rowId}`);
+                    const rawQuery = decodeURIComponent(query);
+                    const parts = rawQuery.split(" - ");
+                    const artists = parts[0] || 'Artist';
+                    const title = parts.slice(1).join(" - ") || 'Track';
+                    
+                    const card = parent.closest('.video-card');
+                    if (result.isDownloaded) {
+                        if (card) {
+                            card.setAttribute('data-downloaded', 'true');
+                            // Update border/glow classes
+                            card.className = card.className.replace(/border-border-glow bg-surface-glass\/40 hover:border-primary\/50 hover:shadow-\[[^\]]+\]/, 'border-emerald-500/35 bg-emerald-950/5 hover:border-emerald-400/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]');
+                            // Add check badge in top right
+                            const oldBadge = card.querySelector('.absolute.top-2.right-2');
+                            if (oldBadge) {
+                                oldBadge.className = 'absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white shadow-md border border-emerald-400/30';
+                                oldBadge.textContent = '✓ In Library';
+                            }
+                        }
+                        
+                        const escapedLocalFile = result.localFile.replace(/'/g, "\\'");
+                        const escapedDir = downloadDir.replaceAll('\\', '\\\\').replace(/'/g, "\\'");
+                        
+                        parent.innerHTML = `
+                            <div class="mt-2 flex flex-col gap-1.5 w-full">
+                                <div class="flex gap-1.5 w-full">
+                                    <button class="btn-play-outline flex-[1.2] justify-center text-xs h-8 flex items-center gap-1 rounded-md bg-[#10b981] text-white border-none cursor-pointer btn-play-action">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        Play Local
+                                    </button>
+                                    <button class="btn-play-outline flex-[0.8] justify-center text-xs h-8 flex items-center gap-1 rounded-md border border-yellow-500/20 bg-yellow-500/5 text-yellow-400 hover:bg-yellow-500/10 cursor-pointer" onclick="openSingleFolder('${escapedDir}')">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                                        Folder
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        parent.querySelector('.btn-play-action').onclick = (e) => {
+                            e.stopPropagation();
+                            playLocalFile(escapedLocalFile, escapedDir);
+                        };
+                    } else {
+                        parent.innerHTML = '';
+                        const wrapper = document.createElement('div');
+                        wrapper.style.display = 'contents';
+                        wrapper.innerHTML = getYouTubeControlsHtmlSync(result.videoId, result.videoUrl, title, artists, rowId, downloadDir, result.formats);
+                        parent.appendChild(wrapper);
+                    }
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = `${ytIconSvg} Not Found`;
+                    alert(`YouTube search failed: ${result.message}`);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = 'Search Error';
+                alert('YouTube search failed: Could not connect to local server.');
+            }
+        }
+
+        async function downloadCustomYtVideo(rowId, videoId, downloadTitle, qualitySelectId, btnId, downloadDir, artistName) {
+            const btnElement = document.getElementById(btnId);
+            if (!btnElement) return;
+            
+            const qualitySelect = document.getElementById(qualitySelectId);
+            const selectedQuality = qualitySelect ? qualitySelect.value : 'best';
+            
+            btnElement.disabled = true;
+            btnElement.innerHTML = `Queued`;
+            
+            try {
+                const response = await fetch('/api/youtube/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        videoId: videoId, 
+                        title: downloadTitle, 
+                        quality: selectedQuality, 
+                        downloadDir: downloadDir,
+                        artistName: artistName || ''
+                    })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    btnElement.innerHTML = `Queued`;
+                    refreshDownloadsList();
+                    startDownloadsPolling();
+                } else {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = dlIconInnerSvg;
+                    alert(`Download failed: ${result.message}`);
+                }
+            } catch (err) {
+                btnElement.disabled = false;
+                btnElement.innerHTML = dlIconInnerSvg;
+                alert('Download failed: connection error.');
+            }
+        }
+
+        async function exportLibraryYouTubeLinks(btn) {
+            const artist = document.getElementById('detail-artist-name').textContent;
+            const totalVideos = currentArtistExisting.length + currentArtistWaiting.length + currentArtistExcluded.length;
+            if (totalVideos === 0) {
+                alert("No videos to export.");
+                return;
+            }
+            
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `Exporting...`;
+            
+            const videosPayload = {
+                existing: currentArtistExisting,
+                waiting: currentArtistWaiting,
+                excluded: currentArtistExcluded
+            };
+            
+            try {
+                const response = await fetch('/api/youtube/export_all', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ artistName: artist, videos: videosPayload })
+                });
+                const result = await response.json();
+                if (response.status === 200 && result.status === 'success') {
+                    if (confirm(`Exported successfully!\n\nFile saved locally:\n${result.filepath}\n\nWould you like to open the exports folder?`)) {
+                        await fetch('/api/downloads/open_folder', { method: 'POST' });
+                    }
+                } else {
+                    alert(`Export failed: ${result.message}`);
+                }
+            } catch (err) {
+                alert(`Export error: connection error.`);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
+        }
+
+        async function downloadAllLibraryVideos(btn) {
+            const cards = document.querySelectorAll('#detail-active-grid .video-card');
+            const waitingCards = [];
+            cards.forEach(card => {
+                if (card.getAttribute('data-downloaded') !== 'true') {
+                    const groupContainer = card.querySelector('[id^="yt-group-"]');
+                    if (groupContainer) {
+                        const dlBtn = groupContainer.querySelector('button[onclick*="downloadCustomYtVideo"]');
+                        const findBtn = groupContainer.querySelector('button[onclick*="findYouTubeSyncVideo"]');
+                        if (dlBtn || findBtn) {
+                            waitingCards.push({ card, dlBtn, findBtn, groupContainer });
+                        }
+                    }
+                }
+            });
+
+            if (waitingCards.length === 0) {
+                alert("No videos in this view available to download.");
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to download all ${waitingCards.length} waiting videos from YouTube?`)) {
+                return;
+            }
+
+            toggleDownloadsDrawer();
+
+            for (const item of waitingCards) {
+                const { card, dlBtn, findBtn, groupContainer } = item;
+                if (card.getAttribute('data-downloaded') === 'true') {
+                    continue;
+                }
+
+                const selectEl = groupContainer.querySelector('select[id^="quality-select-"]');
+                if (selectEl && selectEl.options.length > 0) {
+                    if (selectEl.getAttribute('data-loaded') === 'true') {
+                        let bestOption = selectEl.options[0].value;
+                        for (let i = 0; i < selectEl.options.length; i++) {
+                            const optText = selectEl.options[i].text.toLowerCase();
+                            if (!optText.includes('audio only') && !optText.includes('m4a') && !optText.includes('mp3')) {
+                                bestOption = selectEl.options[i].value;
+                                break;
+                            }
+                        }
+                        selectEl.value = bestOption;
+                    } else {
+                        selectEl.value = "best";
+                    }
+                }
+                
+                if (dlBtn && !dlBtn.disabled && !dlBtn.innerHTML.includes('✓') && !dlBtn.innerHTML.includes('Queued')) {
+                    dlBtn.click();
+                    await new Promise(r => setTimeout(r, 600));
+                } else if (findBtn && !findBtn.disabled) {
+                    findBtn.click();
+                    for (let i = 0; i < 16; i++) {
+                        await new Promise(r => setTimeout(r, 500));
+                        const newDlBtn = groupContainer.querySelector('button[onclick*="downloadCustomYtVideo"]');
+                        if (newDlBtn) {
+                            if (!newDlBtn.disabled && !newDlBtn.innerHTML.includes('✓')) {
+                                const newSelectEl = groupContainer.querySelector('select[id^="quality-select-"]');
+                                if (newSelectEl && newSelectEl.options.length > 0) {
+                                    if (newSelectEl.getAttribute('data-loaded') === 'true') {
+                                        let bestOption = newSelectEl.options[0].value;
+                                        for (let j = 0; j < newSelectEl.options.length; j++) {
+                                            const optText = newSelectEl.options[j].text.toLowerCase();
+                                            if (!optText.includes('audio only') && !optText.includes('m4a') && !optText.includes('mp3')) {
+                                                bestOption = newSelectEl.options[j].value;
+                                                break;
+                                            }
+                                        }
+                                        newSelectEl.value = bestOption;
+                                    } else {
+                                        newSelectEl.value = "best";
+                                    }
+                                }
+                                newDlBtn.click();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        async function findAllLibraryYouTubeLinks(btn) {
+            const btns = Array.from(document.querySelectorAll('#detail-active-grid button[id^="yt-btn-"]')).filter(b => {
+                return !b.disabled && !b.textContent.includes('Searching') && !b.textContent.includes('Not Found') && !b.textContent.includes('Error');
+            });
+            
+            if (btns.length === 0) {
+                alert("No tracks in this view need YouTube links fetched.");
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to search and fetch YouTube links for all ${btns.length} tracks?`)) {
+                return;
+            }
+            
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `Searching...`;
+            
+            try {
+                for (const b of btns) {
+                    if (b.disabled || b.textContent.includes('Searching') || b.textContent.includes('Not Found') || b.textContent.includes('Error')) continue;
+                    b.click();
+                    // Wait for the search request to complete to prevent rate limit
+                    await new Promise(r => setTimeout(r, 1200));
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
+        }
+
+        function copyToClipboard(text, btnElement) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            if (btnElement) {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = `
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Copied!
+                `;
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                }, 1500);
+            }
+        }
+
+        let activeDownloadsPoll = null;
+        let drawerOpen = false;
+
+        function toggleDownloadsDrawer() {
+            const drawer = document.getElementById('downloads-drawer');
+            if (!drawer) return;
+            drawerOpen = !drawerOpen;
+            if (drawerOpen) {
+                drawer.style.right = '0px';
+            } else {
+                drawer.style.right = '-360px';
+            }
+        }
+
+        async function refreshDownloadsList() {
+            try {
+                const response = await fetch('/api/downloads/status');
+                const data = await response.json();
+                const downloadsList = document.getElementById('downloads-list');
+                if (!downloadsList) return;
+                downloadsList.innerHTML = '';
+                
+                let activeCount = 0;
+                let list = Array.isArray(data) ? data : (data.downloads || []);
+                
+                list.forEach(item => {
+                    if (item.status === 'queued' || item.status === 'downloading') {
+                        activeCount++;
+                    }
+                    
+                    const el = document.createElement('li');
+                    el.className = "bg-white/2 border border-white/5 p-3 rounded-lg flex flex-col gap-2";
+                    
+                    let statusColor = "text-[#8b5cf6]";
+                    if (item.status === 'completed') statusColor = "text-[#10b981]";
+                    if (item.status === 'failed') statusColor = "text-[#ef4444]";
+                    
+                    el.innerHTML = `
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-xs font-semibold text-white truncate flex-1" title="${item.title}">${item.title}</span>
+                            <span class="text-[9px] uppercase font-bold tracking-wider ${statusColor}">${item.status}</span>
+                        </div>
+                        <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-300" style="width: ${item.progress}%"></div>
+                        </div>
+                        <div class="flex justify-between text-[9px] text-text-secondary">
+                            <span>${item.progress}% • ${item.quality || 'BEST'}${item.size_status ? ` • ${item.size_status}` : ''}</span>
+                            <span>${item.speed || ''}</span>
+                        </div>
+                    `;
+                    downloadsList.appendChild(el);
+                });
+                
+                const badge = document.getElementById('downloads-badge');
+                if (badge) badge.textContent = activeCount;
+                
+                const badgeText = document.getElementById('downloads-badge-text');
+                if (badgeText) badgeText.textContent = `${activeCount} active`;
+                
+                if (activeCount === 0 && activeDownloadsPoll) {
+                    stopDownloadsPolling();
+                }
+            } catch (err) {
+                console.error("Error refreshing downloads list:", err);
+            }
+        }
+
+        function startDownloadsPolling() {
+            if (!activeDownloadsPoll) {
+                activeDownloadsPoll = setInterval(refreshDownloadsList, 2000);
+            }
+        }
+
+        function stopDownloadsPolling() {
+            if (activeDownloadsPoll) {
+                clearInterval(activeDownloadsPoll);
+                activeDownloadsPoll = null;
+            }
+        }
+
+        async function clearCompletedDownloads() {
+            try {
+                await fetch('/api/downloads/clear', { method: 'POST' });
+                refreshDownloadsList();
+            } catch (err) {
+                console.error("Error clearing downloads:", err);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             initLibrary();
+            refreshDownloadsList();
+            setTimeout(startDownloadsPolling, 1000);
         });
     </script>
 </body>
