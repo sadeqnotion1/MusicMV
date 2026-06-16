@@ -54,3 +54,17 @@ E:\Projects\Icon-Music\
 ├── requirements.txt                # Dependencies list
 └── README.md                       # Repository documentation
 ```
+
+---
+
+## 🎵 Tidal API Integration & Token Legacy
+
+### The Story
+Historically, there was concern that Tidal disabled public client tokens for unauthenticated catalog search and metadata operations, prompting plans to replace the metadata backend with third-party APIs (like Deezer, iTunes, or YouTube). 
+
+However, verification proved that the legacy Tidal client token **`CzET4vdadNUFQ5JU`** is still active and fully operational. To preserve original catalog matching features and premium search quality, the replacement path was discarded, and the app was restored to work directly with Tidal.
+
+### Implementation Details
+* **Fallback Token**: Defined directly in [src/app.py](file:///G:/Music/MusicMV/src/app.py) as a default fallback: `TIDAL_TOKEN = os.environ.get("TIDAL_TOKEN", "CzET4vdadNUFQ5JU")`. If you need to rotate or provide a custom token, define it in the environment variable `TIDAL_TOKEN`.
+* **Explicit HTTP Status Logging**: In case this token is eventually revoked by Tidal, all HTTP requests to Tidal's API check the status code and explicitly print failure reasons (e.g. `HTTP 401` or `HTTP 403` error messages) to the console/logs instead of failing silently. This ensures immediate feedback if the token needs to be replaced.
+

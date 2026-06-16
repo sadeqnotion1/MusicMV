@@ -1031,6 +1031,7 @@
             text-transform: uppercase;
         }
         .v-badge-priority { background-color: var(--accent-warm-light); color: var(--accent-warm); }
+        .v-badge-official_mv { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
         .v-badge-standard { background-color: rgba(161, 161, 170, 0.15); color: var(--text-secondary); }
         .v-badge-excluded { background-color: var(--danger-light); color: var(--danger); }
         .v-badge-hd { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
@@ -1720,9 +1721,13 @@
                             <span class="stat-label" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total</span>
                             <span class="stat-val" id="stat-total" style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">-</span>
                         </div>
+                        <div style="display: flex; align-items: baseline; gap: 6px;" id="stat-official_mv-card">
+                            <span class="stat-label" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Official MV</span>
+                            <span class="stat-val" id="stat-official_mv" style="font-size: 1.15rem; font-weight: 700; color: var(--accent-warm);">-</span>
+                        </div>
                         <div style="display: flex; align-items: baseline; gap: 6px;">
                             <span class="stat-label" id="stat-priority-label" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Priority</span>
-                            <span class="stat-val" id="stat-priority" style="font-size: 1.15rem; font-weight: 700; color: var(--accent-warm);">-</span>
+                            <span class="stat-val" id="stat-priority" style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">-</span>
                         </div>
                         <div style="display: flex; align-items: baseline; gap: 6px;" id="stat-standard-card">
                             <span class="stat-label" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Standard</span>
@@ -1782,7 +1787,11 @@
 
                     <div class="tabs-row">
                         <div class="tabs-list">
-                            <button class="tab-btn active" id="tab-priority-btn" onclick="switchTab('priority')">
+                            <button class="tab-btn active" id="tab-official_mv-btn" onclick="switchTab('official_mv')">
+                                <span id="tab-official_mv-text">Official Music Video</span>
+                                <span class="tab-badge" id="badge-official_mv">0</span>
+                            </button>
+                            <button class="tab-btn" id="tab-priority-btn" onclick="switchTab('priority')">
                                 <span id="tab-priority-text">Priority Content</span>
                                 <span class="tab-badge" id="badge-priority">0</span>
                             </button>
@@ -2115,8 +2124,8 @@
 
         // Data variables
         let activeMode = 'catalog';
-        let artistVideos = { priority: [], standard: [], excluded: [] };
-        let currentTab = 'priority';
+        let artistVideos = { official_mv: [], priority: [], standard: [], excluded: [] };
+        let currentTab = 'official_mv';
         
         let loadedChartData = null;
         let loadedArtistHistory = null;
@@ -2137,6 +2146,7 @@
         const artistPhoto = document.getElementById('artist-photo');
         const artistName = document.getElementById('artist-name');
         const artistMeta = document.getElementById('artist-meta');
+        const badgeOfficialMv = document.getElementById('badge-official_mv');
         const badgePriority = document.getElementById('badge-priority');
         const badgeStandard = document.getElementById('badge-standard');
         const badgeExcluded = document.getElementById('badge-excluded');
@@ -2144,6 +2154,7 @@
         
         const statsPanel = document.getElementById('stats-panel');
         const statTotal = document.getElementById('stat-total');
+        const statOfficialMv = document.getElementById('stat-official_mv');
         const statPriority = document.getElementById('stat-priority');
         const statPriorityLabel = document.getElementById('stat-priority-label');
         const statStandard = document.getElementById('stat-standard');
@@ -2374,9 +2385,12 @@
         }
 
         function loadCatalogData(data) {
+            document.getElementById('tab-official_mv-btn').style.display = 'inline-flex';
             document.getElementById('tab-standard-btn').style.display = 'inline-flex';
             document.getElementById('tab-excluded-btn').style.display = 'inline-flex';
+            document.getElementById('tab-official_mv-text').textContent = 'Official Music Video';
             document.getElementById('tab-priority-text').textContent = 'Priority Content';
+            document.getElementById('stat-official_mv-card').style.display = 'flex';
             statStandardCard.style.display = 'flex';
             statExcludedCard.style.display = 'flex';
             statPriorityLabel.textContent = 'Priority';
@@ -2388,17 +2402,20 @@
             artistVideos = data.videos;
             
             statTotal.textContent = data.stats.total;
+            statOfficialMv.textContent = data.stats.official_mv;
             statPriority.textContent = data.stats.priority;
             statStandard.textContent = data.stats.standard;
             statExcluded.textContent = data.stats.excluded;
             
+            badgeOfficialMv.textContent = data.stats.official_mv;
             badgePriority.textContent = data.stats.priority;
             badgeStandard.textContent = data.stats.standard;
             badgeExcluded.textContent = data.stats.excluded;
             
             statsPanel.style.display = 'flex';
             
-            if (data.stats.priority > 0) switchTab('priority');
+            if (data.stats.official_mv > 0) switchTab('official_mv');
+            else if (data.stats.priority > 0) switchTab('priority');
             else if (data.stats.standard > 0) switchTab('standard');
             else switchTab('excluded');
             
@@ -2440,11 +2457,13 @@
             
             statTotal.textContent = data.stats.total;
             statPriority.textContent = data.stats.priority;
+            document.getElementById('stat-official_mv-card').style.display = 'none';
             statStandardCard.style.display = 'none';
             statExcludedCard.style.display = 'none';
             statPriorityLabel.textContent = 'Playlist';
             
             badgePriority.textContent = data.stats.priority;
+            document.getElementById('tab-official_mv-btn').style.display = 'none';
             document.getElementById('tab-standard-btn').style.display = 'none';
             document.getElementById('tab-excluded-btn').style.display = 'none';
             document.getElementById('tab-priority-text').textContent = 'Song List';
@@ -2456,6 +2475,7 @@
 
         function switchTab(tabName) {
             currentTab = tabName;
+            document.getElementById('tab-official_mv-btn').classList.remove('active');
             document.getElementById('tab-priority-btn').classList.remove('active');
             document.getElementById('tab-standard-btn').classList.remove('active');
             document.getElementById('tab-excluded-btn').classList.remove('active');
@@ -2490,6 +2510,8 @@
                 let badgesHtml = '';
                 if (isExcluded) {
                     badgesHtml += `<span class="v-badge v-badge-excluded">Filtered Out</span>`;
+                } else if (video.category === 'Official Music Video') {
+                    badgesHtml += `<span class="v-badge v-badge-official_mv">Official MV</span>`;
                 } else if (video.category !== 'Standard') {
                     badgesHtml += `<span class="v-badge v-badge-priority">${video.category}</span>`;
                 } else {

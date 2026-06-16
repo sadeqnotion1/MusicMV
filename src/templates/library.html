@@ -1430,12 +1430,14 @@
                 downloadsList.innerHTML = '';
                 
                 let activeCount = 0;
+                let queueIndex = 0;
                 let list = Array.isArray(data) ? data : (data.downloads || []);
                 
                 list.forEach(item => {
                     if (item.status === 'queued' || item.status === 'downloading') {
                         activeCount++;
                     }
+                    if (item.status === 'queued') queueIndex++;
                     
                     const el = document.createElement('li');
                     el.className = "bg-white/2 border border-white/5 p-3 rounded-lg flex flex-col gap-2";
@@ -1444,16 +1446,18 @@
                     if (item.status === 'completed') statusColor = "text-[#10b981]";
                     if (item.status === 'failed') statusColor = "text-[#ef4444]";
                     
+                    const statusLabel = item.status === 'queued' ? `queued (#${queueIndex})` : item.status;
+                    
                     el.innerHTML = `
                         <div class="flex justify-between items-start gap-2">
                             <span class="text-xs font-semibold text-white truncate flex-1" title="${item.title}">${item.title}</span>
-                            <span class="text-[9px] uppercase font-bold tracking-wider ${statusColor}">${item.status}</span>
+                            <span class="text-[9px] uppercase font-bold tracking-wider ${statusColor}">${statusLabel}</span>
                         </div>
                         <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-300" style="width: ${item.progress}%"></div>
+                            <div class="bg-gradient-to-r ${item.status === 'failed' ? 'from-red-500 to-red-600' : 'from-primary to-secondary'} h-full rounded-full transition-all duration-300" style="width: ${item.status === 'queued' ? '0' : item.progress}%"></div>
                         </div>
                         <div class="flex justify-between text-[9px] text-text-secondary">
-                            <span>${item.progress}% • ${item.quality || 'BEST'}${item.size_status ? ` • ${item.size_status}` : ''}</span>
+                            <span>${item.status === 'queued' ? 'Waiting for slot...' : (item.progress + '% • ' + (item.quality || 'BEST') + (item.size_status ? ' • ' + item.size_status : ''))}</span>
                             <span>${item.speed || ''}</span>
                         </div>
                     `;

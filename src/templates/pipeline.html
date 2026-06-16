@@ -408,13 +408,19 @@
             const isScrolledToBottom = consoleBody.scrollHeight - consoleBody.clientHeight <= consoleBody.scrollTop + 60;
             consoleBody.innerHTML = html;
             
-            if (isScrolledToBottom || !window.hasUserScrolledConsole) {
+            if (isScrolledToBottom || window.hasUserScrolledConsole !== true) {
                 consoleBody.scrollTop = consoleBody.scrollHeight;
             }
+            // [fix v3 #2] mark render time so the scroll listener can ignore the
+            // programmatic scroll event caused by replacing innerHTML above.
+            window.__consoleLastRender = Date.now();
         }
 
         // Track if user scrolled the console manually
         document.getElementById('console-body').addEventListener('scroll', function(e) {
+            // [fix v3 #2] ignore scroll events fired by the programmatic innerHTML
+            // re-render so genuine user intent isn't overwritten.
+            if (window.__consoleLastRender && (Date.now() - window.__consoleLastRender) < 200) return;
             const el = e.target;
             // User is near the bottom
             if (el.scrollHeight - el.clientHeight <= el.scrollTop + 30) {

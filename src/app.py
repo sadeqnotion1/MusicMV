@@ -23,7 +23,7 @@ def log_to_file(message):
         print(f"Error writing to flask_app.log: {e}")
 
 # Publicly available Tidal Web Client Token
-TIDAL_TOKEN = os.environ.get("TIDAL_TOKEN", "")
+TIDAL_TOKEN = os.environ.get("TIDAL_TOKEN", "CzET4vdadNUFQ5JU")
 DEFAULT_COUNTRY = "US"
 
 # YT matches history cache file path
@@ -191,6 +191,8 @@ def search_tidal_metadata(query_str):
                     'duration': duration_str,
                     'source': 'tidal_track'
                 }
+        else:
+            print(f"Tidal search metadata HTTP error for '{query_str}': HTTP {response.status_code}")
     except Exception as e:
         print(f"Tidal search metadata error for '{query_str}': {e}")
     return None
@@ -372,6 +374,8 @@ def extract_artist_id(input_str, country_code=DEFAULT_COUNTRY):
                 artist = data.get('artist', {})
                 if artist.get('id'):
                     return str(artist.get('id'))
+            else:
+                print(f"Error resolving artist from video URL HTTP error: HTTP {response.status_code}")
         except Exception as e:
             print(f"Error resolving artist from video URL: {e}")
             
@@ -408,6 +412,8 @@ def search_artists(query, country_code=DEFAULT_COUNTRY):
                     'popularity': item.get('popularity', 0)
                 })
             return results
+        else:
+            print(f"Artist search HTTP error for '{query}': HTTP {response.status_code}")
     except Exception as e:
         print(f"Artist search error: {e}")
     return []
@@ -431,6 +437,8 @@ def fetch_artist_data(artist_id, country_code=DEFAULT_COUNTRY):
             pic_id = data.get('picture')
             if pic_id:
                 artist_pic = f"https://resources.tidal.com/images/{pic_id.replace('-', '/')}/320x320.jpg"
+        else:
+            print(f"Artist details fetch HTTP error for artist ID {artist_id}: HTTP {response.status_code}")
     except Exception as e:
         print(f"Artist details fetch error: {e}")
         
@@ -442,6 +450,8 @@ def fetch_artist_data(artist_id, country_code=DEFAULT_COUNTRY):
         if response.status_code == 200:
             data = response.json()
             videos = data.get('items', [])
+        else:
+            print(f"Artist videos fetch HTTP error for artist ID {artist_id}: HTTP {response.status_code}")
     except Exception as e:
         print(f"Artist videos fetch error: {e}")
         
@@ -451,14 +461,15 @@ def process_and_filter_videos(videos):
     excluded_terms = ["lyric video", "lyric vid", "visualizer", "behind the scenes", "audio", "lyrics", "lyric", "banned", "excluded"]
     
     priority_map = {
-        "official video": "Official Video",
-        "official music video": "Official Video",
         "live from": "Live Session",
         "live at": "Live Session",
         "acoustic": "Acoustic",
         "live session": "Live Session"
     }
     
+    official_mv_terms = ["official music video", "official video"]
+    
+    official_mv_list = []
     priority_list = []
     standard_list = []
     excluded_list = []
@@ -511,20 +522,31 @@ def process_and_filter_videos(videos):
             video_data['exclusion_reason'] = f"Contains '{excluded_by}'"
             excluded_list.append(video_data)
         else:
-            matched_priority = None
-            for term, category_name in priority_map.items():
+            is_official_mv = False
+            for term in official_mv_terms:
                 if term in title_lower:
-                    matched_priority = category_name
+                    is_official_mv = True
                     break
                     
-            if matched_priority:
-                video_data['category'] = matched_priority
-                priority_list.append(video_data)
+            if is_official_mv:
+                video_data['category'] = "Official Music Video"
+                official_mv_list.append(video_data)
             else:
-                video_data['category'] = "Standard"
-                standard_list.append(video_data)
-                
+                matched_priority = None
+                for term, category_name in priority_map.items():
+                    if term in title_lower:
+                        matched_priority = category_name
+                        break
+                        
+                if matched_priority:
+                    video_data['category'] = matched_priority
+                    priority_list.append(video_data)
+                else:
+                    video_data['category'] = "Standard"
+                    standard_list.append(video_data)
+                    
     return {
+        'official_mv': official_mv_list,
         'priority': priority_list,
         'standard': standard_list,
         'excluded': excluded_list
@@ -571,6 +593,24 @@ def get_norm(val, art_name):
     v = re.sub(r'[^a-z0-9]', '', v)
     return v
 
+def is_artist_match(query_artist, info):
+    if not query_artist:
+        return True
+    folder_artist = info.get('artist', '')
+    filename = info.get('filename', '')
+    
+    norm_query = re.sub(r'[^a-z0-9]', '', query_artist.lower())
+    norm_folder = re.sub(r'[^a-z0-9]', '', folder_artist.lower()) if folder_artist else ""
+    norm_filename = re.sub(r'[^a-z0-9]', '', filename.lower()) if filename else ""
+    
+    if not norm_query or not norm_folder:
+        return True
+        
+    return (norm_folder == norm_query or 
+            norm_query in norm_folder or 
+            norm_folder in norm_query or 
+            norm_query in norm_filename)
+
 def get_global_library_norms():
     import manage_music_videos
     global_norms = {}
@@ -587,11 +627,13 @@ def get_global_library_norms():
                         if ext in manage_music_videos.video_extensions:
                             v_norm = get_norm(item.name, artist_name)
                             if v_norm:
-                                global_norms[v_norm] = {
+                                if v_norm not in global_norms:
+                                    global_norms[v_norm] = []
+                                global_norms[v_norm].append({
                                     'artist': artist_name,
                                     'filename': item.name,
                                     'path': item.path
-                                }
+                                })
     except Exception as e:
         print(f"Error building global library norms: {e}")
     return global_norms
@@ -600,9 +642,11 @@ def check_library_status(title, artist, global_norms):
     v_norm = get_norm(title, artist)
     if not v_norm:
         return False, None, None
-    for g_norm, info in global_norms.items():
+    for g_norm, items in global_norms.items():
         if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
-            return True, info['filename'], os.path.dirname(info['path'])
+            for info in items:
+                if is_artist_match(artist, info):
+                    return True, info['filename'], os.path.dirname(info['path'])
     return False, None, None
 
 @app.route('/api/fetch', methods=['POST'])
@@ -663,7 +707,7 @@ def api_fetch():
         
         try:
             yt_cache = load_yt_cache()
-            for cat in ['priority', 'standard', 'excluded']:
+            for cat in ['official_mv', 'priority', 'standard', 'excluded']:
                 for video in classified[cat]:
                     t_id = str(video['id'])
                     artists_str = ", ".join(video.get('artists', [])) if video.get('artists') else name
@@ -687,13 +731,19 @@ def api_fetch():
                             
                     # 2. Check globally if not matched in current artist folder
                     if not matched:
-                        for g_norm, info in global_norms.items():
+                        for g_norm, items in global_norms.items():
                             if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
-                                video['isDownloaded'] = True
-                                video['localFile'] = info['filename']
-                                video['localDir'] = os.path.dirname(info['path'])
-                                video['differentArtist'] = info['artist']
-                                break
+                                matched_item = None
+                                for info in items:
+                                    if is_artist_match(artists_str, info):
+                                        matched_item = info
+                                        break
+                                if matched_item:
+                                    video['isDownloaded'] = True
+                                    video['localFile'] = matched_item['filename']
+                                    video['localDir'] = os.path.dirname(matched_item['path'])
+                                    video['differentArtist'] = matched_item['artist']
+                                    break
                             
                     cached_entry = get_from_yt_cache(t_id, v_query, yt_cache)
                     if cached_entry:
@@ -714,6 +764,7 @@ def api_fetch():
                 'videos': classified,
                 'stats': {
                     'total': len(videos),
+                    'official_mv': len(classified['official_mv']),
                     'priority': len(classified['priority']),
                     'standard': len(classified['standard']),
                     'excluded': len(classified['excluded'])
@@ -802,6 +853,8 @@ def api_playlist_match():
                         'url': f"https://tidal.com/video/{item.get('id')}",
                         'category': 'Priority'
                     }
+            else:
+                print(f"Playlist line matching HTTP error for line '{line}': HTTP {response.status_code}")
         except Exception as e:
             print(f"Error matching playlist line '{line}' on Tidal: {e}")
             
@@ -836,13 +889,20 @@ def api_playlist_match():
         video_data['localFile'] = None
         video_data['localDir'] = None
         
-        for g_norm, info in global_norms.items():
+        for g_norm, items in global_norms.items():
             if g_norm == v_norm or v_norm in g_norm or g_norm in v_norm:
-                video_data['isDownloaded'] = True
-                video_data['localFile'] = info['filename']
-                video_data['localDir'] = os.path.dirname(info['path'])
-                video_data['differentArtist'] = info['artist']
-                break
+                matched_item = None
+                query_art = ", ".join(video_data['artists']) if video_data['artists'] else first_artist
+                for info in items:
+                    if is_artist_match(query_art, info):
+                        matched_item = info
+                        break
+                if matched_item:
+                    video_data['isDownloaded'] = True
+                    video_data['localFile'] = matched_item['filename']
+                    video_data['localDir'] = os.path.dirname(matched_item['path'])
+                    video_data['differentArtist'] = matched_item['artist']
+                    break
                 
         return video_data
 
@@ -859,12 +919,14 @@ def api_playlist_match():
                 'picture': ''
             },
             'videos': {
+                'official_mv': [],
                 'priority': matched_videos,
                 'standard': [],
                 'excluded': []
             },
             'stats': {
                 'total': len(matched_videos),
+                'official_mv': 0,
                 'priority': len(matched_videos),
                 'standard': 0,
                 'excluded': 0
@@ -882,9 +944,10 @@ def api_export():
     text_content += f"Exported on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
     text_content += f"======================================================================\n\n"
     
-    categories = ['priority', 'standard', 'excluded']
+    categories = ['official_mv', 'priority', 'standard', 'excluded']
     titles = {
-        'priority': 'PRIORITY MUSIC VIDEOS (OFFICIAL / LIVE / ACOUSTIC)',
+        'official_mv': 'OFFICIAL MUSIC VIDEOS',
+        'priority': 'OTHER PRIORITY CONTENT (LIVE / ACOUSTIC)',
         'standard': 'STANDARD MUSIC VIDEOS',
         'excluded': 'FILTERED OUT VIDEOS (LYRIC VIDEOS / VISUALIZERS / BEHIND THE SCENES)'
     }
@@ -1058,7 +1121,8 @@ def api_youtube_export_all():
     text_content += f"======================================================================\n\n"
     
     titles = {
-        'priority': 'PRIORITY MUSIC VIDEOS (OFFICIAL / LIVE / ACOUSTIC)',
+        'official_mv': 'OFFICIAL MUSIC VIDEOS',
+        'priority': 'OTHER PRIORITY CONTENT (LIVE / ACOUSTIC)',
         'standard': 'STANDARD MUSIC VIDEOS',
         'excluded': 'FILTERED OUT VIDEOS (LYRIC VIDEOS / VISUALIZERS / BEHIND THE SCENES)',
         'existing': 'DOWNLOADED VIDEOS IN LIBRARY',
@@ -2704,7 +2768,7 @@ def api_archive_artist_sync():
         except Exception as e:
             print(f"Error loading banned.json: {e}")
             
-    for cat in ['priority', 'standard']:
+    for cat in ['official_mv', 'priority', 'standard']:
         new_cat_list = []
         for video in classified[cat]:
             v_id = str(video.get('id', ''))
@@ -2719,7 +2783,7 @@ def api_archive_artist_sync():
     
     try:
         yt_cache = load_yt_cache()
-        for cat in ['priority', 'standard', 'excluded']:
+        for cat in ['official_mv', 'priority', 'standard', 'excluded']:
             for video in classified[cat]:
                 t_id = str(video['id'])
                 artists_str = ", ".join(video.get('artists', [])) if video.get('artists') else tidal_artist_name
@@ -2743,7 +2807,7 @@ def api_archive_artist_sync():
     excluded_videos = []
     excluded_terms = ["lyric video", "lyric vid", "visualizer", "behind the scenes", "audio", "lyrics", "lyric", "banned", "excluded"]
     
-    all_allowed = classified['priority'] + classified['standard']
+    all_allowed = classified['official_mv'] + classified['priority'] + classified['standard']
     matched_local_filenames = set()
     
     # 1. Match local files against allowed Tidal videos
