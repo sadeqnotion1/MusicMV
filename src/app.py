@@ -3033,6 +3033,9 @@ def api_archive_video_ban():
 def run_flask(port):
     app.run(host='127.0.0.1', port=port, debug=False, use_reloader=False)
 
+from dashboard_api import register_dashboard
+register_dashboard(app, lambda: PIPELINE_PATH)
+
 if __name__ == '__main__':
     # Prefer port 30308 to keep port stable across restarts, fallback if occupied
     port = 30308

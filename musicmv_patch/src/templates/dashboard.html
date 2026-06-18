@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MusicMV · Catalog Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/dashboard.css" />
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<div class="shell">
+  <!-- LEFT RAIL -->
+  <aside class="rail">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <div class="brand-txt"><b>MusicMV</b><small>Catalog Manager</small></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></button>
+      <button class="nav-item" data-view="artists"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Artists</span></button>
+      <button class="nav-item" data-view="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="15" rx="2"/><path d="m10 9 5 3-5 3z"/></svg><span>Video Library</span></button>
+      <button class="nav-item" data-view="missing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg><span>Missing Tracks</span></button>
+    </nav>
+    <div class="rail-foot">
+      <div class="pulse-dot"><i></i></div>
+      <div><b id="foot-status">Ready</b><small id="foot-path">scanning…</small></div>
+    </div>
+  </aside>
+
+  <!-- CENTER STAGE -->
+  <main class="stage">
+    <header class="topbar">
+      <div>
+        <h1>Catalog Dashboard</h1>
+        <p class="sub">Your real library — sorted, reconciled, audited.</p>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Search artists or videos…" />
+      </div>
+    </header>
+
+    <section class="stats" id="stats">
+      <article class="stat reveal"><span class="stat-ico v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><div><div class="stat-num" data-count="0" id="st-artists">0</div><div class="stat-lbl">Artists</div></div></article>
+      <article class="stat reveal"><span class="stat-ico c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="15" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></span><div><div class="stat-num" data-count="0" id="st-videos">0</div><div class="stat-lbl">Music Videos</div></div></article>
+      <article class="stat reveal"><span class="stat-ico g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="stat-num" data-count="0" id="st-collabs">0</div><div class="stat-lbl">Collaborations</div></div></article>
+      <article class="stat reveal"><span class="stat-ico r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg></span><div><div class="stat-num" data-count="0" id="st-missing">0</div><div class="stat-lbl">Missing on Deezer</div></div></article>
+    </section>
+
+    <section class="block reveal" id="artists-block">
+      <div class="block-head"><h2>Artists</h2><span class="hint" id="artists-hint"></span></div>
+      <div class="artist-grid" id="artist-grid"></div>
+    </section>
+
+    <section class="block reveal" id="library-block">
+      <div class="block-head"><h2>Video Library</h2><span class="hint" id="library-hint"></span></div>
+      <div class="video-grid" id="video-grid"></div>
+    </section>
+  </main>
+
+  <!-- RIGHT DRAWER -->
+  <aside class="drawer">
+    <div class="ring-wrap reveal">
+      <svg class="ring" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fg" cx="60" cy="60" r="52" id="ring-fg"/>
+      </svg>
+      <div class="ring-center"><b id="ring-pct">0%</b><small>complete</small></div>
+    </div>
+    <div class="drawer-head">
+      <h3>Missing Tracks Auditor</h3>
+      <p>Deezer Top-50 not yet in your library.</p>
+    </div>
+    <div class="miss-list" id="miss-list"></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="/static/dashboard.js"></script>
+</body>
+</html>

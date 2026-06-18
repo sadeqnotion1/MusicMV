@@ -16,18 +16,12 @@
                     "colors": {
                         "primary": "#8b5cf6",
                         "secondary": "#06b6d4",
-                        "terminal-green": "#10b981",
                         "background": "#05060a",
                         "surface-glass": "rgba(20, 24, 38, 0.65)",
                         "border-glow": "rgba(139, 92, 246, 0.15)",
                         "text-primary": "#f8fafc",
                         "text-secondary": "#94a3b8",
                         "text-muted": "#475569"
-                    },
-                    "fontFamily": {
-                        "sans": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-                        "display-lg": ["Outfit", "Inter", "sans-serif"],
-                        "label-sm": ["Inter", "ui-sans-serif", "sans-serif"]
                     }
                 }
             }
@@ -122,9 +116,9 @@
             <!-- 1. Tidal Sourcing -->
             <li id="nav-tidal" class="nav-item active">
                 <a href="#" onclick="switchView('tidal'); return false;" class="flex items-center gap-4 px-6 py-3 text-white font-bold border-l-2 border-primary bg-primary/10 transition-all duration-300">
-                    <span class="inline-flex items-center justify-center text-[#06b6d4]">
+                    <span class="inline-flex items-center justify-center text-[#00f0ff]">
                         <!-- Tidal Logo SVG (local) -->
-                        <svg viewBox="532 0 387 257" style="width:16px; height:16px; fill:#06b6d4 !important;"><path stroke="#000000" stroke-width=".094" d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4zM0 469.9h192.4c.1 15.398.1 30.8 0 46.1h-69.3v182c-.1 3 .2 6-.4 9H69.2c.2-63.7.1-127.3.1-191H0v-46.1zM352.9 469.9c18 0 36 0 54 .1-.1 79 .2 158-.2 237H353c-.3-21-.1-42-.2-63 .1-58 0-116 .1-174.1zM1305 469.9c18 0 36 0 54 .1v189.4c31.3.198 62.7.1 94 .1V707h-147.9c-.3-79 0-158-.1-237.1zM797.4 549.4c-5.4-18.602-15.9-35.5-30.5-48.2-19.3-17.1-44.5-26.4-69.8-29.7-14.3-2.1-28.8-1.5-43.198-1.6h-63.9c-1.2 0-2.5.1-3.7.3.3 78.3 0 156.6.2 234.898-.1.5-.2 1.4-.3 1.9H678.6c8.302-1.5 16.802-1.4 25-3.2 28-5.1 54.9-19 73.2-41.1 13.5-16 21.8-36.102 24.5-56.8 2.4-18.898 1.4-38.298-3.9-56.498zm-60.9 78.7c-6.7 10.7-16.6 19.2-28.1 24.4-10.4 4.8-21.9 7-33.302 7.3-12 .102-24 0-36 .102-.6-13.302-.1-26.602-.3-39.9 0-34.7 0-69.3.102-104H676c18.6.4 37.5 6.8 51 20 12.1 11.7 18.9 28.2 20 44.9 1.1 16.298-1.9 33.198-10.5 47.198zM1138.6 651.2c-22.6-54.9-45.1-109.9-67.898-164.7-2.102-5.5-4.301-11.1-6.801-16.4-18.601-.3-37.199-.3-55.801 0-31.8 76.5-63.6 153-95.398 229.4-1 2.5-2.2 4.9-2.7 7.5h57.5c5.7-15.8 11.8-31.4 17.5-47.2 32.6-.5 65.3-.1 98-.2 1.7-.5 2.2 1.302 2.6 2.5 5.5 15 11.102 29.9 16.5 44.9h59.302c-7.204-18.8-15.204-37.2-22.804-55.8zm-138.4-33.5c-.3-2.102 1-3.9 1.6-5.8 10.9-28.5 22.102-57 32.9-85.5.2-.102.6-.2.8-.2 11.3 30 22.8 59.898 34.2 89.898 0 .4.1 1.2.1 1.602-23.2-.2-46.4-.2-69.6 0z"/></svg>
+                        <svg viewBox="0 -373 1453 1453" style="width:16px; height:16px; fill:#00f0ff !important;"><path stroke="#000000" stroke-width=".094" d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4zM0 469.9h192.4c.1 15.398.1 30.8 0 46.1h-69.3v182c-.1 3 .2 6-.4 9H69.2c.2-63.7.1-127.3.1-191H0v-46.1zM352.9 469.9c18 0 36 0 54 .1-.1 79 .2 158-.2 237H353c-.3-21-.1-42-.2-63 .1-58 0-116 .1-174.1zM1305 469.9c18 0 36 0 54 .1v189.4c31.3.198 62.7.1 94 .1V707h-147.9c-.3-79 0-158-.1-237.1zM797.4 549.4c-5.4-18.602-15.9-35.5-30.5-48.2-19.3-17.1-44.5-26.4-69.8-29.7-14.3-2.1-28.8-1.5-43.198-1.6h-63.9c-1.2 0-2.5.1-3.7.3.3 78.3 0 156.6.2 234.898-.1.5-.2 1.4-.3 1.9H678.6c8.302-1.5 16.802-1.4 25-3.2 28-5.1 54.9-19 73.2-41.1 13.5-16 21.8-36.102 24.5-56.8 2.4-18.898 1.4-38.298-3.9-56.498zm-60.9 78.7c-6.7 10.7-16.6 19.2-28.1 24.4-10.4 4.8-21.9 7-33.302 7.3-12 .102-24 0-36 .102-.6-13.302-.1-26.602-.3-39.9 0-34.7 0-69.3.102-104H676c18.6.4 37.5 6.8 51 20 12.1 11.7 18.9 28.2 20 44.9 1.1 16.298-1.9 33.198-10.5 47.198zM1138.6 651.2c-22.6-54.9-45.1-109.9-67.898-164.7-2.102-5.5-4.301-11.1-6.801-16.4-18.601-.3-37.199-.3-55.801 0-31.8 76.5-63.6 153-95.398 229.4-1 2.5-2.2 4.9-2.7 7.5h57.5c5.7-15.8 11.8-31.4 17.5-47.2 32.6-.5 65.3-.1 98-.2 1.7-.5 2.2 1.302 2.6 2.5 5.5 15 11.102 29.9 16.5 44.9h59.302c-7.204-18.8-15.204-37.2-22.804-55.8zm-138.4-33.5c-.3-2.102 1-3.9 1.6-5.8 10.9-28.5 22.102-57 32.9-85.5.2-.102.6-.2.8-.2 11.3 30 22.8 59.898 34.2 89.898 0 .4.1 1.2.1 1.602-23.2-.2-46.4-.2-69.6 0z"/></svg>
                     </span>
                     Tidal Sourcing
                 </a>
@@ -175,17 +169,6 @@
                     Control Panel
                 </a>
             </li>
-            <!-- 6. Catalog Dashboard -->
-            <li class="nav-item border-l-2 border-transparent">
-                <a href="/dashboard" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium hover:bg-white/3 hover:text-white transition-all duration-300">
-                    <span class="inline-flex items-center justify-center text-cyan-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                        </svg>
-                    </span>
-                    Catalog Dashboard
-                </a>
-            </li>
         </ul>
 
         <div class="px-4 border-t border-border-glow/30 pt-4 mt-auto">
@@ -218,7 +201,7 @@
                 <div class="form-group relative flex flex-col gap-1.5 border-r border-border-glow/30 pr-6 last:border-0">
                     <div class="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5 mb-2">
                         <!-- Tidal Logo SVG (local) -->
-                        <svg viewBox="532 0 387 257" style="width:14px; height:14px; fill:#8b5cf6 !important; display:inline-block;"><path d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4z"/></svg>
+                        <svg viewBox="0 -373 1453 1453" style="width:14px; height:14px; fill:#8b5cf6 !important; display:inline-block;"><path d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4z"/></svg>
                         Tidal Artist Search
                     </div>
                     <div class="flex gap-2">
@@ -271,12 +254,9 @@
                     </div>
                     <div class="flex gap-3">
                         <button id="btn-export-links" onclick="exportYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center gap-1.5" title="Export Links">${exportIconInnerSvg} Links</button>
-                        <button id="btn-fetch-export-selected" onclick="fetchAndExportSelectedYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center justify-center gap-1.5" title="Fetch Selected YouTube Links and Export">
-                            Fetch <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle; margin: 0 2px;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg> Catalog ${exportIconInnerSvg}
-                        </button>
                         <button id="btn-export-text" onclick="exportAsText()" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center gap-1.5" title="Export Catalog">${exportIconInnerSvg} Catalog</button>
                         <button id="btn-download-selected" onclick="downloadSelectedVideos('tidal-video-list')" class="border border-primary/40 bg-primary/10 hover:border-primary/70 hover:bg-primary/20 transition-all px-4 py-2 rounded-lg font-bold text-xs text-primary hover:text-white flex items-center gap-1.5" title="Download Selected">${dlIconInnerSvg} Selected</button>
-                        <button id="btn-download-all" onclick="downloadAllVideos('tidal-video-list')" class="border border-terminal-green/30 bg-terminal-green/5 hover:border-terminal-green hover:bg-terminal-green/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-terminal-green hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
+                        <button id="btn-download-all" onclick="downloadAllVideos('tidal-video-list')" class="border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-400 hover:bg-emerald-500/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-emerald-400 hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
                         <button id="btn-find-all" onclick="findAllYouTubeLinks('tidal-video-list')" class="border border-red-500/30 bg-red-500/5 hover:border-red-400 hover:bg-red-500/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-red-400 hover:text-white flex items-center gap-1.5">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                             Fetch All <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg> Links
@@ -287,13 +267,9 @@
 
             <!-- Tabs Container -->
             <div id="tidal-tabs" class="mx-8 mb-6 hidden flex gap-2 border-b border-border-glow/20 pb-3">
-                <button id="tab-official_mv-btn" onclick="switchTab('official_mv')" class="tab-btn active px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-primary/30 bg-primary/20 text-primary">
-                    <span id="tab-official_mv-text">Official Music Video</span>
-                    <span id="badge-official_mv" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-primary/20 text-primary rounded-full font-mono">0</span>
-                </button>
-                <button id="tab-priority-btn" onclick="switchTab('priority')" class="tab-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent text-text-secondary hover:text-white hover:bg-white/5">
+                <button id="tab-priority-btn" onclick="switchTab('priority')" class="tab-btn active px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-primary/30 bg-primary/20 text-primary">
                     <span id="tab-priority-text">Priority Content</span>
-                    <span id="badge-priority" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/5 text-text-secondary rounded-full font-mono">0</span>
+                    <span id="badge-priority" class="ml-1.5 px-1.5 py-0.5 text-[10px] bg-primary/20 text-primary rounded-full font-mono">0</span>
                 </button>
                 <button id="tab-standard-btn" onclick="switchTab('standard')" class="tab-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 border border-transparent text-text-secondary hover:text-white hover:bg-white/5">
                     <span id="tab-standard-text">Standard Content</span>
@@ -348,7 +324,7 @@
 
                 <!-- Artist Billboard History -->
                 <div class="flex flex-col gap-4">
-                    <div class="text-xs font-bold uppercase tracking-wider text-terminal-green flex items-center gap-1.5 mb-2">
+                    <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5 mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         Artist Chart History
                     </div>
@@ -356,7 +332,7 @@
                         <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Artist Name</label>
                         <input type="text" id="history-artist-input" class="input-box w-full h-[38px] bg-black/40 border border-border-glow rounded-lg px-4 text-xs text-[#f8fafc] focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all placeholder:text-text-muted" placeholder="e.g. Sabrina Carpenter" onkeydown="if(event.key === 'Enter') fetchArtistChartHistory()">
                     </div>
-                    <button onclick="fetchArtistChartHistory()" class="w-full h-[38px] bg-terminal-green/10 hover:bg-terminal-green/20 border border-terminal-green/30 rounded-lg font-bold text-xs text-terminal-green flex items-center justify-center gap-1.5 transition-all mt-auto">
+                    <button onclick="fetchArtistChartHistory()" class="w-full h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg font-bold text-xs text-emerald-400 flex items-center justify-center gap-1.5 transition-all mt-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         Query Billboard History
                     </button>
@@ -385,11 +361,8 @@
                         <button id="btn-export-chart" onclick="exportBillboardChartAction()" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white hidden flex items-center gap-1.5" title="Export Chart">${exportIconInnerSvg} Chart</button>
                         <button id="btn-export-history" onclick="exportBillboardArtistHistoryAction()" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white hidden flex items-center gap-1.5" title="Export History">${exportIconInnerSvg} History</button>
                         <button id="btn-billboard-export-links" onclick="exportBillboardYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center gap-1.5" title="Export Links">${exportIconInnerSvg} Links</button>
-                        <button id="btn-billboard-fetch-export-selected" onclick="fetchAndExportSelectedYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center justify-center gap-1.5" title="Fetch Selected YouTube Links and Export">
-                            Fetch <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle; margin: 0 2px;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg> Catalog ${exportIconInnerSvg}
-                        </button>
                         <button id="btn-billboard-download-selected" onclick="downloadSelectedVideos('billboard-video-list')" class="border border-primary/40 bg-primary/10 hover:border-primary/70 hover:bg-primary/20 transition-all px-4 py-2 rounded-lg font-bold text-xs text-primary hover:text-white flex items-center gap-1.5" title="Download Selected">${dlIconInnerSvg} Selected</button>
-                        <button id="btn-billboard-download-all" onclick="downloadAllVideos('billboard-video-list')" class="border border-terminal-green/30 bg-terminal-green/5 hover:border-terminal-green hover:bg-terminal-green/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-terminal-green hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
+                        <button id="btn-billboard-download-all" onclick="downloadAllVideos('billboard-video-list')" class="border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-400 hover:bg-emerald-500/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-emerald-400 hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
                         <button id="btn-billboard-find-all" onclick="findAllYouTubeLinks('billboard-video-list')" class="border border-red-500/30 bg-red-500/5 hover:border-red-400 hover:bg-red-500/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-red-400 hover:text-white flex items-center gap-1.5">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                             Fetch All <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg> Links
@@ -497,11 +470,8 @@
                     </div>
                     <div class="flex gap-3">
                         <button id="btn-youtube-export-links" onclick="exportYoutubeDownloaderYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center gap-1.5" title="Export Links">${exportIconInnerSvg} Links</button>
-                        <button id="btn-youtube-fetch-export-selected" onclick="fetchAndExportSelectedYouTubeLinks(this)" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white flex items-center justify-center gap-1.5" title="Fetch Selected YouTube Links and Export">
-                            Fetch <svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle; margin: 0 2px;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg> Catalog ${exportIconInnerSvg}
-                        </button>
                         <button id="btn-youtube-download-selected" onclick="downloadSelectedVideos('youtube-video-list')" class="border border-primary/40 bg-primary/10 hover:border-primary/70 hover:bg-primary/20 transition-all px-4 py-2 rounded-lg font-bold text-xs text-primary hover:text-white flex items-center gap-1.5" title="Download Selected">${dlIconInnerSvg} Selected</button>
-                        <button id="btn-youtube-download-all" onclick="downloadAllVideos('youtube-video-list')" class="border border-terminal-green/30 bg-terminal-green/5 hover:border-terminal-green hover:bg-terminal-green/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-terminal-green hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
+                        <button id="btn-youtube-download-all" onclick="downloadAllVideos('youtube-video-list')" class="border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-400 hover:bg-emerald-500/15 transition-all px-4 py-2 rounded-lg font-bold text-xs text-emerald-400 hover:text-white flex items-center gap-1.5" title="Download All">${dlIconInnerSvg} All</button>
                     </div>
                 </div>
             </div>
@@ -533,7 +503,7 @@
         </ul>
         <div class="px-6 pt-4 border-t border-border-glow/30">
             <button onclick="clearCompletedDownloads()" class="w-full py-2.5 flex items-center justify-center gap-2 text-text-secondary hover:text-white bg-white/2 hover:bg-white/5 rounded-lg border border-white/5 transition-all font-medium text-xs">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Clear Finished
+                Clear Finished
             </button>
         </div>
     </div>
@@ -543,7 +513,7 @@
         const dlIconInnerSvg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
         const exportIconInnerSvg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>`;
         const ytIconSvg = `<svg viewBox="0 0 28.57 20" style="width:16px; height:12px; display:inline-block; vertical-align:middle;"><g><path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path><path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path></g></svg>`;
-        const tidalIconSvg = `<svg viewBox="532 0 387 257" style="width:14px; height:14px; fill:#06b6d4 !important; display:inline-block; vertical-align:middle;"><path d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4z"/></svg>`;
+        const tidalIconSvg = `<svg viewBox="532 0 387 257" style="width:14px; height:14px; fill:#00f0ff !important; display:inline-block; vertical-align:middle;"><path d="M596.8 0h.8c6.102 7 13 13.2 19.5 19.9l44.2 44.2v.8c-21.398 21.3-42.7 42.8-64.1 64.1-21.5-21.4-42.9-42.9-64.4-64.3 1.102-2.1 3.2-3.5 4.8-5.2C557.3 39.6 577.3 20 596.8 0zM725.8 0h.8c.602.9 1.2 1.7 2 2.5 20.7 20.5 41.102 41.3 62 61.7-.5 1.2-1.6 2-2.5 2.9-20.698 20.6-41.3 41.3-62 61.9-21.6-21.3-42.8-43-64.5-64.2 21-21.9 43.1-43 64.2-64.8zM854.8 0h.8c4 4.8 8.7 8.9 13 13.4 16.2 16.2 32.302 32.3 48.5 48.5.802.9 2.102 1.7 2.4 3-21.7 21.1-42.7 43-64.5 64.1l-61.5-61.5c-1-1.1-2.3-1.9-2.8-3.3C801.6 53.6 812.2 42.7 823 32c10.6-10.7 21.4-21.1 31.8-32zM662.5 192.5c21.1-21.1 42.3-42.2 63.4-63.4l.898.4c21.2 21.3 42.4 42.6 63.8 63.7-.698 1.6-2.198 2.5-3.3 3.8-15.398 15.3-30.8 30.8-46.2 46.1-5 4.8-9.8 10.2-14.898 14.7-7.3-6.6-14-14-21.102-20.8-14.398-14.4-28.698-28.8-43.198-43.1.2-.4.4-1 .6-1.4z"/></svg>`;
         const billboardIconSvg = `<svg viewBox="0 0 150 150" style="width:14px; height:14px; fill:currentColor !important; display:inline-block; vertical-align:middle;"><path d="M39.21,117.31v-5.25H23.04v5.25h16.17"/><path d="M39.2,110.21v-5.25H16.7v5.25h22.5"/><path d="M39.2,103.13v-5.25H16.7v5.25h22.5"/><path d="M22.88,41.98v-5.25h1.67c-1.26-.78-1.76-1.93-1.83-3.51h5.57v.62c0,1.86,1.07,2.89,3.05,2.89h7.71v5.25H22.88"/><path d="M19.01,117.73c-1.7,0-3.08-1.36-3.08-3.04s1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05-1.38,3.04-3.08,3.04"/><path d="M22.9,43.85v5.25h1.2c-.82,.74-1.49,2.45-1.49,3.76,0,4.58,3.53,7.67,8.5,7.67s8.18-3.48,8.18-7.73c0-1.31-.44-2.74-1.16-3.7h.91v-5.25h-7.08c-.29,0-.57,0-.85,0-.28,0-.56,0-.85,0h-7.37Zm11.07,8.71c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M16.55,20.82h7.14c-.72,1.03-1.04,2.21-1.04,3.64,0,4.38,3.43,7.8,8.37,7.8,4.66,0,8.24-3.29,8.24-7.3,0-1.65-.53-2.98-1.7-4.23h1.48v-5.16H16.55v5.25Zm17.53,3.09c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.05,3.08-3.05,3.08,1.36,3.08,3.05"/><path d="M22.81,87.11c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M22.81,126.45c0,1.43,.32,2.61,1.04,3.64h-7.14v5.25h22.5v-5.16h-1.48c1.16-1.24,1.7-2.58,1.7-4.23,0-4.01-3.59-7.3-8.24-7.3-4.94,0-8.37,3.42-8.37,7.8m11.46,.56c0,1.68-1.38,3.05-3.08,3.05s-3.08-1.36-3.08-3.05,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/><path d="M95.29,48.09c-7.77,0-14.2,1.68-19.77,5.53V15.57h-28.55v119.86h28.05v-7.88c6.76,6.2,14.02,9.05,22.98,9.05,21.79,0,39.7-19.11,39.7-43.92,0-26.32-18.58-44.59-42.4-44.59m-3.04,61.08c-9.15,0-16.56-7.36-16.56-16.43s7.41-16.42,16.56-16.42,16.55,7.36,16.55,16.42-7.41,16.43-16.55,16.43"/><path d="M22.52,69.86c0,4.54,3.78,8.14,8.37,8.14s8.37-3.57,8.37-8.14-3.81-8.14-8.37-8.14-8.37,3.6-8.37,8.14m11.36,0c0,1.68-1.38,3.04-3.08,3.04s-3.08-1.36-3.08-3.04,1.38-3.04,3.08-3.04,3.08,1.36,3.08,3.04"/></svg>`;
 
         // DOM Elements
@@ -781,7 +751,6 @@
             
             // Save videos to global variable for exporting
             loadedTidalVideos = {
-                official_mv: videos.official_mv || [],
                 priority: videos.priority || res.priority_tracks || [],
                 standard: videos.standard || res.standard_tracks || [],
                 excluded: videos.excluded || res.excluded_tracks || []
@@ -797,12 +766,10 @@
             
             tidalBanner.classList.remove('hidden');
             
-            const officialMvCount = loadedTidalVideos.official_mv.length;
             const priorityCount = loadedTidalVideos.priority.length;
             const standardCount = loadedTidalVideos.standard.length;
             const excludedCount = loadedTidalVideos.excluded.length;
             
-            document.getElementById('badge-official_mv').textContent = officialMvCount;
             document.getElementById('badge-priority').textContent = priorityCount;
             document.getElementById('badge-standard').textContent = standardCount;
             document.getElementById('badge-excluded').textContent = excludedCount;
@@ -811,20 +778,16 @@
             tabsContainer.classList.remove('hidden');
             
             if (activeArtistId === 'playlist') {
-                document.getElementById('tab-official_mv-btn').classList.add('hidden');
                 document.getElementById('tab-priority-text').textContent = 'Song List';
                 document.getElementById('tab-standard-btn').classList.add('hidden');
                 document.getElementById('tab-excluded-btn').classList.add('hidden');
                 switchTab('priority');
             } else {
-                document.getElementById('tab-official_mv-btn').classList.remove('hidden');
                 document.getElementById('tab-priority-text').textContent = 'Priority Content';
                 document.getElementById('tab-standard-btn').classList.remove('hidden');
                 document.getElementById('tab-excluded-btn').classList.remove('hidden');
                 
-                if (officialMvCount > 0) {
-                    switchTab('official_mv');
-                } else if (priorityCount > 0) {
+                if (priorityCount > 0) {
                     switchTab('priority');
                 } else if (standardCount > 0) {
                     switchTab('standard');
@@ -834,11 +797,11 @@
             }
         }
 
-        let currentTab = 'official_mv';
+        let currentTab = 'priority';
         function switchTab(tabName) {
             currentTab = tabName;
             
-            const tabs = ['official_mv', 'priority', 'standard', 'excluded'];
+            const tabs = ['priority', 'standard', 'excluded'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-${t}-btn`);
                 const badge = document.getElementById(`badge-${t}`);
@@ -859,12 +822,7 @@
             
             if (loadedTidalVideos && loadedTidalVideos[tabName]) {
                 const items = loadedTidalVideos[tabName].map(v => {
-                    let dispCat = tabName;
-                    if (tabName === 'official_mv') dispCat = 'Official Music Video';
-                    else if (tabName === 'priority') dispCat = 'Priority';
-                    else if (tabName === 'standard') dispCat = 'Standard';
-                    else if (tabName === 'excluded') dispCat = 'Excluded';
-                    return { ...v, category: dispCat };
+                    return { ...v, category: tabName.charAt(0).toUpperCase() + tabName.slice(1) };
                 });
                 renderVideoList(items, 'tidal-video-list');
             }
@@ -1128,7 +1086,7 @@
                 // Add green border/glow class if downloaded
                 let cardBorderBg = "border-border-glow bg-surface-glass/40 hover:border-primary/50 hover:shadow-[0_10px_25px_rgba(139,92,246,0.15)]";
                 if (video.isDownloaded) {
-                    cardBorderBg = "border-terminal-green/35 bg-emerald-950/5 hover:border-terminal-green/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]";
+                    cardBorderBg = "border-emerald-500/35 bg-emerald-950/5 hover:border-emerald-400/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]";
                 }
                 
                 card.className = `video-card flex flex-col bg-card ${cardBorderBg} rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1` + (isExcluded ? " opacity-60 hover:opacity-90" : "");
@@ -1162,7 +1120,7 @@
                     if (video.differentArtist) {
                         label += ` (${video.differentArtist})`;
                     }
-                    statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-terminal-green/90 text-white shadow-md border border-terminal-green/30" title="${label}">${label}</span>`;
+                    statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white shadow-md border border-emerald-400/30" title="${label}">${label}</span>`;
                 } else if (video.youtubeId) {
                     statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-500/95 text-black shadow-md border border-amber-400/30">Matched</span>`;
                 }
@@ -1465,7 +1423,7 @@
                             bVideo.youtubeUrl = result.videoUrl;
                         }
                     } else if (loadedTidalVideos) {
-                        for (const cat of ['official_mv', 'priority', 'standard', 'excluded']) {
+                        for (const cat of ['priority', 'standard', 'excluded']) {
                             const tVideo = loadedTidalVideos[cat].find(v => v.id === rowId);
                             if (tVideo) {
                                 tVideo.youtubeId = result.videoId;
@@ -1488,11 +1446,11 @@
                         if (card) {
                             card.setAttribute('data-downloaded', 'true');
                             // Directly set classes instead of replacing
-                            card.className = "video-card flex flex-col bg-card border-terminal-green/35 bg-emerald-950/5 hover:border-terminal-green/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)] rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1";
+                            card.className = "video-card flex flex-col bg-card border-emerald-500/35 bg-emerald-950/5 hover:border-emerald-400/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)] rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1";
                             // Add check badge in top right
                             const oldBadge = card.querySelector('.absolute.top-2.right-2');
                             if (oldBadge) {
-                                oldBadge.className = 'absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-terminal-green/90 text-white shadow-md border border-terminal-green/30';
+                                oldBadge.className = 'absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white shadow-md border border-emerald-400/30';
                                 oldBadge.textContent = '✓ In Library';
                             }
                         }
@@ -1739,7 +1697,7 @@
                 if (item.type === 'video') {
                     let cardBorderBg = "border-border-glow bg-surface-glass/40 hover:border-primary/50 hover:shadow-[0_10px_25px_rgba(139,92,246,0.15)]";
                     if (item.isDownloaded) {
-                        cardBorderBg = "border-terminal-green/35 bg-emerald-950/5 hover:border-terminal-green/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]";
+                        cardBorderBg = "border-emerald-500/35 bg-emerald-950/5 hover:border-emerald-400/60 hover:shadow-[0_10px_25px_rgba(16,185,129,0.15)]";
                     }
                     
                     card.className = `video-card flex flex-col bg-card ${cardBorderBg} rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1`;
@@ -1756,7 +1714,7 @@
                     
                     let statusBadgeHtml = '';
                     if (item.isDownloaded) {
-                        statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-terminal-green/90 text-white shadow-md border border-terminal-green/30">✓ In Library</span>`;
+                        statusBadgeHtml = `<span class="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white shadow-md border border-emerald-400/30">✓ In Library</span>`;
                     }
                     
                     card.innerHTML = `
@@ -2167,44 +2125,24 @@
                 
                 let activeCount = 0;
                 
-                let queueIndex = 0;
                 for (const [taskId, dl] of Object.entries(data)) {
                     const progress = dl.progress || 0;
                     const isCompleted = dl.status === 'completed';
-                    const isQueued = dl.status === 'queued';
-                    const isFailed = dl.status === 'failed';
                     
                     if (!isCompleted) activeCount++;
-                    if (isQueued) queueIndex++;
                     
                     const item = document.createElement('li');
                     item.className = "download-item bg-white/2 border border-border-glow p-4 rounded-xl flex flex-col gap-2.5";
-                    
-                    let statusText, rightText;
-                    if (isCompleted) {
-                        statusText = 'Completed';
-                        rightText = '';
-                    } else if (isFailed) {
-                        statusText = 'Failed';
-                        rightText = dl.error || '';
-                    } else if (isQueued) {
-                        statusText = `Queued (#${queueIndex})`;
-                        rightText = 'Waiting for slot...';
-                    } else {
-                        statusText = dl.size_status ? `${dl.size_status} @ ${dl.speed || '---'}` : (dl.speed || '---');
-                        rightText = `ETA ${dl.eta || '---'} (${progress}%)`;
-                    }
-                    
                     item.innerHTML = `
                         <div class="download-info flex flex-col gap-1">
                             <div class="download-name text-xs font-semibold text-white truncate" title="${dl.filename || dl.title}">${dl.filename || dl.title}</div>
                             <div class="download-speed text-[11px] text-text-secondary flex justify-between">
-                                <span>${statusText}</span>
-                                <span>${rightText}</span>
+                                <span>${isCompleted ? 'Completed' : (dl.size_status ? `${dl.size_status} @ ${dl.speed || '---'}` : (dl.speed || '---'))}</span>
+                                <span>${isCompleted ? '' : `ETA ${dl.eta || '---'} (${progress}%)`}</span>
                             </div>
                         </div>
                         <div class="progress-bar-container h-1.5 bg-white/5 rounded-full overflow-hidden relative">
-                            <div class="progress-fill h-full bg-gradient-to-r ${isFailed ? 'from-red-500 to-red-600' : 'from-primary to-secondary'} shadow-[0_0_8px_rgba(139,92,246,0.5)] rounded-full transition-all duration-300" style="width: ${isQueued ? '0' : progress}%;"></div>
+                            <div class="progress-fill h-full bg-gradient-to-r from-primary to-secondary shadow-[0_0_8px_rgba(139,92,246,0.5)] rounded-full transition-all duration-300" style="width: ${progress}%;"></div>
                         </div>
                     `;
                     downloadsList.appendChild(item);
@@ -2314,26 +2252,9 @@
             }
         }
 
-        // [fix v3 #1] Returns a copy of loadedTidalVideos with tracks already in the
-        // local library (isDownloaded === true) removed, so we only export NEW YouTube links.
-        function __filterNotInLibrary(vids) {
-            if (!vids) return vids;
-            if (Array.isArray(vids)) return vids.filter(v => !(v && v.isDownloaded));
-            const out = {};
-            for (const k of Object.keys(vids)) {
-                out[k] = Array.isArray(vids[k]) ? vids[k].filter(v => !(v && v.isDownloaded)) : vids[k];
-            }
-            return out;
-        }
-
         async function exportYouTubeLinks(btn) {
             if (!loadedTidalVideos) return alert("No Tidal videos loaded to export.");
             const artist = tidalArtistName.textContent;
-            const exportVideos = __filterNotInLibrary(loadedTidalVideos);
-            const __remaining = Array.isArray(exportVideos)
-                ? exportVideos.length
-                : Object.keys(exportVideos).reduce((n, k) => n + (Array.isArray(exportVideos[k]) ? exportVideos[k].length : 0), 0);
-            if (__remaining === 0) return alert("All matched tracks are already in your local library \u2014 no new YouTube links to export.");
             const originalHtml = btn.textContent;
             btn.disabled = true;
             btn.textContent = 'Exporting...';
@@ -2341,7 +2262,7 @@
                 const response = await fetch('/api/youtube/export_all', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ artistName: artist, videos: exportVideos })
+                    body: JSON.stringify({ artistName: artist, videos: loadedTidalVideos })
                 });
                 const data = await response.json();
                 btn.disabled = false;
@@ -2357,139 +2278,6 @@
                 btn.disabled = false;
                 btn.textContent = originalHtml;
                 alert("Network error exporting links.");
-            }
-        }
-
-        async function fetchAndExportSelectedYouTubeLinks(btn) {
-            const isBillboard = !document.getElementById('view-billboard').classList.contains('hidden');
-            const isYoutube = !document.getElementById('view-youtube').classList.contains('hidden');
-            
-            let targetGridId = 'tidal-video-list';
-            if (isBillboard) targetGridId = 'billboard-video-list';
-            else if (isYoutube) targetGridId = 'youtube-video-list';
-            
-            const gridEl = document.getElementById(targetGridId);
-            if (!gridEl) return alert("No videos view found.");
-            
-            const cards = Array.from(gridEl.querySelectorAll('.video-card'));
-            const selectedCards = cards.filter(card => {
-                const checkbox = card.querySelector('.video-select-checkbox');
-                return checkbox && checkbox.checked;
-            });
-            
-            if (selectedCards.length === 0) {
-                alert("Please select at least one video checkbox first.");
-                return;
-            }
-            
-            const originalHtml = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block mr-1">⚡</span> Fetching...`;
-            
-            try {
-                // 1. Fetch YouTube links for selected cards that don't have them yet
-                for (const card of selectedCards) {
-                    const searchBtn = card.querySelector('button[id^="yt-btn-"]');
-                    if (searchBtn && !searchBtn.disabled && !searchBtn.textContent.includes('Searching')) {
-                        searchBtn.click();
-                        // Wait for search to complete (to avoid rate limiting)
-                        await new Promise(r => setTimeout(r, 1200));
-                    }
-                }
-                
-                // 2. Gather video data for export
-                const artist = isBillboard ? (loadedChartData ? loadedChartData.chartName : 'Billboard') : (isYoutube ? 'YouTube_Downloader' : tidalArtistName.textContent);
-                const exportVideos = {};
-                
-                if (isBillboard) {
-                    exportVideos['chart'] = [];
-                    selectedCards.forEach(card => {
-                        const groupContainer = card.querySelector('[id^="yt-group-"]');
-                        if (groupContainer) {
-                            const rowId = groupContainer.id.replace('yt-group-', '');
-                            const bVideo = loadedBillboardVideos.find(v => v.id.toString() === rowId.toString());
-                            if (bVideo) {
-                                const ytUrl = bVideo.youtubeUrl || bVideo.videoUrl || (bVideo.youtubeId ? 'https://www.youtube.com/watch?v=' + bVideo.youtubeId : '');
-                                if (ytUrl) {
-                                    exportVideos['chart'].push({
-                                        ...bVideo,
-                                        youtubeUrl: ytUrl
-                                    });
-                                }
-                            }
-                        }
-                    });
-                } else if (isYoutube) {
-                    exportVideos['youtube'] = [];
-                    selectedCards.forEach(card => {
-                        const groupContainer = card.querySelector('[id^="yt-group-"]');
-                        if (groupContainer) {
-                            const rowId = groupContainer.id.replace('yt-group-', '');
-                            const yVideo = loadedYoutubeVideos.find(v => v.id.toString() === rowId.toString());
-                            if (yVideo) {
-                                const ytUrl = yVideo.youtubeUrl || yVideo.videoUrl || (yVideo.youtubeId ? 'https://www.youtube.com/watch?v=' + yVideo.youtubeId : '');
-                                if (ytUrl) {
-                                    exportVideos['youtube'].push({
-                                        ...yVideo,
-                                        youtubeUrl: ytUrl
-                                    });
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    const cats = ['official_mv', 'priority', 'standard', 'excluded'];
-                    cats.forEach(c => { exportVideos[c] = []; });
-                    
-                    selectedCards.forEach(card => {
-                        const groupContainer = card.querySelector('[id^="yt-group-"]');
-                        if (groupContainer) {
-                            const rowId = groupContainer.id.replace('yt-group-', '');
-                            for (const cat of cats) {
-                                const tVideo = loadedTidalVideos[cat].find(v => v.id.toString() === rowId.toString());
-                                if (tVideo) {
-                                    const ytUrl = tVideo.youtubeUrl || tVideo.videoUrl || (tVideo.youtubeId ? 'https://www.youtube.com/watch?v=' + tVideo.youtubeId : '');
-                                    if (ytUrl) {
-                                        exportVideos[cat].push({
-                                            ...tVideo,
-                                            youtubeUrl: ytUrl
-                                        });
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                }
-                
-                // Check if we have anything to export
-                const totalExport = Object.keys(exportVideos).reduce((n, k) => n + exportVideos[k].length, 0);
-                if (totalExport === 0) {
-                    alert("No YouTube links resolved for selected videos.");
-                    return;
-                }
-                
-                btn.innerHTML = `<span class="animate-spin inline-block mr-1">⚡</span> Exporting...`;
-                
-                // 3. Export
-                const response = await fetch('/api/youtube/export_all', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ artistName: artist, videos: exportVideos })
-                });
-                const data = await response.json();
-                if (data.status === 'success') {
-                    if (confirm(`Exported ${totalExport} selected links successfully!\n\nFile saved locally:\n${data.filepath}\n\nWould you like to open the exports folder?`)) {
-                        openExportsFolder();
-                    }
-                } else {
-                    alert("Export failed: " + data.message);
-                }
-            } catch (err) {
-                alert("An error occurred during fetch & export: " + err);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHtml;
             }
         }
 

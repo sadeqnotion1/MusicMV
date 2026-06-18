@@ -25,12 +25,6 @@
                         "text-primary": "#f8fafc",
                         "text-secondary": "#94a3b8",
                         "text-muted": "#475569"
-                    },
-                    "fontFamily": {
-                        "sans": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-                        "display-lg": ["Outfit", "Inter", "sans-serif"],
-                        "label-sm": ["Inter", "ui-sans-serif", "sans-serif"],
-                        "mono": ["Fira Code", "ui-monospace", "monospace"]
                     }
                 }
             }
@@ -152,7 +146,7 @@
                         <path d="M2 10h20"></path>
                     </svg>
                 </span>
-                Local Library
+                Library Explorer
             </a>
             <!-- 5. Control Panel -->
             <a class="flex items-center gap-4 px-6 py-3 text-white font-bold border-l-2 border-primary bg-primary/10 transition-all duration-300" href="#">
@@ -168,15 +162,6 @@
                 </span>
                 Control Panel
             </a>
-            <!-- 6. Catalog Dashboard -->
-            <a class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300" href="/dashboard">
-                <span class="inline-flex items-center justify-center text-cyan-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                    </svg>
-                </span>
-                Catalog Dashboard
-            </a>
         </div>
     </nav>
 
@@ -187,10 +172,10 @@
         </div>
         <div class="flex items-center gap-4 pointer-events-auto">
             <button class="text-[#94a3b8] hover:text-secondary transition-colors opacity-80 p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Notifications</title><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             </button>
             <button class="text-[#94a3b8] hover:text-secondary transition-colors opacity-80 p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Connection</title><path d="M21.2 15a8.85 8.85 0 0 0-3.25-3.24 8.8 8.8 0 0 0-6.8 0A8.9 8.9 0 0 0 7.9 15"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15a8.85 8.85 0 0 0-3.25-3.24 8.8 8.8 0 0 0-6.8 0A8.9 8.9 0 0 0 7.9 15"></path><circle cx="12" cy="12" r="10"></circle></svg>
             </button>
         </div>
     </header>
@@ -218,7 +203,7 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Tidal API Token</label>
-                            <input id="tidal-token" class="w-full h-[44px] bg-[#000000]/40 border border-border-glow rounded-lg px-4 font-mono text-sm text-[#f8fafc] focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all placeholder:text-text-muted" placeholder="••••••••••••••••" type="password" value=""/>
+                            <input id="tidal-token" class="w-full h-[44px] bg-[#000000]/40 border border-border-glow rounded-lg px-4 font-mono text-sm text-[#f8fafc] focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all placeholder:text-text-muted" placeholder="••••••••••••••••" type="password" value="CzET4vdadNUFQ5JU"/>
                         </div>
                         <hr class="border-border-glow/30 my-2"/>
                         <div class="flex flex-col gap-4">
@@ -277,11 +262,11 @@
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <button id="btn-process-guests" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center gap-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Process Guests Only
+                        <button id="btn-process-guests" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white disabled:opacity-50 disabled:pointer-events-none">
+                            Process Guests Only
                         </button>
-                        <button id="btn-fetch-avatars" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center gap-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>Fetch Avatars Only
+                        <button id="btn-fetch-avatars" class="btn-glass-cyan px-4 py-2 rounded-lg font-bold text-xs text-secondary hover:text-white disabled:opacity-50 disabled:pointer-events-none">
+                            Fetch Avatars Only
                         </button>
                     </div>
                 </div>
@@ -359,8 +344,6 @@
                 }
             } catch (err) {
                 console.error("Error fetching status:", err);
-                if (!activeTimer) startPolling(4000);
-                renderLogs([{ time: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}), level: 'ERROR', message: 'Cannot reach backend (/api/archive/status). Retrying…' }]);
             }
         }
 
@@ -379,10 +362,6 @@
         function renderLogs(logs) {
             const consoleBody = document.getElementById('console-body');
             if (!consoleBody) return;
-
-            const __sig = (logs && logs.length) ? (logs.length + '|' + logs[logs.length - 1].message) : '0';
-            if (consoleBody.dataset.logSig === __sig) return;
-            consoleBody.dataset.logSig = __sig;
             
             if (!logs || logs.length === 0) {
                 consoleBody.innerHTML = `
@@ -393,7 +372,6 @@
             }
             
             let html = '';
-            if (logs.length > 500) logs = logs.slice(-500);
             logs.forEach(log => {
                 let levelClass = 'text-text-secondary';
                 if (log.level === 'SUCCESS' || log.level === 'OK') {
@@ -408,7 +386,7 @@
                     levelClass = 'text-text-muted';
                 }
                 
-                html += `<div><span class="text-text-muted">[${escapeHTML(log.time)}]</span> <span class="${levelClass}">${escapeHTML(log.level)}:</span> ${escapeHTML(log.message)}</div>`;
+                html += `<div><span class="text-text-muted">[${log.time}]</span> <span class="${levelClass}">${log.level}:</span> ${escapeHTML(log.message)}</div>`;
             });
             
             // Blink indicator at bottom
@@ -417,19 +395,13 @@
             const isScrolledToBottom = consoleBody.scrollHeight - consoleBody.clientHeight <= consoleBody.scrollTop + 60;
             consoleBody.innerHTML = html;
             
-            if (isScrolledToBottom || window.hasUserScrolledConsole !== true) {
+            if (isScrolledToBottom || !window.hasUserScrolledConsole) {
                 consoleBody.scrollTop = consoleBody.scrollHeight;
             }
-            // [fix v3 #2] mark render time so the scroll listener can ignore the
-            // programmatic scroll event caused by replacing innerHTML above.
-            window.__consoleLastRender = Date.now();
         }
 
         // Track if user scrolled the console manually
         document.getElementById('console-body').addEventListener('scroll', function(e) {
-            // [fix v3 #2] ignore scroll events fired by the programmatic innerHTML
-            // re-render so genuine user intent isn't overwritten.
-            if (window.__consoleLastRender && (Date.now() - window.__consoleLastRender) < 200) return;
             const el = e.target;
             // User is near the bottom
             if (el.scrollHeight - el.clientHeight <= el.scrollTop + 30) {
@@ -500,7 +472,13 @@
                 await fetch('/api/archive/status', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: (() => { const __p = { path, syncDeezerAvatars, generateCatalogs, reconcileShortcuts }; if (tidalToken) __p.tidalToken = tidalToken; return JSON.stringify(__p); })()
+                    body: JSON.stringify({
+                        path,
+                        tidalToken,
+                        syncDeezerAvatars,
+                        generateCatalogs,
+                        reconcileShortcuts
+                    })
                 });
             } catch (err) {
                 console.error("Error saving configuration:", err);

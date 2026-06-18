@@ -22,11 +22,6 @@
                         "text-primary": "#f8fafc",
                         "text-secondary": "#94a3b8",
                         "text-muted": "#475569"
-                    },
-                    "fontFamily": {
-                        "sans": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-                        "display-lg": ["Outfit", "Inter", "sans-serif"],
-                        "label-sm": ["Inter", "ui-sans-serif", "sans-serif"]
                     }
                 }
             }
@@ -230,17 +225,6 @@
                         </svg>
                     </span>
                     Control Panel
-                </a>
-            </li>
-            <!-- 6. Catalog Dashboard -->
-            <li class="nav-item">
-                <a href="/dashboard" class="flex items-center gap-4 px-6 py-3 text-[#94a3b8] font-medium border-l-2 border-transparent hover:bg-white/3 hover:text-white transition-all duration-300">
-                    <span class="inline-flex items-center justify-center text-cyan-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                        </svg>
-                    </span>
-                    Catalog Dashboard
                 </a>
             </li>
         </ul>
@@ -1441,14 +1425,12 @@
                 downloadsList.innerHTML = '';
                 
                 let activeCount = 0;
-                let queueIndex = 0;
                 let list = Array.isArray(data) ? data : (data.downloads || []);
                 
                 list.forEach(item => {
                     if (item.status === 'queued' || item.status === 'downloading') {
                         activeCount++;
                     }
-                    if (item.status === 'queued') queueIndex++;
                     
                     const el = document.createElement('li');
                     el.className = "bg-white/2 border border-white/5 p-3 rounded-lg flex flex-col gap-2";
@@ -1457,18 +1439,16 @@
                     if (item.status === 'completed') statusColor = "text-[#10b981]";
                     if (item.status === 'failed') statusColor = "text-[#ef4444]";
                     
-                    const statusLabel = item.status === 'queued' ? `queued (#${queueIndex})` : item.status;
-                    
                     el.innerHTML = `
                         <div class="flex justify-between items-start gap-2">
                             <span class="text-xs font-semibold text-white truncate flex-1" title="${item.title}">${item.title}</span>
-                            <span class="text-[9px] uppercase font-bold tracking-wider ${statusColor}">${statusLabel}</span>
+                            <span class="text-[9px] uppercase font-bold tracking-wider ${statusColor}">${item.status}</span>
                         </div>
                         <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-gradient-to-r ${item.status === 'failed' ? 'from-red-500 to-red-600' : 'from-primary to-secondary'} h-full rounded-full transition-all duration-300" style="width: ${item.status === 'queued' ? '0' : item.progress}%"></div>
+                            <div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-300" style="width: ${item.progress}%"></div>
                         </div>
                         <div class="flex justify-between text-[9px] text-text-secondary">
-                            <span>${item.status === 'queued' ? 'Waiting for slot...' : (item.progress + '% • ' + (item.quality || 'BEST') + (item.size_status ? ' • ' + item.size_status : ''))}</span>
+                            <span>${item.progress}% • ${item.quality || 'BEST'}${item.size_status ? ` • ${item.size_status}` : ''}</span>
                             <span>${item.speed || ''}</span>
                         </div>
                     `;
